@@ -30,7 +30,7 @@ const BlogPreview: React.FC = () => {
   ];
 
   return (
-    <section id='blog' className="py-20 bg-white dark:bg-primary">
+    <section id='blog' className="py-20 bg-white dark:bg-[#0A192F]">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-12">
           <h2 className="text-3xl font-bold dark:text-white">Latest Blog Posts</h2>

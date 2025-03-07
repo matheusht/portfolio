@@ -51,7 +51,7 @@ const TechnicalSkills: React.FC = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-white dark:bg-primary">
+    <section id="skills" className="py-20 bg-white dark:bg-[#0A192F]">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Technical Skills</h2>
         

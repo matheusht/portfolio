@@ -7,7 +7,7 @@ import ScrollLink from './ScrollLink';
 
 const Header: React.FC = () => {
   return (
-    <header className="w-full py-6 bg-primary">
+    <header className="w-full py-6 bg-[#0A192F]">
       <nav className="container mx-auto px-4 flexitems-center">
         {/* <div className="flex items-center space-x-2">
           <Shield className="w-8 h-8 text-[#64FFDA]" />

@@ -47,7 +47,7 @@ const CertificationCarousel: React.FC = () => {
   ];
 
   return (
-    <section id="certifications" className="py-20 bg-gray-50 dark:bg-primary">
+    <section id="certifications" className="py-20 bg-gray-50 dark:bg-[#0A192F]">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Certification Journey</h2>
         
