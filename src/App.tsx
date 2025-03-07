@@ -5,6 +5,7 @@ import TechnicalSkills from './components/TechnicalSkills';
 import CertificationCarousel from './components/CertificationCarousel';
 import BlogPreview from './components/BlogPreview';
 import SecurityBadges from './components/SecurityBadges';
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
