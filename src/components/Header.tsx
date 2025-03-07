@@ -8,20 +8,14 @@ import ScrollLink from './ScrollLink';
 const Header: React.FC = () => {
   return (
     <header className="w-full py-6 bg-[#0A192F]">
-      <nav className="container mx-auto px-4 flexitems-center">
+      <nav className="container mx-auto px-4 flex items-center justify-end">
         {/* <div className="flex items-center space-x-2">
           <Shield className="w-8 h-8 text-[#64FFDA]" />
           <span className="text-xl font-bold">Matheus Theodoro</span>
         </div>
          */}
-        <div className="flex items-center space-x-6 justify-end">
           <CyberMenuBar />
-          
-          <button
-            className="p-2 rounded-lg bg-gray-100 dark:bg-[#0A192F] transition-colors"
-          >
-          </button>
-        </div>
+
       </nav>
 
       <div className="container mx-auto px-4 mt-20 text-center">

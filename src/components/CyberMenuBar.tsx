@@ -1,9 +1,9 @@
 "use client"
 
-import ScrollLink from './ScrollLink'
-import React from "react";
-import { motion } from "framer-motion";
-import { Shield, Terminal, FileCode, Badge, BookOpen } from "lucide-react";
+import ScrollLink from './ScrollLink';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, FileCode, Badge, BookOpen, Menu, X } from 'lucide-react';
 
 const MotionScrollLink = motion(ScrollLink);
 
@@ -46,113 +46,122 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const itemVariants = {
-  initial: { rotateX: 0, opacity: 1 },
-  hover: { rotateX: -90, opacity: 0 },
+const menuVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
 };
 
-const backVariants = {
-  initial: { rotateX: 90, opacity: 0 },
-  hover: { rotateX: 0, opacity: 1 },
-};
-
-const glowVariants = {
-  initial: { opacity: 0, scale: 0.8 },
-  hover: {
-    opacity: 1,
-    scale: 2,
-    transition: {
-      opacity: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
-      scale: { duration: 0.5, type: "spring", stiffness: 300, damping: 25 },
-    },
-  },
-};
-
-const navGlowVariants = {
-  initial: { opacity: 0 },
-  hover: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  },
-};
-
-const sharedTransition = {
-  type: "spring",
-  stiffness: 100,
-  damping: 20,
-  duration: 0.5,
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
 };
 
 export function CyberMenuBar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+
+  // Close menu on ESC key press
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeMenu();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <motion.nav
-      className="p-2 rounded-2xl bg-[#0A192F]/80 backdrop-blur-lg border border-[#64FFDA]/20 shadow-lg relative overflow-hidden justify-end"
-      initial="initial"
-      whileHover="hover"
+      className="relative z-50"
+      initial={false}
+      animate={isOpen ? "open" : "closed"}
     >
-      <motion.div
-        className="absolute -inset-2 bg-gradient-radial from-transparent via-[#64FFDA]/20 to-transparent rounded-3xl z-0 pointer-events-none"
-        variants={navGlowVariants}
-      />
-      <ul className="flex items-center gap-2 relative z-10">
-        {menuItems.map((item) => (
-          <motion.li key={item.label} className="relative">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={toggleMenu}
+        className="md:hidden p-2 text-[#64FFDA] z-50 relative"
+        aria-label="Toggle menu"
+      >
+        {isOpen ? (
+          <X className="h-7 w-7" strokeWidth={2} />
+        ) : (
+          <Menu className="h-7 w-7" strokeWidth={2} />
+        )}
+      </button>
+
+      {/* Desktop Menu */}
+      <div className="hidden md:block">
+        <motion.div
+          className="p-2 rounded-2xl bg-[#0A192F]/80 backdrop-blur-lg border border-[#64FFDA]/20 shadow-lg"
+          initial="initial"
+          whileHover="hover"
+        >
+          <ul className="flex items-center gap-2">
+            {menuItems.map((item) => (
+              <motion.li key={item.label} className="relative">
+                <motion.div
+                  className="block rounded-xl overflow-visible group relative"
+                  style={{ perspective: "600px" }}
+                  whileHover="hover"
+                  initial="initial"
+                >
+                  <MotionScrollLink
+                    to={item.href}
+                    className="flex items-center gap-2 px-4 py-2 bg-transparent text-gray-300 group-hover:text-white transition-colors rounded-xl"
+                  >
+                    <span className={item.iconColor}>{item.icon}</span>
+                    <span>{item.label}</span>
+                  </MotionScrollLink>
+                </motion.div>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 bg-[#0A192F]/95 backdrop-blur-sm z-40"
+            variants={backdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            onClick={closeMenu}
+          >
             <motion.div
-              className="block rounded-xl overflow-visible group relative"
-              style={{ perspective: "600px" }}
-              whileHover="hover"
-              initial="initial"
+              className="pt-20 px-4"
+              variants={menuVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
             >
-              <motion.div
-                className="absolute inset-0 z-0 pointer-events-none"
-                variants={glowVariants}
-                style={{
-                  background: item.gradient,
-                  opacity: 0,
-                  borderRadius: "16px",
-                }}
-              />
-              <MotionScrollLink
-                to={item.href}
-                className="flex items-center gap-2 px-4 py-2 relative z-10 bg-transparent text-gray-300 group-hover:text-white transition-colors rounded-xl"
-                variants={itemVariants}
-                transition={sharedTransition}
-                style={{ transformStyle: "preserve-3d", transformOrigin: "center bottom" }}
-              >
-                <span className={`transition-colors duration-300 ${item.iconColor}`}>
-                  {item.icon}
-                </span>
-                <span>{item.label}</span>
-                {/* {item.label === "Blog" && (
-                  <span className="absolute -top-2 -right-3 bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-0.5 rounded-full">
-                    Coming Soon
-                  </span>
-                )} */}
-              </MotionScrollLink>
-              <MotionScrollLink
-                to={item.href}
-                className="flex items-center gap-2 px-4 py-2 absolute inset-0 z-10 bg-transparent text-gray-300 group-hover:text-white transition-colors rounded-xl"
-                variants={backVariants}
-                transition={sharedTransition}
-                style={{ transformStyle: "preserve-3d", transformOrigin: "center top", rotateX: 90 }}
-              >
-                <span className={`transition-colors duration-300 ${item.iconColor}`}>
-                  {item.icon}
-                </span>
-                <span>{item.label}</span>
-                {item.label === "Blog" && (
-                  <span className="absolute -top-2 -right-12 bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-0.5 rounded-full">
-                    Coming Soon
-                  </span>
-                )}
-              </MotionScrollLink>
+              <div className="max-w-md mx-auto space-y-4">
+                {menuItems.map((item) => (
+                  <ScrollLink
+                    key={item.label}
+                    to={item.href}
+                    className="flex items-center gap-3 px-6 py-4 text-gray-300 hover:text-white transition-colors rounded-xl border border-[#64FFDA]/20"
+                    onClick={closeMenu}
+                  >
+                    <span className={item.iconColor}>{item.icon}</span>
+                    <span className="text-lg">{item.label}</span>
+                    {item.label === "Blog" && (
+                      <span className="ml-auto bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-1 rounded-full">
+                        Coming Soon
+                      </span>
+                    )}
+                  </ScrollLink>
+                ))}
+              </div>
             </motion.div>
-          </motion.li>
-        ))}
-      </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }

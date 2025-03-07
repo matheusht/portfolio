@@ -36,6 +36,7 @@ function App() {
         {/* <BlogPreview /> */}
         <SecurityBadges />
       </main>
+      <Analytics />
     </div>
   );
 }
