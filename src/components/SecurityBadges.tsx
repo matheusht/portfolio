@@ -32,7 +32,7 @@ const SecurityBadges: React.FC = () => {
             </div>
           </div>
           
-          <div className="flex items-center space-x-6">
+          {/* <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <Shield className="w-5 h-5 text-accent animate-pulse" />
               <span className="text-sm dark:text-white">
@@ -46,7 +46,7 @@ const SecurityBadges: React.FC = () => {
               <AlertTriangle className="w-4 h-4" />
               <span>Report a Vulnerability</span>
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

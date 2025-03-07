@@ -7,14 +7,14 @@ import ScrollLink from './ScrollLink';
 
 const Header: React.FC = () => {
   return (
-    <header className="w-full py-6">
-      <nav className="container mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
+    <header className="w-full py-6 bg-primary">
+      <nav className="container mx-auto px-4 flexitems-center">
+        {/* <div className="flex items-center space-x-2">
           <Shield className="w-8 h-8 text-[#64FFDA]" />
-          <span className="text-xl font-bold">CyberPortfolio</span>
+          <span className="text-xl font-bold">Matheus Theodoro</span>
         </div>
-        
-        <div className="flex items-center space-x-6">
+         */}
+        <div className="flex items-center space-x-6 justify-end">
           <CyberMenuBar />
           
           <button
@@ -36,8 +36,8 @@ const Header: React.FC = () => {
         <h1 className="text-4xl font-bold mb-4">
           Matheus Theodoro
         </h1>
-        <h2 className="text-xl text-gray-600 dark:text-gray-400 mb-6">
-          Blue Team Enthusiast | SIEM & Threat Detection {/*Specialist*/}
+        <h2 className="text-xl text-white dark:text-white mb-6">
+          Cybersecurity Enthusiast | SIEM & Threat Detection {/*Specialist*/}
         </h2>
         
         <div className="h-12 mb-8">
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
             wrapper="span"
             speed={50}
             repeat={Infinity}
-            className="text-lg text-gray-700 dark:text-gray-300"
+            className="text-lg text-white-700 dark:text-white-300"
           />
         </div>
 

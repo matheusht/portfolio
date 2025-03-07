@@ -12,12 +12,12 @@ const ProjectsShowcase: React.FC = () => {
         'Real-time threat intelligence integration',
         'Automated incident response workflows'
       ],
-      tags: ['Elastic Stack', 'SIGMA Rules', 'Python Automation'],
+      tags: ['Elastic Stack', 'Kubernetes', 'Python Automation'],
       demoUrl: '#',
       image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=1000'
     },
     {
-      title: 'Network IDS/IPS System',
+      title: 'Network IDS/IPS System Lab',
       icon: Activity,
       description: 'Suricata-based intrusion detection system with custom rulesets for C2 traffic detection',
       metrics: [
@@ -45,7 +45,7 @@ const ProjectsShowcase: React.FC = () => {
   ];
 
   return (
-    <section id="projects" className="py-20 bg-primary dark:bg-gray-900">
+    <section id="projects" className="py-20 bg-primary">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 text-white">Project Showcase</h2>
         

@@ -5,7 +5,7 @@ const CertificationCarousel: React.FC = () => {
   const certifications = [
     {
       name: 'CompTIA Security+',
-      progress: 60,
+      progress: 35,
       status: 'In Progress',
       focusAreas: ['Threat Detection', 'Cryptography'],
       objectives: [
@@ -20,7 +20,7 @@ const CertificationCarousel: React.FC = () => {
     },
     {
       name: 'AWS Cloud Practitioner',
-      progress: 45,
+      progress: 20,
       status: 'In Progress',
       focusAreas: ['Cloud Security', 'AWS Services'],
       objectives: [
@@ -42,7 +42,7 @@ const CertificationCarousel: React.FC = () => {
         'Microsoft Defender XDR',
         'Encryption'
       ],
-      expectedDate: '2024-08'
+      expectedDate: '2025-08'
     }
   ];
 

@@ -89,7 +89,7 @@ const sharedTransition = {
 export function CyberMenuBar() {
   return (
     <motion.nav
-      className="p-2 rounded-2xl bg-[#0A192F]/80 backdrop-blur-lg border border-[#64FFDA]/20 shadow-lg relative overflow-hidden"
+      className="p-2 rounded-2xl bg-[#0A192F]/80 backdrop-blur-lg border border-[#64FFDA]/20 shadow-lg relative overflow-hidden justify-end"
       initial="initial"
       whileHover="hover"
     >
