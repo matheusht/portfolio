@@ -47,7 +47,7 @@ const Header: React.FC = () => {
             wrapper="span"
             speed={50}
             repeat={Infinity}
-            className="text-lg text-white-700 dark:text-white-300"
+            className="text-lg text-white-700"
           />
         </div>
 

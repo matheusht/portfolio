@@ -23,7 +23,7 @@ const SecurityBadges: React.FC = () => {
                 OWASP Top 10 Compliant
               </span>
             </div>
-            <div className="h-4 w-px bg-gray-300 dark:bg-gray-700" />
+            <div className="h-4 w-px bg-gray-300 " />
             <div className="flex items-center space-x-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
               <span className="text-sm dark:text-white">

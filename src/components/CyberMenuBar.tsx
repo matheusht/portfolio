@@ -179,7 +179,7 @@ export function CyberMenuBar() {
                     </span>
                     <span>{item.label}</span>
                     {item.label === "Articles" && (
-                      <span className="absolute -top-2 -right-3 bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-0.5 rounded-full">
+                      <span className="absolute -top-2 -right-3 bg-[#64FFDA] text-[#0a192f] text-xs px-2 py-0.5 rounded-full">
                         Coming Soon
                       </span>
                     )}
@@ -191,7 +191,6 @@ export function CyberMenuBar() {
         </motion.div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
