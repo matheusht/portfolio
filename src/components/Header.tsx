@@ -19,7 +19,7 @@ const Header: React.FC = () => {
       </nav>
 
       <div className="container mx-auto px-4 mt-20 text-center">
-        <div className="w-40 h-40 mx-auto mb-6 rounded-full bg-[#0A192F] dark:bg-[#64FFDA]/10 flex items-center justify-center overflow-hidden p-1">
+        <div className="w-40 h-40 mx-auto mb-6 rounded-full bg-[#64FFDA]/10 flex items-center justify-center overflow-hidden p-1">
           <img 
             src="https://avatars.githubusercontent.com/u/96798246?v=4" 
             alt="GitHub Profile"
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
         <h1 className="text-4xl font-bold mb-4 text-white">
           Matheus Theodoro
         </h1>
-        <h2 className="text-xl text-white dark:text-white mb-6">
+        <h2 className="text-xl text-white mb-6">
           Cybersecurity Enthusiast | SIEM & Threat Detection {/*Specialist*/}
         </h2>
         

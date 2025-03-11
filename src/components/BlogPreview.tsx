@@ -33,7 +33,7 @@ const BlogPreview: React.FC = () => {
     <section id='blog' className="py-20 bg-primary">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl font-bold dark:text-white">Latest Blog Posts</h2>
+          <h2 className="text-3xl font-bold text-white">Latest Blog Posts</h2>
           <span className="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm">
             Coming Soon
           </span>
@@ -43,17 +43,17 @@ const BlogPreview: React.FC = () => {
           {blogPosts.map((post, index) => (
             <div
               key={index}
-              className="bg-gray-50 dark:bg-white/5 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow backdrop-blur-lg"
+              className="bg-white/5 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow backdrop-blur-lg"
             >
               <div className="p-6">
                 <div className="flex items-center space-x-3 mb-4">
                   <post.icon className="w-6 h-6 text-accent" />
-                  <h3 className="text-xl font-semibold dark:text-white line-clamp-2">
+                  <h3 className="text-xl font-semibold text-white line-clamp-2">
                     {post.title}
                   </h3>
                 </div>
                 
-                <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                <p className="text-gray-400 mb-4 line-clamp-3">
                   {post.preview}
                 </p>
 
@@ -68,7 +68,7 @@ const BlogPreview: React.FC = () => {
                   ))}
                 </div>
                 
-                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center justify-between text-sm text-gray-400">
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />

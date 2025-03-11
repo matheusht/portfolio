@@ -49,25 +49,25 @@ const CertificationCarousel: React.FC = () => {
   return (
     <section id="certifications" className="py-20 bg-primary">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Certification Journey</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 text-white">Certification Journey</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {certifications.map((cert, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-white/5 rounded-xl p-6 shadow-lg backdrop-blur-lg hover:shadow-xl transition-shadow group"
+              className="bg-white/5 rounded-xl p-6 shadow-lg backdrop-blur-lg hover:shadow-xl transition-shadow group"
             >
               <div className="flex items-center space-x-3 mb-4">
                 <Award className="w-6 h-6 text-accent" />
-                <h3 className="text-xl font-semibold dark:text-white">{cert.name}</h3>
+                <h3 className="text-xl font-semibold text-white">{cert.name}</h3>
               </div>
               
               <div className="mb-6">
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-600 dark:text-gray-400">Progress</span>
+                  <span className="text-gray-400">Progress</span>
                   <span className="text-accent font-semibold">{cert.progress}%</span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div className="w-full bg-gray-700 rounded-full h-2">
                   <div
                     className="bg-accent h-2 rounded-full transition-all duration-500"
                     style={{ width: `${cert.progress}%` }}
@@ -76,14 +76,14 @@ const CertificationCarousel: React.FC = () => {
               </div>
               
               <div className="flex items-center space-x-2 mb-4">
-                <Clock className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <Clock className="w-4 h-4 text-gray-400" />
+                <span className="text-sm text-gray-400">
                   Expected: {cert.expectedDate}
                 </span>
               </div>
 
               <div className="mb-4">
-                <h4 className="text-sm font-semibold mb-2 dark:text-white">Current Focus:</h4>
+                <h4 className="text-sm font-semibold mb-2 text-white">Current Focus:</h4>
                 <div className="flex flex-wrap gap-2">
                   {cert.focusAreas.map((area, idx) => (
                     <span
@@ -97,8 +97,8 @@ const CertificationCarousel: React.FC = () => {
               </div>
               
               <div className="hidden group-hover:block">
-                <h4 className="text-sm font-semibold mb-2 dark:text-white">Exam Objectives:</h4>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <h4 className="text-sm font-semibold mb-2 text-white">Exam Objectives:</h4>
+                <ul className="text-sm text-gray-400 space-y-1">
                   {cert.objectives.map((objective, idx) => (
                     <li key={idx} className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-accent" />
