@@ -23,7 +23,6 @@ export default function CVModal({ cvUrl, cvFilename }: CVModalProps) {
     document.body.removeChild(link)
   }
 
-  // Add PDF viewer parameters to hide UI elements
   const pdfViewerUrl = `${cvUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`
 
   return (
