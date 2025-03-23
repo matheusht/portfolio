@@ -8,7 +8,7 @@ import CVModal from "./cv-modal"
 
 const Header: React.FC = () => {
   const cvUrl = "../../../dist/assets/CV.pdf"
-  const cvFilename = "Matheus_Theodoro_cv.pdf"
+  const cvFilename = "Matheus_Theodoro_CV.pdf"
 
   return (
     <header className="w-full py-6 bg-[#0A192F]">
