@@ -23,7 +23,7 @@ export default function CVModal({ cvUrl, cvFilename }: CVModalProps) {
     document.body.removeChild(link)
   }
 
-  const pdfViewerUrl = `${cvUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`
+  const pdfViewerUrl = `${cvUrl}#toolbar=0&pagemode=none&view=FitH`
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -58,4 +58,3 @@ export default function CVModal({ cvUrl, cvFilename }: CVModalProps) {
     </Dialog>
   )
 }
-
