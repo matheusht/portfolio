@@ -28,7 +28,7 @@ export default function CVModal({ cvUrl, cvFilename }: CVModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="px-6 py-3 bg-[#64FFDA] text-[#0A192F] rounded-lg hover:opacity-90 transition-opacity flex items-center space-x-2">
+        <Button className="px-6 py-3 bg-[#64FFDA] text-[#0A192F] rounded-lg hover:bg-accent/75 transition-opacity flex items-center space-x-2">
           <span>Review My CV</span>
           <ExternalLink className="w-4 h-4" />
         </Button>
