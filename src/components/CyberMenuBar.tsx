@@ -39,8 +39,8 @@ const menuItems: MenuItem[] = [
   },
   {
     icon: <BookOpen className="h-5 w-5" />,
-    label: "Articles",
-    href: "articles",
+    label: "Blog",
+    href: "blog",
     gradient: "radial-gradient(circle, rgba(187,162,253,0.15) 0%, rgba(187,162,253,0.06) 50%, rgba(187,162,253,0) 100%)",
     iconColor: "text-[#64FFDA]",
   },
@@ -159,7 +159,7 @@ export function CyberMenuBar() {
                       {item.icon}
                     </span>
                     <span>{item.label}</span>
-                    {item.label === "Articles" && (
+                    {item.label === "Blog" && (
                       <span className="absolute -top-2 -right-3 bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-0.5 rounded-full">
                         Coming Soon
                       </span>
@@ -178,7 +178,7 @@ export function CyberMenuBar() {
                       {item.icon}
                     </span>
                     <span>{item.label}</span>
-                    {item.label === "Articles" && (
+                    {item.label === "Blog" && (
                       <span className="absolute -top-2 -right-3 bg-[#64FFDA] text-[#0a192f] text-xs px-2 py-0.5 rounded-full">
                         Coming Soon
                       </span>
@@ -211,7 +211,7 @@ export function CyberMenuBar() {
                   >
                     <span className={item.iconColor}>{item.icon}</span>
                     <span className="text-lg">{item.label}</span>
-                    {item.label === "Articles" && (
+                    {item.label === "Blog" && (
                       <span className="ml-auto bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-1 rounded-full">
                         Coming Soon
                       </span>
