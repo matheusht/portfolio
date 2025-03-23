@@ -35,7 +35,7 @@ export default function CVModal({ cvUrl, cvFilename }: CVModalProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[900px] max-h-[90vh] p-0 bg-[#112240] border border-[#64FFDA]/30 text-white">
         <DialogHeader className="p-4 border-b border-[#64FFDA]/20 flex flex-row items-center justify-between">
-          <DialogTitle className="text-[#64FFDA]">My Curriculum Vitae</DialogTitle>
+          <DialogTitle className="text-[#64FFDA]">My Curriculum</DialogTitle>
           <div className="flex items-center gap-2">
             <Button onClick={handleDownload} className="bg-[#64FFDA] text-[#0A192F] hover:bg-[#64FFDA]/80">
               <Download className="w-4 h-4 mr-2" />
