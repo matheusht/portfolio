@@ -7,8 +7,8 @@ import { CyberMenuBar } from "./CyberMenuBar"
 import CVModal from "./cv-modal"
 
 const Header: React.FC = () => {
-  const cvUrl = "../../../dist/assets/CV.pdf"
-  const cvFilename = "Matheus_Theodoro_CV.pdf"
+
+
 
   return (
     <header className="w-full py-6 bg-[#0A192F]">
@@ -76,7 +76,7 @@ const Header: React.FC = () => {
         </div>
 
         <div className="flex justify-center space-x-4">
-          <CVModal cvUrl={cvUrl} cvFilename={cvFilename} />
+          <CVModal cvUrl={'/assets/CV.pdf'} cvFilename={`Matheus_Theodoro_CV.pdf`} />
         </div>
       </div>
     </header>
