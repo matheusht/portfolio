@@ -76,7 +76,7 @@ const Header: React.FC = () => {
         </div>
 
         <div className="flex justify-center space-x-4">
-          <CVModal cvUrl={'https://drive.google.com/file/d/1VgkWV_IsZuPXg-BaqqMe7WnAy959tWJd/view?usp=sharing'} cvFilename={`Matheus_Theodoro_CV.pdf`} />
+          <CVModal cvUrl={'/assets/Resume-03.pdf'} cvFilename={`Matheus_Theodoro_CV.pdf`} />
         </div>
       </div>
     </header>
