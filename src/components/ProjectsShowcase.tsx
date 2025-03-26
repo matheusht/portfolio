@@ -4,41 +4,44 @@ import { Shield, Activity, FileSearch, ExternalLink, Terminal } from 'lucide-rea
 const ProjectsShowcase: React.FC = () => {
   const projects = [
     {
-      title: 'Enterprise SIEM Implementation',
+      title: 'Synkro (Enterprise SIEM Implementation)',
       icon: Shield,
-      description: 'Complete Elastic Stack deployment with custom detection rules and automated response playbooks',
+      description: 'Elastic Stack deployment on Kubernetes cluster with automated threat detection systems',
       metrics: [
-        'Custom correlation rules for APT detection',
+        'Custom correlation rules aligned with MITRE ATT&CK',
         'Real-time threat intelligence integration',
-        'Automated incident response workflows'
+        'Automated incident response playbooks',
+        'Centralized logging for multi-cloud environments'
       ],
-      tags: ['Elastic Stack', 'Kubernetes', 'Python Automation'],
+      tags: ['Elastic Stack', 'Kubernetes', 'Threat Hunting', 'NIST Framework'],
       demoUrl: '#',
       image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=1000'
     },
     {
-      title: 'Network IDS/IPS System Lab',
+      title: 'Cybersecurity Defense Lab',
       icon: Activity,
-      description: 'Suricata-based intrusion detection system with custom rulesets for C2 traffic detection',
+      description: 'Hybrid SOC environment with offensive/defensive security operations',
       metrics: [
-        'Custom C2 detection signatures',
-        'Network traffic baseline analysis',
-        'Automated blocking responses'
+        'Network segmentation strategies with pfSense',
+        'Active Directory privilege escalation simulations',
+        'Suricata IDS rule development',
+        'Vulnerability exploitation documentation'
       ],
-      tags: ['Suricata', 'Network Security', 'Traffic Analysis'],
+      tags: ['Kali Linux', 'OWASP Top 10', 'pfSense', 'Windows AD'],
       demoUrl: '#',
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1000'
     },
     {
-      title: 'Phishing Campaign Analysis',
+      title: 'Malware Analysis Lab',
       icon: FileSearch,
-      description: 'Comprehensive analysis of APT phishing tactics with comparison to TA505 techniques',
+      description: 'Advanced malware research environment with reverse engineering capabilities',
       metrics: [
-        'IOC extraction and correlation',
-        'MITRE ATT&CK mapping',
-        'Automated analysis pipeline'
+        'Static/Dynamic analysis workflows',
+        'MITRE ATT&CK technique mapping',
+        'Sandboxed analysis environment',
+        'IOC extraction and correlation'
       ],
-      tags: ['Threat Intel', 'OSINT', 'MITRE ATT&CK'],
+      tags: ['REMnux', 'FlareVM', 'Digital Forensics', 'YARA Rules'],
       demoUrl: '#',
       image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000'
     }
@@ -47,7 +50,7 @@ const ProjectsShowcase: React.FC = () => {
   return (
     <section id="projects" className="py-20 bg-primary">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-white">Project Showcase</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 text-white">Security Projects</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
@@ -98,7 +101,7 @@ const ProjectsShowcase: React.FC = () => {
                   href={project.demoUrl}
                   className="inline-flex items-center text-accent hover:opacity-80 transition-opacity"
                 >
-                  View Demo
+                  View Technical Details
                   <ExternalLink className="w-4 h-4 ml-1" />
                 </a>
               </div>
