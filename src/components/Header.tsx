@@ -55,7 +55,7 @@ const Header: React.FC = () => {
           </a>
 
           <a
-            href="https://linkedin.com/in/matheustheodoro1"
+            href="https://linkedin.com/in/matheusht"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center space-x-2 text-[#64FFDA] hover:opacity-80 transition-opacity"
@@ -68,7 +68,7 @@ const Header: React.FC = () => {
             href="https://github.com/matheusht"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center space-x-2 text-[#64FFDA] hover:opacity-80 transition-opacity"
+            className="flex items-centFer space-x-2 text-[#64FFDA] hover:opacity-80 transition-opacity"
           >
             <Github className="w-5 h-5" />
             <span>GitHub</span>
