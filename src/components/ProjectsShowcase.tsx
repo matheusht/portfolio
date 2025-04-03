@@ -18,7 +18,7 @@ const ProjectsShowcase: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=1000'
     },
     {
-      title: 'Cybersecurity Defense Lab',
+      title: 'Cybersecurity  Lab',
       icon: Activity,
       description: 'Hybrid SOC environment with offensive/defensive security operations',
       metrics: [
