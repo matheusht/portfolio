@@ -1,61 +1,79 @@
 import React from 'react';
-import { BookOpen, Clock, ArrowRight, Terminal, Shield, Code } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BookOpen, Clock, ArrowRight, Shield, Terminal } from 'lucide-react';
 
 const BlogPreview: React.FC = () => {
   const blogPosts = [
     {
-      title: 'Building a Low-Cost SIEM for Threat Hunting',
-      preview: 'A comprehensive guide to setting up an enterprise-grade SIEM using open-source tools...',
-      readTime: '15 min read',
-      date: '2024-04-01',
+      title: 'Code',
+      platform: 'HackTheBox',
+      challenge: 'Code',
+      author: 'matheusht',
+      date: '2025-03-26',
+      readTime: '9 min read',
+      slug: 'htb-code',
       icon: Shield,
-      tags: ['SIEM', 'Elastic Stack', 'Threat Hunting']
+      tags: ['Web App', 'PHP', 'RCE']
     },
     {
-      title: 'Automating Log Analysis with Python Pandas',
-      preview: 'Learn how to build automated log analysis pipelines using Python and Pandas...',
-      readTime: '12 min read',
-      date: '2024-04-15',
-      icon: Code,
-      tags: ['Python', 'Automation', 'Log Analysis']
-    },
-    {
-      title: 'Advanced Suricata Rule Writing for C2 Detection',
-      preview: 'Deep dive into creating custom Suricata rules for detecting command and control traffic...',
-      readTime: '20 min read',
-      date: '2024-05-01',
+      title: 'TheFrizz',
+      platform: 'HackTheBox',
+      challenge: 'TheFrizz',
+      author: 'matheusht',
+      date: '2025-03-21',
+      readTime: '19 min read',
+      slug: 'htb-thefrizz',
       icon: Terminal,
-      tags: ['IDS/IPS', 'Network Security', 'Threat Detection']
+      tags: ['Privilege Escalation', 'Linux', 'SUID']
+    },
+    {
+      title: 'Dog',
+      platform: 'HackTheBox',
+      challenge: 'Dog',
+      author: 'matheusht',
+      date: '2025-03-10',
+      readTime: '11 min read',
+      slug: 'htb-dog',
+      icon: Shield,
+      tags: ['Container Escape', 'K8s', 'Docker']
     }
   ];
 
   return (
-    <section id='blog' className="py-20 bg-primary">
+    <section id="blog" className="py-20 bg-primary">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl font-bold text-white">Latest Blog Posts</h2>
-          <span className="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm">
-            Coming Soon
-          </span>
+          <h2 className="text-3xl font-bold text-white">Latest Writeups</h2>
+          <Link 
+            to="/blog"
+            className="flex items-center text-accent hover:opacity-80 transition-opacity"
+          >
+            View All
+            <ArrowRight className="w-4 h-4 ml-1" />
+          </Link>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogPosts.map((post, index) => (
-            <div
+            <Link
               key={index}
-              className="bg-white/5 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow backdrop-blur-lg"
+              to={`/blog/${post.slug}`}
+              className="bg-white/5 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all hover:scale-105"
             >
               <div className="p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <post.icon className="w-6 h-6 text-accent" />
-                  <h3 className="text-xl font-semibold text-white line-clamp-2">
-                    {post.title}
-                  </h3>
+                  <span className="px-3 py-1 bg-accent/20 text-accent rounded-full text-sm">
+                    {post.platform}
+                  </span>
                 </div>
+
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  {post.title}
+                </h3>
                 
-                <p className="text-gray-400 mb-4 line-clamp-3">
-                  {post.preview}
-                </p>
+                <div className="text-sm text-gray-400 mb-4">
+                  {post.platform} | {post.challenge}
+                </div>
 
                 <div className="flex flex-wrap gap-2 mb-4">
                   {post.tags.map((tag, idx) => (
@@ -71,25 +89,17 @@ const BlogPreview: React.FC = () => {
                 <div className="flex items-center justify-between text-sm text-gray-400">
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
+                      <BookOpen className="w-4 h-4 mr-1" />
+                      {post.author}
+                    </div>
+                    <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
                       {post.readTime}
                     </div>
-                    <div className="flex items-center">
-                      <BookOpen className="w-4 h-4 mr-1" />
-                      {new Date(post.date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                    </div>
                   </div>
-                  
-                  <button className="flex items-center text-accent hover:opacity-80 transition-opacity">
-                    Read more
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </button>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

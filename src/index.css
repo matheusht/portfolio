@@ -39,4 +39,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+  font-display: swap;
 }

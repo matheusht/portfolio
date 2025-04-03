@@ -1,11 +1,7 @@
-"use client"
-
-import ScrollLink from './ScrollLink';
+import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, FileCode, Badge, BookOpen, Menu, X } from 'lucide-react';
-
-const MotionScrollLink = motion(ScrollLink);
 
 interface MenuItem {
   icon: React.ReactNode;
@@ -19,34 +15,34 @@ const menuItems: MenuItem[] = [
   {
     icon: <Shield className="h-5 w-5" />,
     label: "Projects",
-    href: "projects",
+    href: "/projects",
     gradient: "radial-gradient(circle, rgba(100,255,218,0.15) 0%, rgba(100,255,218,0.06) 50%, rgba(100,255,218,0) 100%)",
     iconColor: "text-[#64FFDA]",
   },
   {
     icon: <FileCode className="h-5 w-5" />,
     label: "Skills",
-    href: "skills",
+    href: "/#skills",
     gradient: "radial-gradient(circle, rgba(126,231,250,0.15) 0%, rgba(126,231,250,0.06) 50%, rgba(126,231,250,0) 100%)",
     iconColor: "text-[#64FFDA]",
   },
   {
     icon: <Badge className="h-5 w-5" />,
     label: "Certifications",
-    href: "certifications",
+    href: "/#certifications",
     gradient: "radial-gradient(circle, rgba(149,197,252,0.15) 0%, rgba(149,197,252,0.06) 50%, rgba(149,197,252,0) 100%)",
     iconColor: "text-[#64FFDA]",
   },
   {
     icon: <BookOpen className="h-5 w-5" />,
     label: "Blog",
-    href: "blog",
+    href: "/blog",
     gradient: "radial-gradient(circle, rgba(187,162,253,0.15) 0%, rgba(187,162,253,0.06) 50%, rgba(187,162,253,0) 100%)",
     iconColor: "text-[#64FFDA]",
   },
 ];
 
-// Animation variants remain the same
+// Animation variants remain the same...
 const itemVariants = {
   initial: { rotateX: 0, opacity: 1 },
   hover: { rotateX: -90, opacity: 0 },
@@ -101,9 +97,10 @@ export function CyberMenuBar() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const MotionLink = motion(Link);
+
   return (
     <motion.nav className="relative z-50">
-      {/* Mobile Menu Button */}
       <button
         onClick={toggleMenu}
         className="md:hidden p-2 text-[#64FFDA] z-50 relative"
@@ -116,7 +113,6 @@ export function CyberMenuBar() {
         )}
       </button>
 
-      {/* Desktop Menu with Glow Effects */}
       <div className="hidden md:block">
         <motion.div
           className="p-2 rounded-2xl bg-[#0A192F]/80 backdrop-blur-lg border border-[#64FFDA]/20 shadow-lg relative overflow-hidden"
@@ -147,8 +143,7 @@ export function CyberMenuBar() {
                     }}
                   />
                   
-                  {/* Front Side */}
-                  <MotionScrollLink
+                  <MotionLink
                     to={item.href}
                     className="flex items-center gap-2 px-4 py-2 relative z-10 bg-transparent text-gray-300 group-hover:text-white transition-colors rounded-xl"
                     variants={itemVariants}
@@ -159,15 +154,9 @@ export function CyberMenuBar() {
                       {item.icon}
                     </span>
                     <span>{item.label}</span>
-                    {item.label === "Blog" && (
-                      <span className="absolute -top-2 -right-3 bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-0.5 rounded-full">
-                        Coming Soon
-                      </span>
-                    )}
-                  </MotionScrollLink>
+                  </MotionLink>
                   
-                  {/* Back Side */}
-                  <MotionScrollLink
+                  <MotionLink
                     to={item.href}
                     className="flex items-center gap-2 px-4 py-2 absolute inset-0 z-10 bg-transparent text-gray-300 group-hover:text-white transition-colors rounded-xl"
                     variants={backVariants}
@@ -178,12 +167,7 @@ export function CyberMenuBar() {
                       {item.icon}
                     </span>
                     <span>{item.label}</span>
-                    {item.label === "Blog" && (
-                      <span className="absolute -top-2 -right-3 bg-[#64FFDA] text-[#0a192f] text-xs px-2 py-0.5 rounded-full">
-                        Coming Soon
-                      </span>
-                    )}
-                  </MotionScrollLink>
+                  </MotionLink>
                 </motion.div>
               </motion.li>
             ))}
@@ -203,7 +187,7 @@ export function CyberMenuBar() {
             <div className="pt-20 px-4" onClick={(e) => e.stopPropagation()}>
               <div className="max-w-md mx-auto space-y-4">
                 {menuItems.map((item) => (
-                  <ScrollLink
+                  <Link
                     key={item.label}
                     to={item.href}
                     className="flex items-center gap-3 px-6 py-4 text-gray-300 hover:text-white transition-colors rounded-xl border border-[#64FFDA]/20"
@@ -211,12 +195,7 @@ export function CyberMenuBar() {
                   >
                     <span className={item.iconColor}>{item.icon}</span>
                     <span className="text-lg">{item.label}</span>
-                    {item.label === "Blog" && (
-                      <span className="ml-auto bg-[#64FFDA] text-[#0A192F] text-xs px-2 py-1 rounded-full">
-                        Coming Soon
-                      </span>
-                    )}
-                  </ScrollLink>
+                  </Link>
                 ))}
               </div>
             </div>
