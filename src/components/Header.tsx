@@ -26,7 +26,7 @@ const Header: React.FC = () => {
         </div>
 
         <h1 className="text-4xl font-bold mb-4 text-white">Matheus Theodoro</h1>
-        <h2 className="text-xl text-white mb-6">Cybersecurity Enthusiast | SIEM & Threat Detection</h2>
+        <h2 className="text-xl text-white mb-6">Security Engineer | DevSecOps & Penetration Testing</h2>
 
         <div className="h-12 mb-8">
           <TypeAnimation
@@ -35,7 +35,7 @@ const Header: React.FC = () => {
               2000,
               "Analyzing and correlating security events",
               2000,
-              "Implementing automated threat response",
+              "Pentesting insecure applications",
               2000,
             ]}
             wrapper="span"
