@@ -107,13 +107,13 @@ const ProjectsShowcase: React.FC = () => {
                   ))}
                 </div>
                 
-                <a
-                  href={project.demoUrl}
+                <Link
+                  to={project.demoUrl}
                   className="inline-flex items-center text-accent hover:opacity-80 transition-opacity"
                 >
                   View Technical Details
                   <ExternalLink className="w-4 h-4 ml-1" />
-                </a>
+                </Link>
               </div>
             </div>
           ))}
