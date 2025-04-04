@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from './components/Navbar';
 import Header from './components/Header';
-import Home from './pages/Home';
+import { Home } from './pages/Home';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Projects from './pages/Projects';

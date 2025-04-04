@@ -39,6 +39,8 @@ const BlogPreview: React.FC = () => {
     }
   ];
 
+  
+
   return (
     <section id="blog" className="py-20 bg-primary">
       <div className="container mx-auto px-4">

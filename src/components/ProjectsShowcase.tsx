@@ -53,6 +53,16 @@ const ProjectsShowcase: React.FC = () => {
   return (
     <section id="projects" className="py-20 bg-primary">
       <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center mb-12">
+                  <h2 className="text-3xl font-bold text-white">Projects</h2>
+                  <Link 
+                    to="/projects"
+                    className="flex items-center text-accent hover:opacity-80 transition-opacity"
+                  >
+                    View All
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </Link>
+                </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
