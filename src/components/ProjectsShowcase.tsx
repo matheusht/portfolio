@@ -14,7 +14,7 @@ const ProjectsShowcase: React.FC = () => {
         'Automated incident response playbooks',
         'Centralized logging for multi-cloud environments'
       ],
-      tags: ['Elastic Stack', 'Kubernetes', 'Threat Hunting', 'NIST Framework'],
+      tags: ['Elastic Stack', 'Kubernetes', 'Threat Hunting','Threat Detection', 'NIST Framework'],
       demoUrl: '/projects/synkro',
       image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=1000'
     },
@@ -26,9 +26,10 @@ const ProjectsShowcase: React.FC = () => {
         'Network segmentation strategies with pfSense',
         'Active Directory privilege escalation simulations',
         'Suricata IDS rule development',
-        'Vulnerability exploitation documentation'
+        'Vulnerability exploitation documentation',
+        'SIEM Incident Response'
       ],
-      tags: ['Kali Linux', 'OWASP Top 10', 'pfSense', 'Windows AD'],
+      tags: ['Active Directory', 'Kali Linux', 'OWASP Top 10', 'pfSense', 'Windows AD'],
       demoUrl: '/projects/security-lab',
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1000'
     },
@@ -40,9 +41,10 @@ const ProjectsShowcase: React.FC = () => {
         'Static/Dynamic analysis workflows',
         'MITRE ATT&CK technique mapping',
         'Sandboxed analysis environment',
-        'IOC extraction and correlation'
+        'IOC extraction and correlation',
+        'Ghidra/IDA Tools'
       ],
-      tags: ['REMnux', 'FlareVM', 'Digital Forensics', 'YARA Rules'],
+      tags: ['Reverse Engineering','IOCs','REMnux', 'FlareVM', 'Forensics', 'YARA Rules'],
       demoUrl: '/projects/malware-analysis-lab',
       image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000'
     }
@@ -51,22 +53,12 @@ const ProjectsShowcase: React.FC = () => {
   return (
     <section id="projects" className="py-20 bg-primary">
       <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl font-bold text-white">Projects</h2>
-          <Link 
-            to="/projects"
-            className="flex items-center text-accent hover:opacity-80 transition-opacity"
-          >
-            View All
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </Link>
-        </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <div
               key={index}
-              className="bg-white/10 backdrop-blur-lg rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-105"
+              className="bg-white/10 backdrop-blur-lg rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-105 flex flex-col"
             >
               <div className="h-48 overflow-hidden relative">
                 <img
@@ -77,42 +69,46 @@ const ProjectsShowcase: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
               </div>
               
-              <div className="p-6">
-                <div className="flex items-center space-x-2 mb-4">
-                  <project.icon className="w-6 h-6 text-accent" />
-                  <h3 className="text-xl font-semibold text-white">{project.title}</h3>
-                </div>
-                
-                <p className="text-gray-300 mb-4">
-                  {project.description}
-                </p>
-                
-                <div className="space-y-2 mb-4">
-                  {project.metrics.map((metric, idx) => (
-                    <div key={idx} className="flex items-center text-sm text-gray-300">
-                      <Terminal className="w-4 h-4 mr-2 text-accent" />
-                      {metric}
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex flex-col flex-grow">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <project.icon className="w-6 h-6 text-accent" />
+                    <h3 className="text-xl font-semibold text-white">{project.title}</h3>
+                  </div>
+                  
+                  <p className="text-gray-300 mb-4">
+                    {project.description}
+                  </p>
+                  
+                  <div className="space-y-2 mb-4">
+                    {project.metrics.map((metric, idx) => (
+                      <div key={idx} className="flex items-center text-sm text-gray-300">
+                        <Terminal className="w-4 h-4 mr-2 text-accent flex-shrink-0" />
+                        <span>{metric}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-auto mb-4">
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-accent/10 text-accent text-sm rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
-                
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 bg-accent/10 text-accent text-sm rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                
+
                 <Link
                   to={project.demoUrl}
-                  className="inline-flex items-center text-accent hover:opacity-80 transition-opacity"
+                  className="inline-flex items-center text-accent hover:opacity-80 transition-opacity mt-2"
                 >
                   View Technical Details
-                  <ExternalLink className="w-4 h-4 ml-1" />
+                  <ExternalLink className="w-4 h-4 ml-1 flex-shrink-0" />
                 </Link>
               </div>
             </div>
