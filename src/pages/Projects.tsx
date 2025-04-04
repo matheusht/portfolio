@@ -11,29 +11,36 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: 'Proxmox Lab: Game of Active Directory',
-    description: 'In this project, we\'ll be using deployment tools and scripts shared by m4yfly to standup and configure Game of Active Directory (GOAD) v3 in the environment set up in my original Proxmox Lab series.',
+    title: 'Synkro (Enterprise SIEM)',  
+  description: 'In this project, I deployed an enterprise-grade SIEM using Elastic Stack on Kubernetes. This scalable implementation enhanced threat detection with real-time log analysis, automated incident response workflows, and proactive threat hunting via integrated intelligence feeds.',  
+  slug: 'synkro',
+    image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=1000'
+  },
+  {
+    title: 'Cybersecurity Lab',
+    description: 'In this project, I built a hybrid SOC environment using pfSense and Kali Linux. This lab enables hands-on practice with network segmentation, Active Directory penetration testing, and SIEM-driven incident response through controlled attack simulations.',
+    slug: 'security-lab',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000'
+  },
+  {
+    title: 'Malware Analysis Lab',
+    description: 'In this project, I built a secure malware research environment using REMnux and FlareVM. This setup allows safe static/dynamic analysis of malicious samples, reverse engineering of Windows/Linux binaries, and extraction of IOCs through sandboxed investigations using tools like Ghidra/IDA and Cuckoo Sandbox ',
+    slug: 'malware-analysis-lab',
+    image: 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&q=80&w=1000'
+  },
+  {
+    title: 'Game of Active Directory',
+    description: 'In this project, we\'ll be using deployment tools and scripts shared by m4yfly to standup and configure Game of Active Directory (GOAD) v3.',
     slug: 'proxmox-goad',
     image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1000'
   },
   {
-    title: 'IT and Cybersecurity Learning Path',
+    title: 'Cybersecurity Learning Path',
     description: 'In this post, I suggest a path of free resources that newcomers to IT and cybersecurity can follow to build a solid set of foundational skills to secure their careers.',
-    slug: 'it-cybersecurity-path',
+    slug: 'cybersecurity-path',
     image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=1000'
   },
-  {
-    title: 'Installing Proxmox on a Laptop and Building a Cybersecurity Lab',
-    description: 'In this project, broken up into multiple modules, you will build a comprehensive cybersecurity home lab using Proxmox VE. Upon completion, you will have an environment where you can safely practice penetration testing against a variety of targets, as well as detection in your SIEM.',
-    slug: 'proxmox-laptop-lab',
-    image: 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&q=80&w=1000'
-  },
-  {
-    title: 'Building a Security Lab in VirtualBox',
-    description: 'In this project, broken up into multiple modules, you will build a comprehensive penetration testing lab using VirtualBox. Upon completion, you will have an environment where you can safely practice penetration testing against a variety of targets.',
-    slug: 'virtualbox-security-lab',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000'
-  }
+
 ];
 
 const Projects: React.FC = () => {
@@ -58,7 +65,7 @@ const Projects: React.FC = () => {
               <article className="bg-[#0d1117] rounded-lg overflow-hidden border border-gray-800">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="p-8">
-                    <h2 className="text-2xl font-mono text-white mb-4 group-hover:text-[#00FF00] transition-colors">
+                    <h2 className="text-2xl font-mono text-white mb-4 group-hover:text-accent transition-colors">
                       {project.title}
                     </h2>
                     
@@ -66,7 +73,7 @@ const Projects: React.FC = () => {
                       {project.description}
                     </p>
 
-                    <div className="flex items-center text-[#00FF00] font-mono">
+                    <div className="flex items-center text-accent font-mono">
                       Read more
                       <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform" />
                     </div>

@@ -18,14 +18,14 @@ const certifications: Certification[] = [
   {
     name: "Security+",
     provider: "CompTIA",
-    logo: "https://www.comptia.org/images/default-source/memberbuttons/securityplus-badge.png",
+    logo: "https://security.ine.com/wp-content/uploads/2024/06/CompTIA-Security-300x251.png",
     link: "https://www.comptia.org/certifications/security"
   },
   {
-    name: "OSCP",
-    provider: "Offensive Security",
-    logo: "https://www.offensive-security.com/wp-content/uploads/2021/07/OSCP-badge.png",
-    link: "https://www.offensive-security.com/pwk-oscp/"
+    name: "ISO 27001",
+    provider: "SkillFront",
+    logo: "/assets/iso.png",
+    link: "https://www.skillfront.com/Badges/12680635355948"
   }
 ];
 
@@ -88,7 +88,7 @@ const Resume: React.FC = () => {
         <section className="mb-16 text-center">
           <h2 className="text-2xl font-bold text-white mb-6">About</h2>
           <p className="text-gray-300 max-w-3xl mx-auto">
-            Extensive on-premise and cloud systems, networking, and automation experience. Embraces DevSecOps and agile mindsets. Well-versed in the penetration testing lifecycle, as well as pentesting tools and methodologies. Knowledgeable on defensive security concepts including SIEM, HIDS, NIDS, and threat hunting. Maintains a Proxmox home lab cluster to research and test a wide variety of topics.
+          Security engineer with experience in defensive architecture (SIEM/Wazuh/ELK) and offensive penetration testing. Well-versed in penetration testing lifecycle, as well as tools and methodologies. Knowledgeable on defensive security operations including SIEM, HIDS, NIDS configuration, MITRE ATT&CK threat hunting, and session hardening. Maintains a Virtual Security Lab to research and test a wide variety of topics.
           </p>
         </section>
 

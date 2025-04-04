@@ -7,8 +7,8 @@ const ProjectDetail: React.FC = () => {
 
   // This would normally fetch project data from your content system
   const project = {
-    title: 'PROXNOX',
-    subtitle: 'Proxmox Lab: Game of Active Directory',
+    title: 'Security Lab',
+    subtitle: 'Security Lab: Hybrid SOC environment with offensive/defensive security operations',
     description: 'In this project, we\'ll be using deployment tools and scripts shared by m4yfly to standup and configure Game of Active Directory (GOAD) v3 in the environment set up in my original Proxmox Lab series.',
     objective: 'Create a comprehensive Active Directory lab environment for security testing and learning.',
     technicalStack: [

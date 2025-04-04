@@ -1,5 +1,6 @@
 import React from 'react';
-import { Shield, Activity, FileSearch, ExternalLink, Terminal } from 'lucide-react';
+import { Shield, Activity, FileSearch, ExternalLink, Terminal, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ProjectsShowcase: React.FC = () => {
   const projects = [
@@ -14,7 +15,7 @@ const ProjectsShowcase: React.FC = () => {
         'Centralized logging for multi-cloud environments'
       ],
       tags: ['Elastic Stack', 'Kubernetes', 'Threat Hunting', 'NIST Framework'],
-      demoUrl: '#',
+      demoUrl: '/projects/synkro',
       image: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=1000'
     },
     {
@@ -28,7 +29,7 @@ const ProjectsShowcase: React.FC = () => {
         'Vulnerability exploitation documentation'
       ],
       tags: ['Kali Linux', 'OWASP Top 10', 'pfSense', 'Windows AD'],
-      demoUrl: '#',
+      demoUrl: '/projects/security-lab',
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1000'
     },
     {
@@ -42,7 +43,7 @@ const ProjectsShowcase: React.FC = () => {
         'IOC extraction and correlation'
       ],
       tags: ['REMnux', 'FlareVM', 'Digital Forensics', 'YARA Rules'],
-      demoUrl: '#',
+      demoUrl: '/projects/malware-analysis-lab',
       image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000'
     }
   ];
@@ -50,7 +51,16 @@ const ProjectsShowcase: React.FC = () => {
   return (
     <section id="projects" className="py-20 bg-primary">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-white">Security Projects</h2>
+      <div className="flex justify-between items-center mb-12">
+          <h2 className="text-3xl font-bold text-white">Projects</h2>
+          <Link 
+            to="/projects"
+            className="flex items-center text-accent hover:opacity-80 transition-opacity"
+          >
+            View All
+            <ArrowRight className="w-4 h-4 ml-1" />
+          </Link>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (

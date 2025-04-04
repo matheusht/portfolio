@@ -5,7 +5,7 @@ const CertificationCarousel: React.FC = () => {
   const certifications = [
     {
       name: 'CompTIA Security+',
-      progress: 35,
+      progress: 70,
       status: 'In Progress',
       focusAreas: ['Threat Detection', 'Cryptography'],
       objectives: [
@@ -32,15 +32,15 @@ const CertificationCarousel: React.FC = () => {
       expectedDate: '2025-04'
     },
     {
-      name: 'SC-900',
+      name: 'eJPT',
       progress: 0,
       status: 'Planned',
-      focusAreas: ['Incident Response', 'Threat Hunting'],
+      focusAreas: ['Penetration Testing', 'Ethical Hacking '],
       objectives: [
-        'Zero Trust model',
-        'Encryption',
-        'Microsoft Defender XDR',
-        'Encryption'
+        'Network Pentesting',
+        'Infrastructure Pentesting',
+        'Web Pentesting',
+        'Ethical Hacking'
       ],
       expectedDate: '2025-08'
     }

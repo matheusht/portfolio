@@ -101,7 +101,7 @@ const Blog: React.FC = () => {
                   </span>
                 </div>
 
-                <h2 className="text-2xl font-mono text-white mb-2 group-hover:text-[#00FF00] transition-colors">
+                <h2 className="text-2xl font-mono text-white mb-2 group-hover:text-accent-hover transition-colors">
                   {post.title}
                 </h2>
                 
@@ -119,7 +119,7 @@ const Blog: React.FC = () => {
                 </div>
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#00FF00] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent-hover transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
             </Link>
           ))}
         </div>
