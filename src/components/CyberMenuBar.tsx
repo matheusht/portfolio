@@ -20,29 +20,23 @@ const menuItems: MenuItem[] = [
     iconColor: "text-[#64FFDA]",
   },
   {
-    icon: <FileCode className="h-5 w-5" />,
-    label: "Skills",
-    href: "/#skills",
-    gradient: "radial-gradient(circle, rgba(126,231,250,0.15) 0%, rgba(126,231,250,0.06) 50%, rgba(126,231,250,0) 100%)",
-    iconColor: "text-[#64FFDA]",
-  },
-  {
-    icon: <Badge className="h-5 w-5" />,
-    label: "Certifications",
-    href: "/#certifications",
-    gradient: "radial-gradient(circle, rgba(149,197,252,0.15) 0%, rgba(149,197,252,0.06) 50%, rgba(149,197,252,0) 100%)",
-    iconColor: "text-[#64FFDA]",
-  },
-  {
     icon: <BookOpen className="h-5 w-5" />,
     label: "Blog",
     href: "/blog",
     gradient: "radial-gradient(circle, rgba(187,162,253,0.15) 0%, rgba(187,162,253,0.06) 50%, rgba(187,162,253,0) 100%)",
     iconColor: "text-[#64FFDA]",
   },
+  {
+    icon: <FileCode className="h-5 w-5" />,
+    label: "Resume",
+    href: "/resume",
+    gradient: "radial-gradient(circle, rgba(126,231,250,0.15) 0%, rgba(126,231,250,0.06) 50%, rgba(126,231,250,0) 100%)",
+    iconColor: "text-[#64FFDA]",
+  },
+
+  
 ];
 
-// Animation variants remain the same...
 const itemVariants = {
   initial: { rotateX: 0, opacity: 1 },
   hover: { rotateX: -90, opacity: 0 },

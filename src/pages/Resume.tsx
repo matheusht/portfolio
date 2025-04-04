@@ -88,7 +88,7 @@ const Resume: React.FC = () => {
         <section className="mb-16 text-center">
           <h2 className="text-2xl font-bold text-white mb-6">About</h2>
           <p className="text-gray-300 max-w-3xl mx-auto">
-          Security engineer with experience in defensive architecture (SIEM/Wazuh/ELK) and offensive penetration testing. Well-versed in penetration testing lifecycle, as well as tools and methodologies. Knowledgeable on defensive security operations including SIEM, HIDS, NIDS configuration, MITRE ATT&CK threat hunting, and session hardening. Maintains a Virtual Security Lab to research and test a wide variety of topics.
+          Security engineer with experience in networking, automation, defensive architecture, and offensive penetration testing. Well-versed in penetration testing lifecycle and DevSecOps practices (CI/CD security, IaC scanning). Knowledgeable on defensive security operations including SIEM, HIDS/NIDS configuration, and threat hunting. Maintains a Virtualized Security Lab to research and test a wide variety of topics.
           </p>
         </section>
 
