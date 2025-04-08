@@ -34,7 +34,7 @@ const skillCategories: SkillCategory[] = [
     title: "Infrastructure",
     icon: Server,
     items: [
-      "Cloud Providers (AWS | Azure)",
+      // "Cloud Providers (AWS | Azure)",
       "DevOps Tools (Terraform | Ansible)",
       "Enterprise Services (Database | DNS | SMTP | Web)",
       "Hypervisors (VirtualBox | VMWare)",
