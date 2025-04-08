@@ -35,7 +35,7 @@ const skillCategories: SkillCategory[] = [
     icon: Server,
     items: [
       "Cloud Providers (AWS | Azure)",
-      "DevOps Tools (Terraform | Ansible  )",
+      "DevOps Tools (Terraform | Ansible)",
       "Enterprise Services (Database | DNS | SMTP | Web)",
       "Hypervisors (VirtualBox | VMWare)",
       "Identity Providers (Active Directory)",
@@ -63,7 +63,7 @@ const skillCategories: SkillCategory[] = [
     title: "Programming",
     icon: Code,
     items: [
-      "Scripting Languages (Bash | PowerShell | Python )"
+      "Scripting Languages (Bash | PowerShell | Python)"
     ]
   },
   {
@@ -83,16 +83,18 @@ const skillCategories: SkillCategory[] = [
 
 const Resume: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#0A192F] pt-20">
+    <div className="max-w-screen-md mx-auto min-h-screen bg-[#0A192F] pt-20">
       <div className="container mx-auto px-4">
-        <section className="mb-16 text-center">
+        {/* About Section */}
+        <section className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-6">About</h2>
-          <p className="text-gray-300 max-w-3xl mx-auto">
-          Security engineer with experience in networking, automation, defensive architecture, and offensive penetration testing. Well-versed in penetration testing lifecycle and DevSecOps practices (CI/CD security, IaC scanning). Knowledgeable on defensive security operations including SIEM, HIDS/NIDS configuration, and threat hunting. Maintains a Virtualized Security Lab to research and test a wide variety of topics.
+          <p className="text-gray-300 max-w-3xl">
+            Security engineer with experience in networking, automation, defensive architecture, and offensive penetration testing. Well-versed in penetration testing lifecycle and DevSecOps practices (CI/CD security, IaC scanning). Knowledgeable on defensive security operations including SIEM, HIDS/NIDS configuration, and threat hunting. Maintains a Virtualized Security Lab to research and test a wide variety of topics.
           </p>
         </section>
 
-        <section className="mb-16 text-center">
+        {/* Experience Section */}
+        <section className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-6">Experience</h2>
           <div className="text-gray-300">
             <h3 className="text-xl font-semibold mb-2">Security Engineer (DevSecOps)</h3>
@@ -103,8 +105,8 @@ const Resume: React.FC = () => {
 
         {/* Certifications Section */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">Certifications</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-6">Certifications</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
             {certifications.map((cert, index) => (
               <a
                 key={index}
@@ -133,7 +135,7 @@ const Resume: React.FC = () => {
         </section>
 
         {/* Education Section */}
-        <section className="mb-16 text-center">
+        <section className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-6">Education</h2>
           <div className="text-gray-300">
             <h3 className="text-xl font-semibold mb-2">Technical School in System Analysis and Computing</h3>
@@ -143,12 +145,12 @@ const Resume: React.FC = () => {
           </div>
         </section>
 
-        {/* Skills Section */}
+        {/* Technical Skills Section */}
         <section>
-          <h2 className="text-2xl font-bold text-white mb-12 text-center">Technical Skills</h2>
+          <h2 className="text-2xl font-bold text-white mb-12">Technical Skills</h2>
           <div className="space-y-12">
             {skillCategories.map((category, index) => (
-              <section key={index}>
+              <section key={index} className="max-w-2xl">
                 <h3 className="text-xl font-mono text-white mb-6 flex items-center">
                   <category.icon className="w-6 h-6 mr-3 text-accent" />
                   {category.title}

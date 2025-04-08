@@ -1,7 +1,0 @@
-• Realizei testes de penetração em 5+ aplicações web, identificando e corrigindo vulnerabilidades como SQL Injection (SQLi), XSS
-• Desenvolvi aplicações seguindo OWASP Top 10 com validação de input, RBAC e criptografia para proteção contra ameaças comuns
-• Integrei segurança no SDLC através de threat modeling e revisões de código seguro em todas as fases de desenvolvimento
-• Automatizei scans de vulnerabilidade em pipelines CI/CD usando Nessus, bloqueando deploys com CVEs críticos (CVSS ≥ 7.0).
-• Implementei MFA (Multifactor Authentication) e políticas de session hardening contra credential stuffing
-• Implantei infraestrutura SIEM com Elastic Stack/Wazuh, centralizando logs de 5+ sistemas
-• Criei regras de correlação personalizadas para detectar atividades suspeitas

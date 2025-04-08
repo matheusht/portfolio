@@ -3,7 +3,6 @@
 import type React from "react"
 import { Mail, Linkedin, Github } from "lucide-react"
 import { TypeAnimation } from "react-type-animation"
-import { CyberMenuBar } from "./CyberMenuBar"
 import CVModal from "./cv-modal"
 
 const Header: React.FC = () => {
@@ -12,9 +11,6 @@ const Header: React.FC = () => {
 
   return (
     <header className="w-full py-6 bg-[#0A192F]">
-      <nav className="container mx-auto px-4 flex items-center justify-end">
-        <CyberMenuBar />
-      </nav>
 
       <div className="container mx-auto px-4 mt-20 text-center">
         <div className="w-40 h-40 mx-auto mb-6 rounded-full bg-[#64FFDA]/10 flex items-center justify-center overflow-hidden p-1">
