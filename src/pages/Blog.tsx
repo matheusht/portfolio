@@ -17,7 +17,7 @@ const posts: Post[] = [
     title: 'Checker',
     platform: 'HACKTHEBOX',
     challenge: 'HackTheBox | Checker',
-    author: 'DABEN',
+    author: 'matheusht',
     date: 'Feb 26, 2025',
     readTime: '18 min read',
     slug: 'htb-checker'
