@@ -97,9 +97,14 @@ const Resume: React.FC = () => {
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-6">Experience</h2>
           <div className="text-gray-300">
+            <h3 className="text-xl font-semibold mb-2">Offensive Security Engineer</h3>
+            <p className="text-accent mb-1">Marketisa</p>
+            <p className="text-sm">February 2025 - Present </p>
+          </div>
+          <div className="text-gray-300">
             <h3 className="text-xl font-semibold mb-2">Security Engineer (DevSecOps)</h3>
             <p className="text-accent mb-1">Marketisa</p>
-            <p className="text-sm">Sep 2023 – Present</p>
+            <p className="text-sm">Sep 2023 – February 2025</p>
           </div>
         </section>
 
