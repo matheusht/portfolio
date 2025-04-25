@@ -96,14 +96,14 @@ const Resume: React.FC = () => {
         {/* Experience Section */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-6">Experience</h2>
-          <div className="text-gray-300">
+          <div className="text-gray-300 mb-5">
             <h3 className="text-xl font-semibold mb-2">Offensive Security Engineer</h3>
-            <p className="text-accent mb-1">Marketisa</p>
+            <p className="text-accent mb-1 hover:text-secondary"><a href="https://boltsec.vercel.app/" target='_blank'>Boltsec</a></p>
             <p className="text-sm">February 2025 - Present </p>
           </div>
           <div className="text-gray-300">
-            <h3 className="text-xl font-semibold mb-2">Security Engineer (DevSecOps)</h3>
-            <p className="text-accent mb-1">Marketisa</p>
+            <h3 className="text-xl font-semibold mb-2">Security Engineer</h3>
+            <p className="text-accent mb-1 hover:text-secondary"><a href="https://www.marketisa.com.br/" target='_blank'>Marketisa</a></p>
             <p className="text-sm">Sep 2023 – February 2025</p>
           </div>
         </section>
