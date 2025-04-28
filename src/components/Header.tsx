@@ -22,7 +22,7 @@ const Header: React.FC = () => {
         </div>
 
         <h1 className="text-4xl font-bold mb-4 text-white">Matheus Theodoro</h1>
-        <h2 className="text-xl text-white mb-6">Security Engineer | DevSecOps & Penetration Testing</h2>
+        <h2 className="text-xl text-white mb-6">Offensive Security Engineer | Penetration Testing & DevSecOps </h2>
 
         <div className="h-12 mb-8">
           <TypeAnimation
