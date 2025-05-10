@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Server, Network, Code, Terminal, ExternalLink } from 'lucide-react';
+import { HoverPeek } from "../components/ui/link-preview"
 
 interface SkillCategory {
   title: string;
@@ -98,12 +99,34 @@ const Resume: React.FC = () => {
           <h2 className="text-2xl font-bold text-white mb-6">Experience</h2>
           <div className="text-gray-300 mb-5">
             <h3 className="text-xl font-semibold mb-2">Offensive Security Engineer</h3>
-            <p className="text-accent mb-1 hover:text-secondary"><a href="https://boltsec.vercel.app/" target='_blank'>Boltsec</a></p>
+            <p className="text-accent mb-1 hover:text-secondary">
+            <HoverPeek url="https://boltsec.vercel.app">
+          <a
+            href="https://boltsec.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+
+            className="font-medium underline hover:decoration-solid"
+          >
+            Boltsec
+          </a>
+        </HoverPeek></p>
             <p className="text-sm">February 2025 - Present </p>
           </div>
           <div className="text-gray-300">
             <h3 className="text-xl font-semibold mb-2">Security Engineer</h3>
-            <p className="text-accent mb-1 hover:text-secondary"><a href="https://www.marketisa.com.br/" target='_blank'>Marketisa</a></p>
+            <p className="text-accent mb-1 hover:text-secondary">
+            <HoverPeek url="https://www.linkedin.com/company/agencia-marketisa/">
+          <a
+            href="https://marketisa.com.br"
+            target="_blank"
+            rel="noopener noreferrer"
+
+            className="font-medium underline hover:decoration-solid"
+          >
+            Marketisa
+          </a>
+        </HoverPeek></p>
             <p className="text-sm">Sep 2023 – February 2025</p>
           </div>
         </section>
