@@ -64,7 +64,7 @@ const skillCategories: SkillCategory[] = [
     title: "Programming",
     icon: Code,
     items: [
-      "Scripting Languages (Bash | PowerShell | Python)"
+      "Scripting Languages (Python | C++ | Bash | PowerShell)"
     ]
   },
   {

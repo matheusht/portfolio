@@ -59,7 +59,7 @@ const posts: Post[] = [
     slug: 'htb-backfire'
   },
   {
-    title: 'Adding a Comprehensive Wazuh SIEM and Network Intrusion Detection System (NIDS) to the VirtualBox Lab',
+    title: 'Wazuh SIEM to Security Lab',
     platform: 'VIRTUALBOX',
     challenge: 'VirtualBox | Lab Setup',
     author: 'matheusht',
