@@ -90,7 +90,7 @@ const Resume: React.FC = () => {
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-6">About</h2>
           <p className="text-gray-300 max-w-3xl">
-            Offensive Security engineer with experience in networking, automation, defensive architecture, and offensive penetration testing. Well-versed in penetration testing lifecycle and DevSecOps practices (CI/CD security, IaC scanning). Knowledgeable on defensive security operations including SIEM, HIDS/NIDS configuration, and threat hunting. Maintains a Virtualized Security Lab to research and test a wide variety of topics.
+            Offensive Security engineer with experience in networking, automation, defensive architecture, and offensive security. Well-versed in penetration testing lifecycle and DevSecOps practices (CI/CD security, IaC scanning). Knowledgeable on defensive security operations including SIEM, HIDS/NIDS configuration, and threat hunting. Maintains a Virtualized Security Lab to research and test a wide variety of topics.
           </p>
         </section>
 
