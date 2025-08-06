@@ -14,13 +14,13 @@ interface Post {
 
 const posts: Post[] = [
   {
-    title: 'Checker',
+    title: 'Nocturnal',
     platform: 'HACKTHEBOX',
-    challenge: 'HackTheBox | Checker',
+    challenge: 'HackTheBox | Nocturnal',
     author: 'matheusht',
     date: 'Feb 26, 2025',
     readTime: '18 min read',
-    slug: 'htb-checker'
+    slug: 'htb-nocturnal'
   },
   {
     title: 'Titanic',
