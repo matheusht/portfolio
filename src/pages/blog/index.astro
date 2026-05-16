@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = await getCollection("blog");
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Matheus Theodoro - AI Coding & Product Building" description="Thoughts on building with frontier AI, coding techniques, and shipping real products.">
+  <div class="master-grid">
+    <div class="col-span-12 md:col-span-8 md:col-start-3">
+      {
+        posts.map((post, i) => (
+          <article class="post-card">
+            <div style="font-family: var(--font-sans-en); color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); font-variant: small-caps; letter-spacing: 0.03em; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 16px; font-size: 12px; line-height: 1.4;">
+              <span style="border: 2px solid var(--color-vermilion); color: var(--color-vermilion); font-family: var(--font-sans-en); text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 8px; font-size: 11px; font-weight: 700;">
+                {post.data.category}
+              </span>
+              <time style="color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent);">
+                {new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(post.data.pubDate)}
+              </time>
+              <span style="color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent);">{post.data.readTime} min read</span>
+            </div>
+            <h2 class="post-title">
+              <a href={`/blog/${post.slug}`} style="text-decoration: none;">{post.data.title}</a>
+            </h2>
+            <p style="color: var(--color-warm-gray); margin: 0 0 16px; font-size: 18px; line-height: 1.6;">
+              {post.data.description}
+            </p>
+            <a class="continue-reading" href={`/blog/${post.slug}`}>Continue Reading</a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

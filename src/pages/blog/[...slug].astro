@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog");
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={`${entry.data.title} | Matheus Theodoro`} description={entry.data.description}>
+  <div class="master-grid">
+    <article class="col-span-12 md:col-span-8 md:col-start-3" style="animation: settleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0;">
+      <a href="/blog" style="font-family: var(--font-sans-en); color: var(--color-ultramarine); font-size: 16px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; transition: color 0.2s;">
+        <span style="margin-right: 8px; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);">←</span>
+        <span class="back-text">Blog</span>
+      </a>
+      <div style="font-family: var(--font-sans-en); color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); font-variant: small-caps; letter-spacing: 0.03em; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px; font-size: 12px;">
+        <span style="border: 2px solid var(--color-vermilion); color: var(--color-vermilion); font-family: var(--font-sans-en); text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 8px; font-size: 11px; font-weight: 700;">
+          {entry.data.category}
+        </span>
+        <time dateTime={entry.data.pubDate.toISOString()}>{new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(entry.data.pubDate)}</time>
+        <span>{entry.data.readTime} min read</span>
+      </div>
+      <h1 class="post-title-full">{entry.data.title}</h1>
+      <div class="prose">
+        <Content />
+      </div>
+
+      <div style="padding-top: var(--ma-3); margin-top: var(--ma-2); border-top: 1px solid var(--color-light-gray); margin-bottom: var(--ma-5);">
+        <h3 style="margin-bottom: var(--ma-0); font-size: 1.75rem; font-weight: 600; color: var(--color-warm-gray);">About Me</h3>
+        <p style="color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); margin-bottom: var(--ma-0); line-height: 1.6; font-size: var(--font-size-body);">
+          I'm Matheus, an AI security engineer at Avenza Cloud, building
+          <a href="https://github.com/matheusht/redthread" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer">RedThread</a>
+          on the side—an open-source AI red-teaming and defense-evidence engine for LLM and agentic systems.
+        </p>
+        <div style="display: flex; gap: var(--ma-1); margin-top: var(--ma-1);">
+          <a href="mailto:dev.matheustheodoro@gmail.com" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;">Email</a>
+          <a href="https://github.com/matheusht" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://linkedin.com/in/matheusht" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <style>
+    .back-text:hover { color: var(--color-vermilion); }
+    a:has(.back-text):hover span:first-child { transform: translateX(-4px); }
+    .prose a { background-image: linear-gradient(to right, var(--color-ultramarine), var(--color-ultramarine)); background-position: 0 100%; background-repeat: no-repeat; background-size: 0% 1px; }
+    .prose a:hover { color: var(--color-vermilion) !important; background-image: linear-gradient(to right, var(--color-vermilion), var(--color-vermilion)); background-size: 100% 1px; }
+  </style>
+</BaseLayout>
