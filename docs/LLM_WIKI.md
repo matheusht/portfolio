@@ -171,3 +171,4 @@ NASA Space Apps 2025 global nominee and local 1st place. Proof of applied AI eng
 - Email: dev.matheustheodoro@gmail.com
 - LinkedIn: https://linkedin.com/in/matheusht
 - GitHub: https://github.com/matheusht
+
