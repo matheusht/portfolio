@@ -7,12 +7,6 @@ readTime: 20
 tags: [AI security, learning-augmented algorithms, adversarial ML, online algorithms, robust recourse, prediction security]
 ---
 
-**Status:** final draft  
-**Type:** position paper with a compact survey and research agenda  
-**Scope:** learning-augmented algorithms, adversarial prediction channels, online decision-making, robustness under untrusted advice
-
-## Abstract
-
 Learning-augmented algorithms use predictions to improve online decisions while retaining worst-case guarantees when predictions fail. This field has developed a useful vocabulary: consistency for performance under accurate predictions, robustness for protection under inaccurate predictions, and smoothness for graceful degradation as prediction error grows. But the usual error model is incomplete for systems whose predictions are produced by machine-learning pipelines, retrieval layers, user-controlled context, telemetry, or model updates. In those systems, a prediction is not merely noisy. It is a channel that can be corrupted.
 
 Adversarial machine learning supplies the missing threat vocabulary. Its taxonomies distinguish attacks by lifecycle stage, attacker goal, capability, and knowledge, including poisoning, evasion, and other manipulations of training or inference pipelines. When such a compromised or strategically influenced model feeds advice into an online algorithm, the result is an algorithmic problem: the downstream decision rule may pay extra cost, violate safety margins, trigger unnecessary recourse, or silently let advice replace policy.
