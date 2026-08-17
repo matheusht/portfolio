@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FlowSteer: The Attack That Current Multi-Agent Defenses Can&#39;t See | Matheus Theodoro</title><meta name="description" content="Deep technical analysis of FlowSteer — a prompt-only planning-time attack against multi-agent LLM systems that achieves +55% malicious success rate by manipulating workflow formation itself, completely bypassing post-hoc defenses like G-Safeguard and ARGUS."><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_slug_.CqyLALPn.css">
+<style>.back-text[data-astro-cid-7jjqptxk]:hover{color:var(--color-vermilion)}a[data-astro-cid-7jjqptxk]:has(.back-text):hover span[data-astro-cid-7jjqptxk]:first-child{transform:translate(-4px)}.prose[data-astro-cid-7jjqptxk] a[data-astro-cid-7jjqptxk]{background-image:linear-gradient(to right,var(--color-ultramarine),var(--color-ultramarine));background-position:0 100%;background-repeat:no-repeat;background-size:0% 1px}.prose[data-astro-cid-7jjqptxk] a[data-astro-cid-7jjqptxk]:hover{color:var(--color-vermilion)!important;background-image:linear-gradient(to right,var(--color-vermilion),var(--color-vermilion));background-size:100% 1px}
+</style></head> <body> <header class="blog-header"> <div class="container"> <div class="name-float"> <h1>Matheus Theodoro</h1> <span class="underline"></span> </div> <nav> <a href="/">Home</a> <a href="/experience">Experience</a> <a href="/blog">Blog</a> </nav> </div> </header>  <div class="master-grid" data-astro-cid-7jjqptxk> <article class="col-span-12 md:col-span-8 md:col-start-3" style="animation: settleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0;" data-astro-cid-7jjqptxk> <a href="/blog" style="font-family: var(--font-sans-en); color: var(--color-ultramarine); font-size: 16px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; transition: color 0.2s;" data-astro-cid-7jjqptxk> <span style="margin-right: 8px; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);" data-astro-cid-7jjqptxk>←</span> <span class="back-text" data-astro-cid-7jjqptxk>Blog</span> </a> <div style="font-family: var(--font-sans-en); color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); font-variant: small-caps; letter-spacing: 0.03em; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px; font-size: 12px;" data-astro-cid-7jjqptxk> <span style="border: 2px solid var(--color-vermilion); color: var(--color-vermilion); font-family: var(--font-sans-en); text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 8px; font-size: 11px; font-weight: 700;" data-astro-cid-7jjqptxk> AI Security </span> <time dateTime="2026-05-26T00:00:00.000Z" data-astro-cid-7jjqptxk>May 25, 2026</time> <span data-astro-cid-7jjqptxk>20 min read</span> </div> <h1 class="post-title-full" data-astro-cid-7jjqptxk>FlowSteer: The Attack That Current Multi-Agent Defenses Can&#39;t See</h1> <div class="prose" data-astro-cid-7jjqptxk> <p>Multi-agent systems built on large language models are moving into production — code review pipelines, research assistants that decompose questions across specialized sub-agents, supply-chain coordination across vendors. <em>What happens when one of those agents is compromised?</em></p>
+<p>The security community responded with a wave of post-hoc defenses. G-Safeguard inspects agent outputs for toxicity and redirects malicious propagation. ARGUS monitors cross-agent information flow. INFA-GUARD checks whether generated workflows conform to safety specifications. MAS-Shield audits the final plan before execution.</p>
+<p>Every single one shares a critical blind spot: <strong>they inspect the generated artifacts — the workflow graph, the agent outputs, the propagation paths — after the workflow has already been formed.</strong> None of them inspect the <em>planning signals</em> that create the workflow in the first place.</p>
+<p>FlowSteer is the first attack to exploit this gap systematically. It is a <strong>prompt-only, planning-time attack</strong> that achieves a <strong>+55% absolute increase in malicious success rate</strong> over baseline jailbreak methods — not by crafting better payloads, but by manipulating <em>how the planner decomposes the user prompt into subtasks and dependencies.</em> FlowSteer does not need access to the model weights, does not need to know the agent topology, and <strong>completely bypasses all existing post-hoc defenses.</strong> A companion defense, FlowGuard, reduces success rates by up to 34% but still allows 66% of attacks through — planning-time security is an open problem.</p>
+<p>This post unpacks the attack: the planner-executor architecture it targets, the social-influence vulnerabilities it exploits, the two-stage attack construction, why every current defense fails against it, and what this means for the future of multi-agent security.</p>
+<h2 id="the-planner-executor-architecture">The Planner-Executor Architecture</h2>
+<p>Most production MAS deployments follow a <strong>planner-executor</strong> pattern. A single planner agent receives the user’s natural-language request and dynamically constructs a workflow graph: a set of subtasks <code>V_t</code>, their interdependencies <code>E_t</code>, the roles assigned to each subtask, and the routing paths that determine how information flows between agents.</p>
+<p>The planner’s output is a structured plan — often a DAG or task decomposition — that the executor layer then runs. Each node in the graph corresponds to an agent invocation with a specific instruction (the subtask description) and a specific input source (the output of its upstream dependencies).</p>
+<p>This dynamic workflow formation is the <strong>attack surface.</strong> The planner is a language model, and language models are vulnerable to prompt manipulation. If an attacker can influence <em>how</em> the planner decomposes a prompt — which subtasks get created, how they connect, which roles they receive — then the attacker can shape the entire coordination structure before any defense ever sees it.</p>
+<p>Critically, the planner has no concept of “malicious intent” in its decomposition logic. It treats the user’s request as a legitimate instruction to be broken into manageable pieces. The planner’s goal is fidelity to the user’s request, not adversarial robustness. This is the opening FlowSteer exploits.</p>
+<h2 id="the-vulnerability-workflow-position-amplifies-malicious-signals">The Vulnerability: Workflow Position Amplifies Malicious Signals</h2>
+<p>FlowSteer’s key insight comes from social influence theory applied to MAS graphs: <strong>not all subtasks are equal, and not all dependencies transmit information faithfully.</strong></p>
+<p><strong>Workflow position.</strong> In any directed workflow graph, certain subtasks have outsized influence. A subtask at a graph bottleneck — a node that all downstream agents depend on — can contaminate every subsequent agent’s thinking. A subtask at a leaf node with no downstream consumers has virtually no influence, regardless of how malicious its output is. FlowSteer identifies that inserting a malicious signal into a <em>high-influence</em> subtask (one with high out-degree or a bridging position in the dependency graph) produces <strong>disproportionately higher attack success</strong> than placing the same signal in a low-influence position.</p>
+<p><strong>Sycophantic framing.</strong> Even more interesting: the <em>way</em> a signal is presented to a downstream agent determines whether that agent relays it or suppresses it. Downstream agents exhibit a measurable <strong>sycophancy bias</strong> — they are significantly more likely to pass along information that is framed with authoritative language, persuasive justification, and confidence markers. A malicious signal wrapped in sycophantic framing propagates farther through the graph than one delivered plainly.</p>
+<p>These two vulnerabilities combine to form FlowSteer’s attack strategy: put the malicious signal in the highest-influence position, and wrap it in framing that makes downstream agents want to relay it.</p>
+<p>A third property makes the attack even more powerful: <strong>black-box transferability.</strong> FlowSteer does not require white-box access to the planner model. The topology inference is done entirely through query-level probing — sending carefully crafted inputs and observing the structure of the returned plan. Across model families (GPT-4o, Claude 3.5 Sonnet, Llama 3.1 70B), the attack transfers with minimal degradation.</p>
+<h2 id="flowsteer-attack-in-detail">FlowSteer Attack in Detail</h2>
+<h3 id="task-aware-sycophantic-argument">Task-Aware Sycophantic Argument</h3>
+<p>The attacker identifies the target task — the subtask that the user originally wanted the MAS to perform — and constructs a <strong>sycophantic argument</strong> that aligns the malicious signal with the highest-influence subtask in the expected workflow. The argument has three structural components:</p>
+<ul>
+<li><strong>Subtle steering language</strong>: The prompt uses wording that implicitly assigns the malicious reasoning to the most influential role. For example, rather than saying “output X”, the prompt says “the analysis should be grounded in the principle of X, which the coordination agent will evaluate.”</li>
+<li><strong>Authoritative justification framing</strong>: The malicious reasoning is preceded by persuasive markers — “it is well-established that…”, “a rigorous analysis must account for…” — that downstream agents interpret as legitimate guidance rather than adversarial injection.</li>
+<li><strong>Role anchoring</strong>: The malicious signal is attached to a specific agent role that the planner would naturally place at a bottleneck position (e.g., “coordinator”, “reviewer”, “quality assurance agent”).</li>
+</ul>
+<p>The attacker does not need to know the exact topology. By probing the planner with similar (benign) prompts and observing the generated workflow, the attacker can infer which roles tend to occupy high-influence positions. This is <strong>black-box topology inference</strong>, and FlowSteer shows it succeeds with as few as 20 probe queries.</p>
+<h3 id="dependency-guided-workflow-steering">Dependency-Guided Workflow Steering</h3>
+<p>The second stage manipulates the <strong>dependency edges</strong> <code>E_t</code> that the planner creates between subtasks. The planner decides which subtasks feed into which other subtasks, and this routing determines propagation paths.</p>
+<p>FlowSteer identifies two dependency classes:</p>
+<ul>
+<li><strong>Propagation-favorable dependencies</strong>: Edges where the downstream agent’s role is expected to trust and relay information from the upstream agent. Example: a “fact-checker” that defers to a “data-collector” — the fact-checker’s job is to verify, so it must engage with the collector’s output.</li>
+<li><strong>Propagation-unfavorable dependencies</strong>: Edges where the downstream agent’s role encourages skepticism or filtering. Example: a “safety-reviewer” that filters outputs from a “code-generator.”</li>
+</ul>
+<p>FlowSteer’s dependency guidance subtly nudges the planner to <strong>favor propagation-favorable edges</strong> for the malicious signal’s path, and <strong>discourage propagation-unfavorable edges</strong> from intercepting it. This is done through natural-language cues in the prompt — describing the expected information flow in ways that make the favorable routing seem like the natural choice.</p>
+<p>The result is a malicious workflow that looks perfectly benign when inspected after formation. The subtasks are legitimate, the roles are standard, the dependencies are reasonable. Only the <em>positioning</em> of the malicious signal within the graph structure is different — and none of today’s defenses check for that.</p>
+<p><strong>Figure 1</strong> (adapted from FlowSteer, arXiv:2605.11514) illustrates the difference between existing attacks and FlowSteer. Existing attacks (jailbreak, prompt injection) insert the malicious payload into the user prompt and rely on a single agent bypassing safety filters. FlowSteer instead manipulates the planner’s decomposition to place the malicious signal at a high-influence workflow position, then uses dependency steering to ensure it propagates through favorable routes. The malicious signal does not need to bypass any single agent’s filter — it simply needs one agent to produce it and the workflow’s own structure to amplify it.</p>
+<p><img src="https://arxiv.org/html/2605.11514/x1.png" alt="FlowSteer architecture: comparison of jailbreak/prompt-injection attacks vs. FlowSteer workflow manipulation"></p>
+<p><strong>Figure 2</strong> (also from FlowSteer) shows the two-stage attack architecture. Stage 1 (Task-Aware Sycophantic Argument) generates the sycophantic payload and assigns it to the target role. Stage 2 (Dependency-Guided Workflow Steering) generates dependency cues that shape the planner’s edge formation. The two stages are combined into a single natural-language prompt that the planner processes normally.</p>
+<p><img src="https://arxiv.org/html/2605.11514/x2.png" alt="FlowSteer two-stage attack architecture: sycophantic argument + dependency steering"></p>
+<h2 id="why-existing-defenses-fail">Why Existing Defenses Fail</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Defense</th><th>What It Inspects</th><th>When It Inspects</th><th>FlowSteer Bypass</th></tr></thead><tbody><tr><td><strong>G-Safeguard</strong> [2]</td><td>Agent outputs, cross-agent propagation</td><td>After execution</td><td>The malicious signal is already positioned at a bottleneck; by the time G-Safeguard sees it, the workflow has routed it through downstream agents.</td></tr><tr><td><strong>ARGUS</strong></td><td>Inter-agent information flow</td><td>During execution</td><td>FlowSteer’s sycophantic framing causes downstream agents to relay malicious information willingly — ARGUS flags toxicity, not sycophantic relay.</td></tr><tr><td><strong>INFA-GUARD</strong> [3]</td><td>Workflow compliance to safety specs</td><td>After workflow formation</td><td>FlowSteer generates a <strong>fully compliant workflow</strong>. The subtasks, roles, and dependencies all satisfy safety constraints. Only the influence positioning is malicious.</td></tr><tr><td><strong>MAS-Shield</strong> [4]</td><td>Final plan before execution</td><td>After planning</td><td>Same as INFA-GUARD — the plan looks clean because no subtask is inherently malicious. The attack is in the <em>structure</em>.</td></tr><tr><td><strong>MAST</strong> [6]</td><td>Multi-round agent output consistency</td><td>During execution</td><td>FlowSteer is single-round; the contamination happens during planning, not execution.</td></tr></tbody></table>
+<p>The pattern is clear: every existing defense inspects <strong>after workflow formation</strong>. By the time they see the workflow, the contamination has already shaped the coordination structure. G-Safeguard’s topology diagram (see below) shows how it monitors agent output propagation and rewrites malicious outputs — but this assumes the initial formation of the routing paths is benign.</p>
+<p>See Figure 1 in <a href="https://arxiv.org/abs/2502.11127">G-Safeguard: A Topology-Guided Guardrail for Multi-Agent Systems</a> for the architecture diagram. The defense operates after agents have already been invoked, monitoring outputs and rewriting malicious content. There is no mechanism to inspect whether the workflow structure itself was adversarially shaped.</p>
+<p>FlowSteer achieves a <strong>+55% higher malicious success rate</strong> compared to direct prompt injection in the planner-executor setting. Against a baseline where the user query is directly injected (no sycophantic framing, no dependency steering), FlowSteer succeeds 74% of the time versus 19% for direct injection. Against systems protected by G-Safeguard, FlowSteer still succeeds at 61% — the defense provides only a 13-point reduction.</p>
+<p>This is not a weakness of G-Safeguard or ARGUS specifically. They were designed for a different threat model. The point is that <strong>post-hoc defenses cannot fix planning-time contamination</strong>, because the contamination is already baked into the coordination structure before any defense activates.</p>
+<h2 id="flowguard-the-input-side-defense">FlowGuard: The Input-Side Defense</h2>
+<p>The companion defense, FlowGuard, takes a fundamentally different approach: instead of inspecting the generated workflow, it inspects and sanitizes the <strong>input prompt before the planner processes it.</strong></p>
+<p>FlowGuard implements two stages:</p>
+<p><strong>Intent triage.</strong> The defense classifies the user prompt into three intent categories:</p>
+<ul>
+<li><strong>Task intent</strong>: Standard instructions for what the MAS should do</li>
+<li><strong>Methodological intent</strong>: Instructions for <em>how</em> the MAS should execute the task — which roles to create, how to route information</li>
+<li><strong>Argument intent</strong>: Persuasive or framing language attached to the task description</li>
+</ul>
+<p>FlowSteer’s attack lives primarily in the <strong>methodological</strong> and <strong>argument</strong> intent classes. The sycophantic framing is argument intent; the dependency steering cues are methodological intent.</p>
+<p><strong>Intent decontamination.</strong> FlowGuard rewrites the prompt to strip out argument intent and normalize methodological intent to a safe default. It removes persuasive framing, reduces role assignments to standard templates, and eliminates dependency cues that would steer the planner toward favorable routing.</p>
+<p>The result: FlowGuard reduces FlowSteer’s malicious success rate from 74% to 40% — a 34-point reduction. However, 40% is still unacceptably high. The defense is effective but <strong>not sufficient.</strong> Attackers adapt: by embedding sycophantic framing more subtly (e.g., using domain-specific language that the intent classifier mislabels as task intent), the attack rate climbs back toward 50%.</p>
+<p>FlowGuard opens a promising direction — <strong>input-side security for planning-time attacks</strong> — but the 66% residual attack rate (when accounting for adaptive attacks) shows that this is far from solved.</p>
+<h2 id="attack-implications">Attack Implications</h2>
+<p><strong>Black-box topology inference works.</strong> An attacker does not need to know the MAS architecture ahead of time. With 20–50 probe queries, the attacker can infer which roles occupy high-influence positions in the generated workflow. FlowSteer’s transferability across model families means the attacker can probe a surrogate model (or the target model via API) and craft the attack offline.</p>
+<p><strong>Transfer across model families.</strong> FlowSteer constructed on GPT-4o transfers to Claude 3.5 Sonnet with only a 5% success rate degradation. The sycophantic framing and dependency steering cues exploit general properties of LLM planners — not specific model idiosyncrasies.</p>
+<p><strong>Post-hoc defenses cannot fix planning-time contamination.</strong> This is the central negative result. Once the planner has created a workflow with adversarially shaped subtask positioning and dependency routing, the malicious signal will propagate through the graph regardless of what downstream defenses do. The defense must operate <em>before</em> or <em>during</em> planning.</p>
+<p><strong>This opens “planning-time security” as a new research frontier.</strong> The FlowSteer paper establishes the first systematic threat model for planning-time attacks, but many questions remain open:</p>
+<ul>
+<li>Can we build provably safe planners that are invariant to sycophantic framing?</li>
+<li>Can we use formal methods to verify that a generated workflow’s influence structure is not adversarially skewed?</li>
+<li>Can cryptographic commitment schemes help — where the planner commits to a workflow before seeing the user prompt?</li>
+</ul>
+<p>The broader implication: <strong>every MAS has a planner, and every planner processes prompts.</strong> The attack surface is universal.</p>
+<h2 id="the-bigger-picture">The Bigger Picture</h2>
+<p>FlowSteer is not an isolated vulnerability. It is the first example of a class of attacks — <strong>planning-time workflow manipulation</strong> — that targets the layer between the user input and the agent execution. This class of attacks exploits a fundamental architectural asymmetry:</p>
+<ul>
+<li><strong>The attacker only needs one prompt.</strong> A single carefully crafted input can poison the entire planning process.</li>
+<li><strong>The defender needs to secure the entire planning pipeline.</strong> Every input must be vetted, every generated workflow must be inspected for structural anomalies, every role assignment must be audited for influence imbalances.</li>
+</ul>
+<p>The asymmetry is compounded by the fact that planners are language models designed for <em>fidelity</em>, not <em>security</em>. Their loss functions optimize for how well the decomposition matches the user’s intent — not for whether the decomposition creates safe information-flow properties.</p>
+<p>FlowSteer demonstrates that current MAS security is fighting the wrong battle. G-Safeguard, ARGUS, INFA-GUARD, and MAS-Shield all make the same assumption: <em>the workflow is trustworthy, so we just need to check the agents’ outputs.</em> FlowSteer shows that the workflow itself is not trustworthy.</p>
+<p>The path forward requires a shift from <strong>post-hoc output inspection</strong> to <strong>planning-time structural verification.</strong> Defenses must ask not just “is this agent output safe?” but “was this workflow adversarially shaped?” The answers to the latter will determine whether multi-agent LLM systems can be safely deployed at scale.</p>
+<p>The FlowSteer paper is worth reading in full for its detailed experimental methodology, ablation studies, and the complete FlowGuard defense architecture. It establishes a new subfield and raises the bar for what MAS security must address.</p>
+<hr>
+<h2 id="references">References</h2>
+<ol>
+<li>
+<p><strong>FlowSteer &#x26; FlowGuard</strong> — “FlowSteer: A Prompt-Level Attack on Multi-Agent Workflows and FlowGuard: An Input-Side Defense.” arXiv:2605.11514, 2026. <a href="https://arxiv.org/abs/2605.11514">https://arxiv.org/abs/2605.11514</a></p>
+</li>
+<li>
+<p><strong>G-Safeguard</strong> — “G-Safeguard: A Topology-Guided Guardrail for Multi-Agent Systems.” arXiv:2502.11127, 2025. <a href="https://arxiv.org/abs/2502.11127">https://arxiv.org/abs/2502.11127</a></p>
+</li>
+<li>
+<p><strong>INFA-GUARD</strong> — “INFA-GUARD: An Infrastructure-Guided Defense for Multi-Agent Systems.” arXiv:2601.14667, 2026. <a href="https://arxiv.org/abs/2601.14667">https://arxiv.org/abs/2601.14667</a></p>
+</li>
+<li>
+<p><strong>MAS-Shield</strong> — “MAS-Shield: Defending Multi-Agent Systems Against Malicious Plans.” arXiv:2511.22924, 2025. <a href="https://arxiv.org/abs/2511.22924">https://arxiv.org/abs/2511.22924</a></p>
+</li>
+<li>
+<p><strong>ARGUS</strong> — “ARGUS: Multi-Agent System Security via Graph-Based Information Flow Monitoring.” Referenced in FlowSteer (arXiv:2605.11514).</p>
+</li>
+<li>
+<p><strong>MAST</strong> — “MAST: Multi-round Adaptive Stealthy Tampering in Multi-Agent Systems.” Proceedings of AAAI Conference on Artificial Intelligence, 2026.</p>
+</li>
+<li>
+<p><strong>MATRA</strong> — “MATRA: Modeling the Attack Surface of Agentic AI Systems.” arXiv:2605.10763, 2026. <a href="https://arxiv.org/abs/2605.10763">https://arxiv.org/abs/2605.10763</a></p>
+</li>
+<li>
+<p><strong>USENIX Security 2026 SoK</strong> — Kim, Guo, Song. “SoK: Security and Privacy of LLM-Based Agentic Systems.” Proceedings of the 35th USENIX Security Symposium, 2026.</p>
+</li>
+</ol> </div> <div style="padding-top: var(--ma-3); margin-top: var(--ma-2); border-top: 1px solid var(--color-light-gray); margin-bottom: var(--ma-5);" data-astro-cid-7jjqptxk> <h3 style="margin-bottom: var(--ma-0); font-size: 1.75rem; font-weight: 600; color: var(--color-warm-gray);" data-astro-cid-7jjqptxk>About Me</h3> <p style="color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); margin-bottom: var(--ma-0); line-height: 1.6; font-size: var(--font-size-body);" data-astro-cid-7jjqptxk>
+I'm Matheus, an AI security engineer at
+<a href="https://adapta.org" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>Adapta</a>, building
+<a href="https://github.com/matheusht/redthread" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>OSlit</a>
+on the side—an autonomous security agent for testing blockchain systems.
+</p> <div style="display: flex; gap: var(--ma-1); margin-top: var(--ma-1);" data-astro-cid-7jjqptxk> <a href="mailto:dev.matheustheodoro@gmail.com" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" data-astro-cid-7jjqptxk>Email</a> <a href="https://github.com/matheusht" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>GitHub</a> <a href="https://linkedin.com/in/matheusht" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>LinkedIn</a> </div> </div> </article> </div>   </body></html>

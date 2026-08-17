@@ -179,7 +179,26 @@ Curated summaries of peer-reviewed benchmarks, taxonomies, and live security aud
 
 ---
 
-## 4. Architectural Decisions & Timelines
+## 4. Agentic Defense Systems & Architectures (Research)
+
+Curated summaries of defense-focused papers — agentic defenses, guardrails, runtime protection, formally verified architectures, and multi-agent defense frameworks:
+
+- [research/defense/usenix-security26-sok-agentic-defense-landscape.md](research/defense/usenix-security26-sok-agentic-defense-landscape.md) — SoK: Attack and Defense Landscape of Agentic AI Systems (USENIX Security 2026).
+- [research/defense/stable-agentic-control-lean4-cyber-defense.md](research/defense/stable-agentic-control-lean4-cyber-defense.md) — Stable Agentic Control: Lean 4-Verified Tool-Mediated Cyber Defense (2026).
+- [research/defense/safeagent-runtime-protection-architecture.md](research/defense/safeagent-runtime-protection-architecture.md) — SafeAgent: Runtime Protection Architecture for Agentic Systems (2026).
+- [research/defense/agentsentry-temporal-causal-ipi-defense.md](research/defense/agentsentry-temporal-causal-ipi-defense.md) — AgentSentry: Temporal Causal Defense Against Indirect Prompt Injection (2026).
+- [research/defense/coopguard-cooperative-multiagent-defense.md](research/defense/coopguard-cooperative-multiagent-defense.md) — CoopGuard: Cooperative Multi-Agent Defense for Multi-Round Attacks (ICLR 2026).
+- [research/defense/aegisllm-multi-agent-self-reflective-defense.md](research/defense/aegisllm-multi-agent-self-reflective-defense.md) — AegisLLM: Self-Reflective Multi-Agent Defense (2025).
+- [research/defense/rvb-red-blue-game-hardening.md](research/defense/rvb-red-blue-game-hardening.md) — RvB: Red-Blue Game Framework for AI System Hardening (2026).
+- [research/defense/flowsteer-planning-time-vulnerabilities-mas.md](research/defense/flowsteer-planning-time-vulnerabilities-mas.md) — FlowSteer/FlowGuard: Planning-Time MAS Attack and Defense (2026).
+- [research/defense/constitutional-classifiers-v2-production-defense.md](research/defense/constitutional-classifiers-v2-production-defense.md) — Constitutional Classifiers v2: Production Jailbreak Defense (Anthropic, 2026).
+- [research/defense/shield-auto-healing-defense-dos.md](research/defense/shield-auto-healing-defense-dos.md) — SHIELD: Auto-Healing Multi-Agent DoS Defense (2026).
+- [research/defense/dynatrust-dynamic-trust-sleeper-agent-defense.md](research/defense/dynatrust-dynamic-trust-sleeper-agent-defense.md) — DynaTrust: Dynamic Trust Defense Against Sleeper Agents (2026).
+- [research/defense/trajguard-decoding-time-jailbreak-defense.md](research/defense/trajguard-decoding-time-jailbreak-defense.md) — TrajGuard: Decoding-Time Jailbreak Defense via Hidden State Trajectories (2026).
+
+---
+
+## 5. Architectural Decisions & Timelines
 
 Design records (ADRs) and chronological logs tracing our engineering decisions:
 
@@ -209,7 +228,7 @@ Design records (ADRs) and chronological logs tracing our engineering decisions:
 
 ---
 
-## 5. Wiki Management & Metadata
+## 6. Wiki Management & Metadata
 
 - [SCHEMA.md](SCHEMA.md) — Formatting, directory structures, and update rules.
 - [log.md](log.md) — Chronological ledger of all ingestions and maintenance operations.

@@ -37,6 +37,24 @@ This append-only log tracks every ingestion, revision, and lint cycle executed a
 - Added 5 Architectural Decisions and 5 Timelines tracing safety evolution.
 - Fully synchronized index.md with strict relative links.
 
+## [2026-05-26] Antigravity | Ingested 12 Defense Research Papers — New defense/ subfolder
+- Created `research/defense/` subfolder for defense-focused agentic security papers.
+- Added 12 new research files covering agentic defense architectures:
+  - `research/defense/usenix-security26-sok-agentic-defense-landscape.md` — USENIX Security 2026 SoK (128 papers, 51 attacks, 60 defenses)
+  - `research/defense/stable-agentic-control-lean4-cyber-defense.md` — Lean 4-verified tool-mediated cyber defense (arXiv:2605.03034)
+  - `research/defense/safeagent-runtime-protection-architecture.md` — Runtime governance architecture (arXiv:2604.17562)
+  - `research/defense/agentsentry-temporal-causal-ipi-defense.md` — Temporal causal IPI defense (arXiv:2602.22724)
+  - `research/defense/coopguard-cooperative-multiagent-defense.md` — Cooperative multi-agent defense, ICLR 2026 (arXiv:2604.04060)
+  - `research/defense/aegisllm-multi-agent-self-reflective-defense.md` — Self-reflective multi-agent defense (arXiv:2504.20965)
+  - `research/defense/rvb-red-blue-game-hardening.md` — Red-Blue game framework, ACL ARR 2026 (arXiv:2601.19726)
+  - `research/defense/flowsteer-planning-time-vulnerabilities-mas.md` — Planning-time MAS attack + FlowGuard defense (arXiv:2605.11514)
+  - `research/defense/constitutional-classifiers-v2-production-defense.md` — Anthropic production defense (arXiv:2601.04603)
+  - `research/defense/shield-auto-healing-defense-dos.md` — Auto-healing DoS defense (arXiv:2601.19174)
+  - `research/defense/dynatrust-dynamic-trust-sleeper-agent-defense.md` — Dynamic trust against sleeper agents (arXiv:2603.15661)
+  - `research/defense/trajguard-decoding-time-jailbreak-defense.md` — Decoding-time jailbreak detection (arXiv:2604.07727)
+- Updated `index.md` with new Section 4 cataloging defense research.
+- Renumbered Wiki Management section from 5 → 6.
+
 ## [2026-05-20] Antigravity | Ingested 10 Research Papers — Batch 2
 - Added 10 new research papers covering previously underrepresented areas:
   - `research/ai-content-provenance-detection-2025.md` — Provenance Detection via Perceptual Hashing and FHE (arXiv:2503.11195)

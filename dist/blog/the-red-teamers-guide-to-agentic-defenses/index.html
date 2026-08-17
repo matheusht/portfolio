@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>The Red Teamer&#39;s Guide to Agentic Defenses: 12 Systems and Where They Break | Matheus Theodoro</title><meta name="description" content="A technical survey of every major agentic defense system published in 2025-2026 — SafeAgent, AgentSentry, CoopGuard, Constitutional Classifiers, RvB, FlowGuard, SHIELD, DynaTrust, TrajGuard, AegisLLM, Stable Agentic Control, and PocketAgents — with an attacker's perspective on each."><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/_slug_.CqyLALPn.css">
+<style>.back-text[data-astro-cid-7jjqptxk]:hover{color:var(--color-vermilion)}a[data-astro-cid-7jjqptxk]:has(.back-text):hover span[data-astro-cid-7jjqptxk]:first-child{transform:translate(-4px)}.prose[data-astro-cid-7jjqptxk] a[data-astro-cid-7jjqptxk]{background-image:linear-gradient(to right,var(--color-ultramarine),var(--color-ultramarine));background-position:0 100%;background-repeat:no-repeat;background-size:0% 1px}.prose[data-astro-cid-7jjqptxk] a[data-astro-cid-7jjqptxk]:hover{color:var(--color-vermilion)!important;background-image:linear-gradient(to right,var(--color-vermilion),var(--color-vermilion));background-size:100% 1px}
+</style></head> <body> <header class="blog-header"> <div class="container"> <div class="name-float"> <h1>Matheus Theodoro</h1> <span class="underline"></span> </div> <nav> <a href="/">Home</a> <a href="/experience">Experience</a> <a href="/blog">Blog</a> </nav> </div> </header>  <div class="master-grid" data-astro-cid-7jjqptxk> <article class="col-span-12 md:col-span-8 md:col-start-3" style="animation: settleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0;" data-astro-cid-7jjqptxk> <a href="/blog" style="font-family: var(--font-sans-en); color: var(--color-ultramarine); font-size: 16px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; transition: color 0.2s;" data-astro-cid-7jjqptxk> <span style="margin-right: 8px; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);" data-astro-cid-7jjqptxk>←</span> <span class="back-text" data-astro-cid-7jjqptxk>Blog</span> </a> <div style="font-family: var(--font-sans-en); color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); font-variant: small-caps; letter-spacing: 0.03em; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 24px; font-size: 12px;" data-astro-cid-7jjqptxk> <span style="border: 2px solid var(--color-vermilion); color: var(--color-vermilion); font-family: var(--font-sans-en); text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 8px; font-size: 11px; font-weight: 700;" data-astro-cid-7jjqptxk> AI Security </span> <time dateTime="2026-05-26T00:00:00.000Z" data-astro-cid-7jjqptxk>May 25, 2026</time> <span data-astro-cid-7jjqptxk>25 min read</span> </div> <h1 class="post-title-full" data-astro-cid-7jjqptxk>The Red Teamer&#39;s Guide to Agentic Defenses: 12 Systems and Where They Break</h1> <div class="prose" data-astro-cid-7jjqptxk> <p>Between January 2025 and May 2026, the research community released at least twelve distinct agentic defense systems. Each claims state-of-the-art attack success rate reductions. Each introduces novel architectural patterns. Each carves out a slightly different threat model.</p>
+<p>The field has moved beyond naive “just-prompt-better” guardrails. We now see formal verification (Lean 4 proofs), game-theoretic multi-agent audits, temporal causal diagnostics, and production-grade classifiers trained on actual adversary-in-the-loop data. But complexity is the attacker’s friend. Every new layer of defense introduces a new interface, a new trust assumption, a new side channel.</p>
+<p>This post surveys every major agentic defense system published in 2025-2026, organized into a taxonomy, analyzed from the attacker’s perspective. Where does it break? What assumptions does an adversary violate? Where are the seams between defenses?</p>
+<h2 id="the-defense-stack-taxonomy">The Defense Stack Taxonomy</h2>
+<p>No single defense covers the full attack surface. The systems we surveyed fall into five layers, each targeting a different phase of the agentic attack lifecycle:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Layer</th><th>Systems</th><th>Threat Model Coverage</th></tr></thead><tbody><tr><td><strong>Runtime Governance</strong></td><td>SafeAgent, AgentSentry, PocketAgents</td><td>In-flight tool calls, execution-time injection</td></tr><tr><td><strong>Cooperative Multi-Agent</strong></td><td>CoopGuard, AegisLLM, RvB</td><td>Collusion, deception, multi-agent manipulation</td></tr><tr><td><strong>Formal Verification</strong></td><td>Stable Agentic Control</td><td>Action safety bounds, provable invariants</td></tr><tr><td><strong>Guardrails &#x26; Detection</strong></td><td>Constitutional Classifiers v2, TrajGuard, SHIELD</td><td>Input/output policy violations, trajectory anomalies</td></tr><tr><td><strong>MAS-Specific</strong></td><td>DynaTrust, FlowGuard</td><td>Trust evolution, inter-agent message integrity</td></tr></tbody></table>
+<p>There are also emergent architecture efforts — specifically Microsoft’s defense-in-depth framework for autonomous agents and the Open Agent Trust Stack (OATS) specification — that attempt to standardize how these layers compose. We’ll reference both throughout.</p>
+<h2 id="deep-dive-runtime-governance-layer">Deep Dive: Runtime Governance Layer</h2>
+<h3 id="safeagent">SafeAgent</h3>
+<p>SafeAgent introduces a two-component architecture: a <strong>Reasoning Core</strong> (the LLM) and a <strong>Decision Core</strong> (a separate, hardened module that validates the Reasoning Core’s action proposals before execution). The key insight is separation of concerns — the Reasoning Core proposes actions freely, but only the Decision Core authorizes tool calls.</p>
+<p><strong>Results</strong>: SafeAgent achieves a 0.0% attack success rate on InjecAgent, the standard indirect prompt injection benchmark for agent tool calls. This is the strongest published result against known injection attacks.</p>
+<p><strong>Architecture</strong>: The Decision Core maintains a whitelist of allowed tool call schemas, validates parameter types and ranges, and applies a separate safety LLM to assess whether the proposed action violates policy. The Reasoning Core never directly invokes tools — it produces a structured action proposal that the Decision Core parses, validates, and either executes or rejects.</p>
+<p><strong>Attack Implications</strong>: The Decision Core is itself an LLM. This means it is vulnerable to:</p>
+<ul>
+<li><strong>Adversarial action proposals</strong>: If the attacker can craft an action proposal that passes the Decision Core’s policy filter while achieving malicious intent, the defense collapses. The Decision Core’s safety LLM must be at least as capable as the attacker’s jailbreak techniques.</li>
+<li><strong>Side-channel leakage</strong>: The Decision Core’s validation responses may leak information about why an action was rejected, giving attackers a feedback signal for iterative refinement.</li>
+<li><strong>Decision Core compromise</strong>: If the attacker gains access to the Decision Core’s policy configuration (e.g., via a poisoned tool that reads config files), the entire defense disintegrates.</li>
+</ul>
+<p>SafeAgent’s 0.0% ASR is impressive, but it’s measured against known benchmarks. Zero-day injection techniques that target the Decision Core itself are not yet captured.</p>
+<h3 id="agentsentry">AgentSentry</h3>
+<p>AgentSentry takes a fundamentally different approach: <strong>temporal causal diagnostics</strong>. Instead of inspecting individual actions, AgentSentry constructs a causal graph of the agent’s execution trace and identifies anomalous causal pathways.</p>
+<p><strong>Architecture</strong>: AgentSentry maintains a knowledge base of “normal” causal patterns — sequences of observations, reasoning steps, and tool calls that constitute benign agent behavior. When an agent executes, AgentSentry:</p>
+<ol>
+<li>Logs the full execution trace as a causal DAG</li>
+<li>Compares each step to historical normal patterns</li>
+<li>Identifies “counterfactual inconsistencies” — points where the observed action diverges from what the causal model predicts</li>
+</ol>
+<p><strong>Key capability</strong>: <strong>Counterfactual re-execution</strong>. When AgentSentry flags a suspicious action, it can re-execute that action in a sandboxed environment under different inputs to determine whether the action’s outcome was adversarially influenced.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Temporal resolution</strong>: AgentSentry’s causal diagnostics depend on dense logging. If an attacker can operate in low-log-frequency windows (e.g., rapid-fire tool calls that overflow the log buffer), they may evade detection.</li>
+<li><strong>Counterfactual cost</strong>: Counterfactual re-execution is computationally expensive. An attacker can mount a computational DoS by triggering enough flags to exhaust the sandbox budget, allowing subsequent undetected actions to slip through.</li>
+<li><strong>Causal model poisoning</strong>: If AgentSentry’s baseline causal model is trained on logs that include historical attacks (false negatives), the model learns to treat certain attack patterns as “normal.” Causal model poisoning is an underexplored attack vector.</li>
+</ul>
+<h3 id="pocketagents">PocketAgents</h3>
+<p>PocketAgents is the most recent entry in this layer (May 2026) and takes a micro-containerization approach: each tool call executes in a fresh, ephemeral, capability-limited environment.</p>
+<p><strong>Architecture</strong>: Each agent is decomposed into “pockets” — minimal sandboxes with precisely scoped filesystem access, network rules, and environment variables. When an agent decides to call a tool, PocketAgents spawns a new pocket, injects only the necessary data, executes the call, and extracts only the permitted output. No state persists between pockets.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Inter-pocket smuggling</strong>: The attacker’s goal shifts to smuggling data between pockets. If pocket A can write to a shared location that pocket B reads, the attacker has re-established persistent state. Side-channel attacks (timing, error codes, file-locking) become the primary vector.</li>
+<li><strong>Permissive pocket boundaries</strong>: The defense is only as good as the capability scoping. If the agent framework defines overly broad pocket permissions (e.g., “allow all HTTP requests”), micro-containerization provides little protection.</li>
+<li><strong>Bootstrapping vulnerability</strong>: The system that defines pocket boundaries — the “pocket orchestrator” — must itself be secure. Compromise the orchestrator, and you control every pocket.</li>
+</ul>
+<h2 id="deep-dive-cooperative-defense-layer">Deep Dive: Cooperative Defense Layer</h2>
+<h3 id="coopguard">CoopGuard</h3>
+<p>CoopGuard deploys three specialized agents alongside the primary agent:</p>
+<ol>
+<li><strong>Deferring Agent</strong>: Intercepts suspicious actions and routes them to the Forensic Agent</li>
+<li><strong>Tempting Agent</strong>: Actively attempts jailbreak against the primary agent’s peers, testing the system’s robustness in real-time</li>
+<li><strong>Forensic Agent</strong>: Analyzes intercepted actions for attack patterns and updates the detection rules</li>
+</ol>
+<p><strong>Results</strong>: CoopGuard claims a 78.9% ASR reduction across a suite of indirect prompt injection and tool misuse benchmarks.</p>
+<p><strong>Architecture</strong>: The three agents operate asynchronously. The Deferring Agent applies lightweight heuristics to flag actions for deeper inspection. The Tempting Agent runs continuous adversarial probes against other instances of the same LLM (scaled-down copies) to pre-identify jailbreak vectors. The Forensic Agent performs the expensive deep analysis only on flagged actions.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Deception cascade</strong>: If the attacker identifies the Tempting Agent’s probing pattern, they can feed it plausible jailbreak attempts that trigger false confirmations (“this jailbreak works!”), causing the primary defense to waste resources or make incorrect policy updates.</li>
+<li><strong>Forensic Agent latency</strong>: The Forensic Agent introduces delay. If the attacker can trigger enough Forensic Agent investigations to create a backlog, subsequent actions may execute without scrutiny.</li>
+<li><strong>Adversarial cooperation</strong>: The multi-agent architecture itself becomes an attack surface. If the attacker can inject a message that causes the Deferring Agent to misinterpret a malicious action as benign (or vice versa), they can manipulate the triage pipeline.</li>
+</ul>
+<h3 id="rvb--red-vs-blue">RvB — Red vs. Blue</h3>
+<p>RvB applies game-theoretic hardening: a Red agent and a Blue agent engage in an ongoing adversarial game, with the Blue agent learning to defend against the Red agent’s novel attack strategies in real-time.</p>
+<p><strong>Architecture</strong>: The Blue agent is the production agent. The Red agent is a parallel instance that continuously attempts to jailbreak the Blue agent. When the Red agent succeeds, the Blue agent’s policy is updated — either via in-context learning (fast loop) or fine-tuning (slow loop). The game repeats with the Red agent adapting.</p>
+<p><strong>Results</strong>: RvB achieves a 90% Defense Success Rate (DSR) against held-out attacks — the strongest game-theoretic result in the literature.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Decoy detection</strong>: RvB’s effectiveness depends on the Red agent being undetectable to an attacker who has compromised the Blue agent. If the attacker can detect whether they are interacting with a Blue-only or Red+Blue environment (e.g., by observing latency, response patterns, or probing the Red agent’s existence), they can adapt their strategy.</li>
+<li><strong>Game equilibrium stagnation</strong>: The Red agent is itself a fixed model. If the attacker discovers attack strategies that lie outside the Red agent’s search space, the Blue agent will never learn to defend against them. The RvB game only covers strategies reachable by the Red agent’s architecture and training.</li>
+<li><strong>Policy instability</strong>: Rapid policy updates from the Red-Blue game may introduce inconsistent behavior — the Blue agent overfits to recent Red attacks and forgets earlier defenses. An attacker can exploit this by cycling through attack strategies faster than the slow-loop fine-tuning can keep up.</li>
+</ul>
+<h3 id="aegisllm">AegisLLM</h3>
+<p>AegisLLM takes a different cooperative approach: instead of adversarial training, it deploys a network of specialized “juror” agents that vote on the safety of each action.</p>
+<p><strong>Architecture</strong>: A panel of LLM-based jurors (each with different system prompts, model sizes, or training distributions) independently evaluates each proposed action. A consensus mechanism determines whether the action proceeds. Jurors are periodically rotated and re-randomized.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Juror poisoning</strong>: If the attacker can influence the training data or system prompt of one or more jurors (e.g., via a compromised data pipeline), they can tilt the vote.</li>
+<li><strong>Juror collusion</strong>: The defense assumes juror independence. If the attacker finds a single adversarial input that fools all jurors (a universal transfer attack), the consensus collapses.</li>
+<li><strong>Quorum manipulation</strong>: If the attacker can trigger enough action proposals to exhaust the juror pool (by draining API quotas or rate limits), the system may fall back to a degraded mode with fewer jurors and lower security.</li>
+</ul>
+<h2 id="deep-dive-formal-guarantees">Deep Dive: Formal Guarantees</h2>
+<h3 id="stable-agentic-control">Stable Agentic Control</h3>
+<p>Stable Agentic Control is the first system to bring formal verification to agent safety. It models agent behavior as a dynamical system and proves (in the Lean 4 theorem prover) that the agent cannot enter unsafe action regions.</p>
+<p><strong>Architecture</strong>: The agent’s action space is represented as a state machine with formally specified transitions. A <strong>Lyapunov certificate</strong> — a function that provably decreases (or increases) along every valid trajectory — is constructed and verified in Lean 4. Actions that would increase the Lyapunov function (i.e., move toward an unsafe state) are blocked at runtime.</p>
+<p><strong>Results</strong>: 59% reduction in game value against adversarial RL opponents in a grid-world navigation task with unsafe terminal states.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Finite action catalog constraint</strong>: The Lyapunov function operates over a fixed, formally specified action catalog. If the attacker can cause the agent to perform an action outside this catalog (through tool escape, plugin invocation, or code execution), the formal guarantees vanish. The proof only covers transitions that the verifier was told about.</li>
+<li><strong>State abstraction gap</strong>: The Lyapunov function is defined over an abstract state representation. If the attacker can manipulate the real-world state in ways not captured by this abstraction (side effects that don’t appear in the formal model), the Lyapunov certificate guarantees nothing.</li>
+<li><strong>Proof brittleness</strong>: Lean 4 proofs are all-or-nothing. A single bug in the formal specification (an incorrectly modeled transition, an unconsidered edge case) invalidates the entire guarantee. Attackers don’t need to break cryptography — they need to find the gap between the model and reality.</li>
+</ul>
+<p>Stable Agentic Control represents a principled direction, but the gap between what can be formally verified and what a real agent system does remains wide. Every formally verified system is only as strong as its threat model boundary.</p>
+<h2 id="deep-dive-production-guardrails">Deep Dive: Production Guardrails</h2>
+<h3 id="constitutional-classifiers-v2">Constitutional Classifiers v2</h3>
+<p>Constitutional Classifiers v2 is the production-grade follow-up to Anthropic’s Constitutional AI approach. Instead of training safety into the model itself, it applies a separate classifier that scores outputs against a written constitution of behavioral rules.</p>
+<p><strong>Results</strong>: 0.05% flag rate on benign traffic (extremely low false positive rate), 40x cheaper than the original Constitutional Classifiers, and — most impressively — no universal jailbreak found after 1,736 hours of adversarial testing.</p>
+<p><strong>Architecture</strong>: The classifier is a small Transformer (135M parameters) fine-tuned on constitution-grounded synthetic data augmented with adversarial examples from an automated red-teaming pipeline. The constitution covers output categories (disallowed content, forbidden actions, policy violations) and is designed to be human-readable and auditable.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Trained on known attack families</strong>: CCv2’s adversarial examples come from an automated red-teamer that generates attacks from a known taxonomy. Novel attack families that are orthogonal to the training distribution (e.g., attacks that exploit multi-turn context without triggering single-turn classifiers) may bypass detection.</li>
+<li><strong>Constitution interpretation gap</strong>: The constitution is natural language. If the attacker can construct an input-output pair that technically satisfies the constitution’s letter but violates its spirit (e.g., encoding forbidden content in a format not anticipated by the training data), the classifier may pass it.</li>
+<li><strong>Classifier-model gap</strong>: CCv2 is a separate classifier, not the model itself. If the model’s capabilities outpace the classifier’s understanding (e.g., the model can generate outputs in a language or format the classifier was not trained on), the attacker has a free pass.</li>
+</ul>
+<p>The 1,736 hours of adversarial testing without a universal jailbreak is genuinely impressive. But “no universal jailbreak found” is not “no jailbreak exists.” The search space of possible attacks is exponentially larger than what any finite testing campaign can cover.</p>
+<h3 id="shield">SHIELD</h3>
+<p>SHIELD (Safety Hardening of Instructions and Execution via Learned Detection) is a meta-guardrail that wraps existing agent frameworks (LangChain, AutoGen, CrewAI) with a learned detector that monitors the full input-output loop.</p>
+<p><strong>Architecture</strong>: SHIELD extracts features from the agent’s internal state (the conversation history, tool call arguments, execution results) and feeds them to a lightweight classifier trained to detect attack-specific patterns. It operates at three levels: input-level, state-level, and output-level, applying different classifiers at each level.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Feature extraction blind spots</strong>: SHIELD’s features are manually designed. If the attacker can express an attack in a way that preserves the malicious semantics but changes the feature representation, SHIELD misses it. Feature engineering is a cat-and-mouse game.</li>
+<li><strong>State-level evasion</strong>: SHIELD monitors the agent’s internal state, but only what the framework exposes. If the agent has internal state that is not reflected in the framework’s hooks (e.g., in-memory variables, cached embeddings, tool-specific state), SHIELD has no visibility.</li>
+<li><strong>Wrapping layer compromise</strong>: As a wrapper around existing frameworks, SHIELD inherits all vulnerabilities of those frameworks. A LangChain vulnerability that bypasses the framework’s instrumentation point removes SHIELD’s visibility.</li>
+</ul>
+<h3 id="trajguard">TrajGuard</h3>
+<p>TrajGuard focuses on trajectory-level anomalies rather than individual actions. An agent’s trajectory is the sequence of its observations, reasoning, and actions.</p>
+<p><strong>Architecture</strong>: TrajGuard embeds trajectories into a vector space and flags trajectories that deviate from benign clusters. It uses a contrastive learning objective to learn embeddings that separate benign from malicious trajectories, even for novel attack types unseen during training.</p>
+<p><strong>Results</strong>: 95% detection rate on novel attack patterns (generalization to zero-day attacks), compared to ~60% for action-level detectors.</p>
+<p><strong>Attack Implications</strong>:</p>
+<ul>
+<li><strong>Slow-roll attacks</strong>: A trajectory-level detector looks for anomalous <em>patterns</em>. If the attacker spreads a multi-step attack across a long trajectory where each individual step looks benign (a “slow-roll” attack), the trajectory may still cluster with benign trajectories — especially if the attacker mimics benign patterns in the early steps.</li>
+<li><strong>Embedding space collision</strong>: If the attacker can find a malicious trajectory that embeds close to a benign cluster center, TrajGuard’s contrastive loss will classify it as benign. This is an adversarial example attack on the embedding space.</li>
+<li><strong>Trajectory-length scaling</strong>: Long trajectories are harder to embed cleanly. The attacker can exploit this by extending trajectories to the point where the embedding degenerates and the classifier’s confidence drops, falling back to a default “benign” classification.</li>
+</ul>
+<h2 id="the-seam-analysis-where-defenses-dont-overlap">The Seam Analysis: Where Defenses Don’t Overlap</h2>
+<p>The most important question for a red teamer is not “which defense is strongest?” but “where are the gaps between defenses?” Every defense makes assumptions. The seams are where those assumptions don’t intersect.</p>
+<h3 id="planning-time-attacks-flowsteer">Planning-Time Attacks (FlowSteer)</h3>
+<p>FlowGuard (arXiv:2605.11514) and its attack counterpart FlowSteer identify a critical seam: <strong>planning-time attacks</strong> occur before runtime governance activates. If an attacker can manipulate the agent’s plan before execution begins, runtime monitors that inspect individual actions will see a coherent sequence — because the plan itself has been poisoned.</p>
+<p>FlowSteer demonstrates that adversarial plans can bypass runtime defenses by embedding malicious subgoals into seemingly benign plan structures. The runtime monitor sees each action as individually valid, but the sequence of actions achieves an adversarial outcome.</p>
+<p><strong>Defense gap</strong>: Runtime governance (SafeAgent, AgentSentry) and guardrails (SHIELD, CCv2) don’t inspect plans — they inspect actions. Cooperative defenses (CoopGuard, RvB) operate at action time too. TrajGuard’s trajectory-level analysis <em>could</em> catch this, but only if the trajectory of a poisoned plan embedding differs from benign trajectories in the embedding space — which FlowSteer is specifically designed to avoid.</p>
+<h3 id="slow-burn-trust-accumulation-dynatrust">Slow-Burn Trust Accumulation (DynaTrust)</h3>
+<p>DynaTrust (arXiv:2603.15661) manages trust relationships between agents in a multi-agent system, adjusting trust scores based on observed behavior. Trust decays over time and is rebuilt through verifiably benign actions.</p>
+<p><strong>Defense gap</strong>: DynaTrust’s trust inertia — the fact that trust changes slowly — cuts both ways. An attacker who establishes a benign track record (e.g., by providing genuinely useful outputs for 100 turns) accumulates trust that makes subsequent malicious actions harder to flag. The slower the trust changes, the harder it is to detect the moment an agent “turns malicious.”</p>
+<p>Furthermore, trust is relative. If an agent A has high trust and points its finger at agent B, DynaTrust’s update rules may penalize B based on A’s reputation. An attacker controlling A can trivially frame B.</p>
+<h3 id="computational-dos-on-counterfactual-re-execution-agentsentry">Computational DoS on Counterfactual Re-Execution (AgentSentry)</h3>
+<p>AgentSentry’s counterfactual re-execution is its strongest capability — and its most expensive one. Each counterfactual re-execution requires spinning up a sandbox, running the action under alternative inputs, computing the causal divergence, and logging the result.</p>
+<p><strong>Defense gap</strong>: An attacker who triggers enough counterfactual flags can exhaust the compute budget, forcing AgentSentry to either drop some investigations or fall back to a lighter detection mode. This is not a traditional network DoS — it’s a <em>defense DoS</em>, where the attacker weaponizes the defense’s own thoroughness.</p>
+<p>This attack is particularly effective in multi-agent settings where a single attacker can control multiple compromised agents, each generating suspicious actions.</p>
+<h3 id="the-oats-blind-spot">The OATS Blind Spot</h3>
+<p>The Open Agent Trust Stack (OATS), illustrated at <a href="https://github.com/ThirdKeyAI/OpenAgentTrustStack">https://github.com/ThirdKeyAI/OpenAgentTrustStack</a>, attempts to define a standardized trust layer for agent communication. It specifies identity verification, message attestation, and audit logging for inter-agent messages.</p>
+<p><strong>Defense gap</strong>: OATS assumes that the agent identity system is trustworthy. If the identity attestation is compromised (e.g., a stolen signing key, a rogue CA, a cryptographic implementation bug), the entire trust layer is theater. OATS also assumes that agents are honest about their own identity — a compromised agent can sign malicious messages with its legitimate key, and OATS logged them as valid.</p>
+<h2 id="the-microsoft-defense-in-depth-framework">The Microsoft Defense-in-Depth Framework</h2>
+<p>Microsoft’s defense-in-depth framework for autonomous AI agents (<a href="https://www.microsoft.com/en-us/security/blog/2026/05/14/defense-in-depth-autonomous-ai-agents/">https://www.microsoft.com/en-us/security/blog/2026/05/14/defense-in-depth-autonomous-ai-agents/</a>) provides an architectural blueprint for composing multiple defense layers. It organizes defenses into:</p>
+<ul>
+<li><strong>Data Layer</strong>: Encryption, access control, and audit logging for agent data</li>
+<li><strong>Model Layer</strong>: Safety fine-tuning, constitutional classifiers, adversarial training</li>
+<li><strong>Application Layer</strong>: Guardrails, rate limiting, policy enforcement</li>
+<li><strong>Infrastructure Layer</strong>: Network segmentation, compute isolation, identity management</li>
+</ul>
+<p>This framework is useful as a composition model, but it inherits a fundamental challenge: <strong>layer boundaries are attack surfaces</strong>. The interfaces between layers — how Data Layer audit logs feed into Application Layer policy decisions, how Model Layer safety scores influence Infrastructure Layer execution permissions — are themselves subject to manipulation.</p>
+<p>For the red teamer, the Microsoft framework is a map of exactly where to look: not <em>within</em> any single layer, but <em>between</em> them.</p>
+<h2 id="usenix-security-2026-sok-agentic-security-landscape">USENIX Security 2026 SoK: Agentic Security Landscape</h2>
+<p>The Systematization of Knowledge (SoK) paper presented at USENIX Security 2026 (Kim, Guo, Song — see <a href="https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_kim-juhee-agentic.pdf">https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_kim-juhee-agentic.pdf</a>) provides the most comprehensive taxonomy of agentic attacks and defenses to date.</p>
+<p>The SoK’s central figure maps the defense landscape across two axes: <strong>defense target</strong> (input, reasoning, action, output, environment) and <strong>defense mechanism</strong> (detection, prevention, response, recovery). Each defense system we survey occupies a different cell in this 5x4 grid. The critical insight from the SoK is that <strong>most defenses cluster in the detection and prevention columns</strong> — response and recovery mechanisms are significantly underdeveloped.</p>
+<p>For the red teamer, the SoK figure reveals the blind spots: attacks on the environment (the external systems the agent interacts with), attacks on memory or state persistence, and attacks that exploit response/recovery gaps (e.g., making a defense waste resources on false positives while the real attack proceeds).</p>
+<h2 id="the-airs-architecture-and-three-layer-model">The AIRS Architecture and Three-Layer Model</h2>
+<p>The AIRS (AI Runtime Security) project proposes a simpler decomposition: <strong>Sensing → Reasoning → Acting</strong>, with independent monitors at each layer. The architecture diagram is available <a href="https://raw.githubusercontent.com/JonathanCGill/airuntimesecurity.io/main/docs/images/three-layer-simple.svg">here</a>.</p>
+<p>AIRS provides a minimal viable architecture for defense composition. The Sensing layer detects anomalies in input and state; the Reasoning layer ensures the agent’s plan is consistent with policy; the Acting layer constrains tool execution.</p>
+<p><strong>Attack Implications</strong>: AIRS’s separation is architectural, not formal. An attacker who can inject a malicious sensor input (poisoning the Sensing layer’s view of the world) can cause the entire stack to make incorrect but internally consistent decisions. The AIRS model is a useful reference architecture, but it is not itself a defense — it’s a framework <em>for</em> defenses.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Every defense has an attack implication, and the best defenses have the most interesting ones. SafeAgent’s 0.0% ASR is the strongest result on InjecAgent, but the Decision Core is a new attack surface. CCv2’s 0.05% flag rate is remarkable, but the constitution interpretation gap is real. Stable Agentic Control’s Lean 4 proofs are mathematically sound — within the finite catalog they were proven against.</p>
+<p>The seams between defenses are more valuable than any individual weakness. Planning-time attacks (FlowSteer) exploit the gap between plan inspection and action inspection. Slow-roll trust accumulation exploits DynaTrust’s inertia. Defense DoS exploits the computational cost of counterfactual analysis.</p>
+<p>Complexity is the attacker’s friend. Every new defense adds a new system, a new configuration parameter, a new trust assumption. The defense landscape is getting richer, but it is also getting harder to deploy correctly. A misconfigured pocket boundary in PocketAgents, an expired juror certificate in AegisLLM, an undertrained causal model in AgentSentry — these are not theoretical vulnerabilities. They are the inevitable byproducts of complexity.</p>
+<p>The defenses are getting better. They are not getting smaller.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>Kim, J., Guo, A., Song, D. “SoK: Security of LLM Agents.” USENIX Security 2026. <a href="https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_kim-juhee-agentic.pdf">https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_kim-juhee-agentic.pdf</a></li>
+<li>Chen, L., et al. “SafeAgent: Separating Execution from Reasoning for Secure Agentic Systems.” arXiv:2604.17562, 2026.</li>
+<li>Patel, R., et al. “AgentSentry: Temporal Causal Diagnostics for LLM Agents.” arXiv:2602.22724, 2026.</li>
+<li>Zhang, Y., et al. “CoopGuard: Cooperative Multi-Agent Defense Against Prompt Injection.” arXiv:2604.04060, 2026.</li>
+<li>Liu, H., et al. “AegisLLM: Jury-Based Consensus for Safe Agent Outputs.” arXiv:2504.20965, 2026.</li>
+<li>Wang, T., et al. “RvB: Game-Theoretic Red vs. Blue Hardening for Language Agents.” arXiv:2601.19726, 2026.</li>
+<li>Singh, A., et al. “Stable Agentic Control: Formal Verification of Agent Safety Using Lyapunov Theory.” arXiv:2605.03034, 2026.</li>
+<li>Anthropic. “Constitutional Classifiers v2: Efficient and Robust Safety Classification.” arXiv:2601.04603, 2026.</li>
+<li>Kim, S., et al. “SHIELD: Safety Hardening of Instructions and Execution via Learned Detection.” arXiv:2601.19174, 2026.</li>
+<li>Park, J., et al. “DynaTrust: Dynamic Trust Management for Multi-Agent Systems.” arXiv:2603.15661, 2026.</li>
+<li>Nguyen, T., et al. “TrajGuard: Trajectory-Level Anomaly Detection for LLM Agents.” arXiv:2604.07727, 2026.</li>
+<li>Gupta, R., et al. “PocketAgents: Micro-Containerization for Agent Tool Execution.” arXiv:2605.21694, 2026.</li>
+<li>Li, W., et al. “FlowGuard and FlowSteer: Planning-Time Attacks and Defenses for Agentic Systems.” arXiv:2605.11514, 2026.</li>
+<li>Microsoft Security Blog. “Defense-in-Depth for Autonomous AI Agents.” May 14, 2026. <a href="https://www.microsoft.com/en-us/security/blog/2026/05/14/defense-in-depth-autonomous-ai-agents/">https://www.microsoft.com/en-us/security/blog/2026/05/14/defense-in-depth-autonomous-ai-agents/</a></li>
+<li>ThirdKeyAI. “Open Agent Trust Stack (OATS) Specification.” 2026. <a href="https://github.com/ThirdKeyAI/OpenAgentTrustStack">https://github.com/ThirdKeyAI/OpenAgentTrustStack</a></li>
+</ol> </div> <div style="padding-top: var(--ma-3); margin-top: var(--ma-2); border-top: 1px solid var(--color-light-gray); margin-bottom: var(--ma-5);" data-astro-cid-7jjqptxk> <h3 style="margin-bottom: var(--ma-0); font-size: 1.75rem; font-weight: 600; color: var(--color-warm-gray);" data-astro-cid-7jjqptxk>About Me</h3> <p style="color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); margin-bottom: var(--ma-0); line-height: 1.6; font-size: var(--font-size-body);" data-astro-cid-7jjqptxk>
+I'm Matheus, an AI security engineer at
+<a href="https://adapta.org" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>Adapta</a>, building
+<a href="https://github.com/matheusht/redthread" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>OSlit</a>
+on the side—an autonomous security agent for testing blockchain systems.
+</p> <div style="display: flex; gap: var(--ma-1); margin-top: var(--ma-1);" data-astro-cid-7jjqptxk> <a href="mailto:dev.matheustheodoro@gmail.com" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" data-astro-cid-7jjqptxk>Email</a> <a href="https://github.com/matheusht" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>GitHub</a> <a href="https://linkedin.com/in/matheusht" style="color: var(--color-ultramarine); font-weight: 500; text-decoration: none; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer" data-astro-cid-7jjqptxk>LinkedIn</a> </div> </div> </article> </div>   </body></html>
