@@ -79,7 +79,12 @@ test("homepage carries valid JSON-LD Person graph", () => {
   assert.equal(person.name, "Matheus Theodoro");
   assert.ok(person.sameAs.includes("https://github.com/matheusht"));
   assert.equal(person.worksFor.name, "Adapta");
-  assert.ok(!html.includes("Avenza"), "homepage must not claim Avenza affiliation");
+  const avenzaMentions = [...html.matchAll(/Avenza/g)].length;
+  if (avenzaMentions > 0) {
+    const pastOk = /previously founded Avenza Security \(2024 — 2026\)/.test(html);
+    assert.ok(pastOk, "homepage Avenza references must be explicit past-tense only");
+    assert.ok(!/at Avenza Security[^(]|working at Avenza/.test(html), "homepage must not claim current Avenza affiliation");
+  }
 });
 
 test("blog posts carry Article JSON-LD and og:type article", () => {
