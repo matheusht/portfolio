@@ -24,7 +24,7 @@ test("404 page body carries markdown recovery links", () => {
   assert.match(html, /href="\/llms\.txt"/);
   assert.match(html, /href="\/"/);
   const md = read("404.md");
-  assert.match(md, /^# 404/);
+  assert.match(md, /^---[\s\S]*?---\n\n# 404/m);
 });
 
 test("sitemap.xml lists every page with valid XML", () => {
@@ -64,23 +64,39 @@ test("html pages advertise llms.txt via describedby", () => {
   assert.match(index, /rel="describedby"\s+href="\/llms\.txt"/);
 });
 
-test("homepage carries valid JSON-LD Person + Organization graph", () => {
+test("homepage carries valid JSON-LD Person graph", () => {
   const html = read("index.html");
   const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   assert.ok(match, "no JSON-LD script found");
   const ld = JSON.parse(match[1]);
   assert.equal(ld["@context"], "https://schema.org");
   const types = ld["@graph"].map((n) => n["@type"]);
-  for (const t of ["Person", "Organization", "WebSite"]) {
+  for (const t of ["Person", "WebSite"]) {
     assert.ok(types.includes(t), `missing ${t} node`);
   }
   const person = ld["@graph"].find((n) => n["@type"] === "Person");
   assert.equal(person.name, "Matheus Theodoro");
   assert.ok(person.sameAs.includes("https://github.com/matheusht"));
-  const org = ld["@graph"].find((n) => n["@type"] === "Organization");
-  assert.equal(org.name, "Avenza Security");
-  assert.ok(org.contactPoint?.length, "org missing contactPoint");
-  assert.equal(org.address["addressCountry"], "BR");
+  assert.equal(person.worksFor.name, "Adapta");
+  assert.ok(!html.includes("Avenza"), "homepage must not claim Avenza affiliation");
+});
+
+test("blog posts carry Article JSON-LD and og:type article", () => {
+  const post = read("blog/agentic-security-shift-2025/index.html");
+  const match = [...post.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  const article = match.map((m) => JSON.parse(m[1])).find((ld) => ld["@type"] === "Article");
+  assert.ok(article, "missing Article JSON-LD");
+  assert.match(post, /property="og:type" content="article"/);
+});
+
+test("identity: Adapta is current employer across built pages", () => {
+  for (const f of ["index.html", "about/index.html", "experience/index.html"]) {
+    const html = read(f);
+    assert.ok(html.includes("adapta.org"), `${f} missing Adapta`);
+  }
+  const exp = read("experience/index.html").replace(/<[^>]+>/g, " ");
+  assert.match(exp, /2024 — 2026/, "Avenza role must be past-dated");
+  assert.doesNotMatch(exp.replace(/2024 — 2026[\s\S]*?(?=Marketisa|$)/, " "), /Founder & AI Security Engineer[\s\S]*?Present/, "founder role must not be Present");
 });
 
 test("every page has canonical URL and full OG metadata", () => {
@@ -112,10 +128,21 @@ test("trust pages exist with substance and markdown twins", () => {
   }
 });
 
-test("stale identity facts are gone from built pages", () => {
-  for (const f of ["index.html", "about/index.html", "experience/index.html"]) {
-    const html = read(f);
-    assert.ok(!html.includes("adapta.org"), `${f} still links Adapta`);
+test("markdown twins open with YAML frontmatter", () => {
+  for (const f of ["index.md", "experience.md", "blog/index.md", "about.md"]) {
+    const md = read(f);
+    assert.match(md, /^---\ntitle: /, `${f} missing frontmatter`);
+  }
+});
+
+test("well-known ai-catalog.json is valid per ARD spec", () => {
+  const cat = JSON.parse(read(".well-known/ai-catalog.json"));
+  assert.equal(cat.specVersion, "1.0");
+  assert.equal(cat.host.identifier, "matheus.theodoro.dev");
+  assert.ok(cat.entries.length >= 1);
+  for (const e of cat.entries) {
+    assert.match(e.identifier, /^urn:ai:matheus\.theodoro\.dev:/);
+    assert.ok(e.displayName && e.type && e.url);
   }
 });
 

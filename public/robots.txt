@@ -3,4 +3,30 @@
 User-agent: *
 Allow: /
 
+# AI agents are welcome. Markdown via Accept: text/markdown or by appending .md.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: ora-agent
+Allow: /
+
 Sitemap: https://matheus.theodoro.dev/sitemap.xml

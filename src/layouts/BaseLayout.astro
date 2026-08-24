@@ -22,7 +22,7 @@ const jsonLd = {
       "@id": "https://matheus.theodoro.dev/#person",
       "name": "Matheus Theodoro",
       "description":
-        "AI Security Engineer and founder of Avenza Security. Builds and breaks AI systems: LLM red teaming, agentic security, and secure cloud engineering.",
+        "AI Security Engineer. Builds and breaks AI systems: LLM red teaming, agentic security, and secure cloud engineering.",
       "url": "https://matheus.theodoro.dev/",
       "email": "mailto:dev.matheustheodoro@gmail.com",
       "jobTitle": "AI Security Engineer",
@@ -35,26 +35,12 @@ const jsonLd = {
         "DevSecOps",
         "Cloud security",
       ],
-      "worksFor": { "@id": "https://matheus.theodoro.dev/#organization" },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Adapta",
+        "url": "https://adapta.org",
+      },
       "sameAs": ["https://github.com/matheusht", "https://linkedin.com/in/matheusht"],
-    },
-    {
-      "@type": "Organization",
-      "@id": "https://matheus.theodoro.dev/#organization",
-      "name": "Avenza Security",
-      "description":
-        "AI-powered penetration testing and offensive security practice focused on AI red teaming, vulnerability management, and risk reduction.",
-      "founder": { "@id": "https://matheus.theodoro.dev/#person" },
-      "email": "dev.matheustheodoro@gmail.com",
-      "contactPoint": [
-        {
-          "@type": "ContactPoint",
-          "contactType": "business inquiries",
-          "email": "dev.matheustheodoro@gmail.com",
-          "availableLanguage": ["en", "pt-BR"],
-        },
-      ],
-      "address": { "@type": "PostalAddress", "addressCountry": "BR" },
     },
     {
       "@type": "WebSite",

@@ -3,7 +3,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "headers": { "Vary": "Accept, Accept-Encoding" },
+      "headers": { "Vary": "Accept, Accept-Encoding", "Link": "</llms.txt>; rel=\"describedby\"" },
       "continue": true
     },
     {
@@ -39,6 +39,11 @@
     { "src": "^/privacy/?$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/privacy.md" },
     { "src": "^/privacy/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/privacy.md" },
     { "src": "^/privacy/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/privacy.md" },
+
+    { "src": "^/$", "has": [{ "type": "header", "key": "user-agent", "value": "(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot)" }], "dest": "/index.md" },
+    { "src": "^/(about|contact|privacy|experience)/?$", "has": [{ "type": "header", "key": "user-agent", "value": "(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot)" }], "dest": "/$1.md" },
+    { "src": "^/blog/?$", "has": [{ "type": "header", "key": "user-agent", "value": "(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot)" }], "dest": "/blog/index.md" },
+    { "src": "^/blog/([a-z0-9-]+)/?$", "has": [{ "type": "header", "key": "user-agent", "value": "(GPTBot|ClaudeBot|ChatGPT-User|PerplexityBot|Google-Extended|Applebot-Extended|ora-agent|DeepSeekBot)" }], "dest": "/blog/$1.md" },
 
     { "handle": "filesystem" }
   ]

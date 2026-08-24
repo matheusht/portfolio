@@ -1,3 +1,9 @@
+---
+title: "Contact — Matheus Theodoro"
+description: "Reach Matheus Theodoro about AI security work, red teaming assessments, agentic security reviews, and speaking."
+url: https://matheus.theodoro.dev/contact
+---
+
 # Contact — Matheus Theodoro
 
 > Reach Matheus Theodoro about AI security work, red teaming assessments, agentic security reviews, and speaking.

@@ -1,12 +1,26 @@
+---
+title: "Experience — Matheus Theodoro"
+description: "Roles at Adapta, Avenza Security, Avenza Cloud, Marketisa. Projects: RedThread, WindWhisper."
+url: https://matheus.theodoro.dev/experience
+---
+
 # Experience — Matheus Theodoro
 
-> AI Security Engineer at Avenza Security. Experience across AI security, cloud engineering, and DevSecOps.
+> AI Security Engineer at Adapta. Experience across AI security, cloud engineering, and DevSecOps.
+
+## AI Security Engineer — Adapta
+
+2026 — Present
+
+Working on AI security.
+
+Link: https://adapta.org
 
 ## Founder & AI Security Engineer — Avenza Security
 
-2024 — Present
+2024 — 2026
 
-Building a practical AI security practice for companies shipping LLM applications, agents, and AI-enabled products.
+Founded and ran a practical AI security practice for companies shipping LLM applications, agents, and AI-enabled products.
 
 - Built OSlit — an autonomous security agent for testing blockchain systems
 - Ran adversarial campaigns using PAIR, TAP, Crescendo, GS-MCTS across 4+ attack objectives

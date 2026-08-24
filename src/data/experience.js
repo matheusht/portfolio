@@ -2,10 +2,19 @@ export const SITE_URL = "https://matheus.theodoro.dev";
 
 export const roles = [
   {
+    company: "Adapta",
+    role: "AI Security Engineer",
+    date: "2026 — Present",
+    description: "Working on AI security.",
+    achievements: [],
+    link: "https://adapta.org",
+    linkLabel: "Visit Adapta",
+  },
+  {
     company: "Avenza Security",
     role: "Founder & AI Security Engineer",
-    date: "2024 — Present",
-    description: "Building a practical AI security practice for companies shipping LLM applications, agents, and AI-enabled products.",
+    date: "2024 — 2026",
+    description: "Founded and ran a practical AI security practice for companies shipping LLM applications, agents, and AI-enabled products.",
     achievements: [
       "Built OSlit — an autonomous security agent for testing blockchain systems",
       "Ran adversarial campaigns using PAIR, TAP, Crescendo, GS-MCTS across 4+ attack objectives",

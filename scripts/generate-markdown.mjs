@@ -30,10 +30,18 @@ function readPosts() {
     });
 }
 
-function write(rel, content) {
+function write(rel, metaOrContent, maybeContent) {
   const target = path.join(DIST, rel);
   fs.mkdirSync(path.dirname(target), { recursive: true });
-  fs.writeFileSync(target, content.trimStart() + "\n");
+  const isMeta = metaOrContent && typeof metaOrContent === "object";
+  const meta = isMeta ? metaOrContent : null;
+  const content = maybeContent ?? metaOrContent;
+  let out = "";
+  if (meta) {
+    const pagePath = rel.replace(/\.md$/, "").replace(/(^|\/)index$/, "$1");
+    out += `---\ntitle: ${JSON.stringify(meta.title)}\ndescription: ${JSON.stringify(meta.description)}\nurl: ${url(pagePath === "index" ? "" : pagePath)}\n---\n\n`;
+  }
+  fs.writeFileSync(target, (out + content.trimStart()).replace(/^\n+/, "") + "\n");
 }
 
 const posts = readPosts().sort((a, b) => (a.pubDate < b.pubDate ? 1 : -1));
@@ -42,9 +50,10 @@ const url = (...p) => [SITE_URL, ...p].join("/");
 
 write(
   "index.md",
+  { title: "Matheus Theodoro", description: "AI security engineer at Adapta. LLM red teaming, agentic security, and practitioner writing." },
   `# Matheus Theodoro
 
-> AI security engineer. Founder of Avenza Security. I build and break AI systems so companies can ship them with evidence, not hope.
+> AI security engineer at Adapta, previously founder of Avenza Security (2024 — 2026). I build and break AI systems so companies can ship them with evidence, not hope.
 
 I red team LLMs and agentic systems, then turn confirmed failures into engineering controls. My work combines offensive security with production engineering: adversarial campaigns, judge-based scoring, and defense validation for real deployments.
 
@@ -56,7 +65,8 @@ All writing: ${url("blog/index.md")}
 
 ## Experience
 
-- **Founder & AI Security Engineer, Avenza Security** (2024 — Present): practical AI security practice for companies shipping LLM applications and agents.
+- **AI Security Engineer, Adapta** (2026 — Present): AI security.
+- **Founder & AI Security Engineer, Avenza Security** (2024 — 2026): practical AI security practice for companies shipping LLM applications and agents.
 - **Software Engineer II, Avenza Cloud** (2022 — 2026): secure cloud infrastructure and backend systems at scale.
 
 Full history: ${url("experience.md")}
@@ -85,6 +95,7 @@ ${p.body}
 
 write(
   "blog/index.md",
+  { title: "Blog — Matheus Theodoro", description: "Writing on AI security, red teaming, agentic systems, and building with LLMs." },
   `# Blog — Matheus Theodoro
 
 > Writing on AI security, red teaming, agentic systems, and building with LLMs.
@@ -95,9 +106,10 @@ ${posts.map((p) => `- [${p.title}](${url("blog", p.slug + ".md")}): ${p.descript
 
 write(
   "experience.md",
+  { title: "Experience — Matheus Theodoro", description: "Roles at Adapta, Avenza Security, Avenza Cloud, Marketisa. Projects: RedThread, WindWhisper." },
   `# Experience — Matheus Theodoro
 
-> AI Security Engineer at Avenza Security. Experience across AI security, cloud engineering, and DevSecOps.
+> AI Security Engineer at Adapta. Experience across AI security, cloud engineering, and DevSecOps.
 
 ${roles
   .map(
@@ -147,6 +159,7 @@ function pagePath(file) {
 
 write(
   "404.md",
+  { title: "404 — page not found", description: "This path does not exist on matheus.theodoro.dev." },
   `# 404 — page not found
 
 > This path does not exist on matheus.theodoro.dev.
@@ -184,7 +197,7 @@ write(
   "llms.txt",
   `# Matheus Theodoro
 
-> AI security engineer and founder of Avenza Security. I build and break AI systems so companies can ship them with evidence, not hope. This site publishes my writing on LLM red teaming and agentic security, plus my professional record.
+> AI security engineer at Adapta. I build and break AI systems so companies can ship them with evidence, not hope. This site publishes my writing on LLM red teaming and agentic security, plus my professional record.
 
 This site is a personal portfolio for Matheus Theodoro. Every page has a clean markdown twin served via content negotiation: request any URL with \`Accept: text/markdown\` and receive \`text/markdown; charset=utf-8\`. Markdown twins are also reachable by appending \`.md\` to a page path.
 
@@ -202,7 +215,7 @@ Not a fit: general web development inquiries, unrelated product marketing, or an
 ## Pages
 
 - [Home](${SITE_URL}/index.md): overview, latest writing, contact links
-- [Experience](${SITE_URL}/experience.md): roles at Avenza Security and Avenza Cloud, Marketisa, projects
+- [Experience](${SITE_URL}/experience.md): roles at Adapta, Avenza Security, Avenza Cloud, Marketisa; projects
 - [Blog](${SITE_URL}/blog/index.md): all articles with descriptions
 
 ## Articles
@@ -224,17 +237,18 @@ ${posts.map((p) => `- [${p.title}](${url("blog", p.slug + ".md")}): ${p.category
 
 write(
   "about.md",
+  { title: "About — Matheus Theodoro", description: "AI Security Engineer at Adapta. LLM red teaming, agentic security, and secure cloud engineering." },
   `# About — Matheus Theodoro
 
-> AI Security Engineer and founder of Avenza Security. LLM red teaming, agentic security, and secure cloud engineering.
+> AI Security Engineer at Adapta. LLM red teaming, agentic security, and secure cloud engineering.
 
 I'm Matheus Theodoro, an AI security engineer based in Brazil. I build and break AI systems so companies can ship them with evidence, not hope.
 
-I'm the founder of Avenza Security, a practice focused on AI-powered penetration testing and offensive security. I run adversarial campaigns against LLMs and agentic systems using PAIR, TAP, Crescendo, and GS-MCTS. I score what breaks with judge-based rubrics mapped to OWASP LLM and MITRE ATLAS categories. Then I turn confirmed failures into guardrail candidates with replay-backed validation evidence.
+I work at Adapta on AI security. Before that I founded Avenza Security, a practice focused on AI-powered penetration testing and offensive security. I run adversarial campaigns against LLMs and agentic systems using PAIR, TAP, Crescendo, and GS-MCTS. I score what breaks with judge-based rubrics mapped to OWASP LLM and MITRE ATLAS categories. Then I turn confirmed failures into guardrail candidates with replay-backed validation evidence.
 
 My flagship project is RedThread, a CLI-first autonomous AI red-teaming and defense-evidence engine for LLM and agentic systems. It treats AI security like an engineering control loop: generate attacks, execute them in parallel, score behavior, synthesize defenses, replay evidence, and track runtime risk.
 
-Before Avenza, I built secure cloud infrastructure at Avenza Cloud — AWS, Kubernetes, mTLS, RBAC, CI/CD, and observability serving 10+ clients with 99.9% availability. At Marketisa I integrated security practices into the software development lifecycle.
+I built secure cloud infrastructure at Avenza Cloud — AWS, Kubernetes, mTLS, RBAC, CI/CD, and observability serving 10+ clients with 99.9% availability. At Marketisa I integrated security practices into the software development lifecycle.
 
 My work sits at the intersection of offensive security, backend engineering, DevSecOps, and applied AI. I write about what I find on this blog.
 `
@@ -242,6 +256,7 @@ My work sits at the intersection of offensive security, backend engineering, Dev
 
 write(
   "contact.md",
+  { title: "Contact — Matheus Theodoro", description: "Reach Matheus Theodoro about AI security work, red teaming assessments, agentic security reviews, and speaking." },
   `# Contact — Matheus Theodoro
 
 > Reach Matheus Theodoro about AI security work, red teaming assessments, agentic security reviews, and speaking.
@@ -262,6 +277,7 @@ If your message is about RedThread or OSlit, include the campaign context and wh
 
 write(
   "privacy.md",
+  { title: "Privacy — Matheus Theodoro", description: "Privacy statement for matheus.theodoro.dev: no analytics, no cookies, no tracking." },
   `# Privacy
 
 > Privacy statement for matheus.theodoro.dev: no analytics, no cookies, no tracking.

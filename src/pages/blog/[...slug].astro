@@ -12,9 +12,24 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.pubDate.toISOString(),
+  keywords: entry.data.tags?.join(", "),
+  articleSection: entry.data.category,
+  inLanguage: "en",
+  mainEntityOfPage: `https://matheus.theodoro.dev/blog/${entry.slug}`,
+  author: { "@id": "https://matheus.theodoro.dev/#person" },
+  publisher: { "@id": "https://matheus.theodoro.dev/#website" },
+};
 ---
 
-<BaseLayout title={`${entry.data.title} | Matheus Theodoro`} description={entry.data.description}>
+<BaseLayout title={`${entry.data.title} | Matheus Theodoro`} description={entry.data.description} ogType="article">
+  <script type="application/ld+json" set:html={JSON.stringify(articleLd)} />
   <div class="master-grid">
     <article class="col-span-12 md:col-span-8 md:col-start-3" style="animation: settleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0;">
       <a href="/blog" style="font-family: var(--font-sans-en); color: var(--color-ultramarine); font-size: 16px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; transition: color 0.2s;">
@@ -36,8 +51,8 @@ const { Content } = await entry.render();
       <div style="padding-top: var(--ma-3); margin-top: var(--ma-2); border-top: 1px solid var(--color-light-gray); margin-bottom: var(--ma-5);">
         <h3 style="margin-bottom: var(--ma-0); font-size: 1.75rem; font-weight: 600; color: var(--color-warm-gray);">About Me</h3>
         <p style="color: color-mix(in oklab, var(--color-warm-gray) 65%, transparent); margin-bottom: var(--ma-0); line-height: 1.6; font-size: var(--font-size-body);">
-          I'm Matheus, an AI security engineer and founder of
-          <a href="/about" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;">Avenza Security</a>, building
+          I'm Matheus, an AI security engineer at
+          <a href="https://adapta.org" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer">Adapta</a>, building
           <a href="https://github.com/matheusht/redthread" style="color: var(--color-vermilion); text-decoration: underline; transition: opacity 0.2s;" target="_blank" rel="noopener noreferrer">RedThread</a>
           —an autonomous AI red-teaming and defense-evidence engine for LLM and agentic systems.
         </p>

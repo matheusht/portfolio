@@ -1,0 +1,23 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Matheus Theodoro",
+    "identifier": "matheus.theodoro.dev"
+  },
+  "entries": [
+    {
+      "identifier": "urn:ai:matheus.theodoro.dev:content:site-guide",
+      "displayName": "Matheus Theodoro site guide",
+      "type": "text/markdown",
+      "url": "https://matheus.theodoro.dev/llms.txt",
+      "description": "LLM-friendly guide to matheus.theodoro.dev: identity, employment history, and practitioner writing on AI security and LLM red teaming."
+    },
+    {
+      "identifier": "urn:ai:matheus.theodoro.dev:content:writing-feed",
+      "displayName": "AI security writing in markdown",
+      "type": "text/markdown",
+      "url": "https://matheus.theodoro.dev/blog/index.md",
+      "description": "Every article on LLM red teaming, agentic defense systems, and prompt injection as clean markdown."
+    }
+  ]
+}

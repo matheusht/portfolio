@@ -1,3 +1,9 @@
+---
+title: "Privacy — Matheus Theodoro"
+description: "Privacy statement for matheus.theodoro.dev: no analytics, no cookies, no tracking."
+url: https://matheus.theodoro.dev/privacy
+---
+
 # Privacy
 
 > Privacy statement for matheus.theodoro.dev: no analytics, no cookies, no tracking.

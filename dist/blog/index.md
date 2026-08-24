@@ -1,3 +1,9 @@
+---
+title: "Blog — Matheus Theodoro"
+description: "Writing on AI security, red teaming, agentic systems, and building with LLMs."
+url: https://matheus.theodoro.dev/blog/
+---
+
 # Blog — Matheus Theodoro
 
 > Writing on AI security, red teaming, agentic systems, and building with LLMs.

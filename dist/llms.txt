@@ -1,6 +1,6 @@
 # Matheus Theodoro
 
-> AI security engineer and founder of Avenza Security. I build and break AI systems so companies can ship them with evidence, not hope. This site publishes my writing on LLM red teaming and agentic security, plus my professional record.
+> AI security engineer at Adapta. I build and break AI systems so companies can ship them with evidence, not hope. This site publishes my writing on LLM red teaming and agentic security, plus my professional record.
 
 This site is a personal portfolio for Matheus Theodoro. Every page has a clean markdown twin served via content negotiation: request any URL with `Accept: text/markdown` and receive `text/markdown; charset=utf-8`. Markdown twins are also reachable by appending `.md` to a page path.
 
@@ -18,7 +18,7 @@ Not a fit: general web development inquiries, unrelated product marketing, or an
 ## Pages
 
 - [Home](https://matheus.theodoro.dev/index.md): overview, latest writing, contact links
-- [Experience](https://matheus.theodoro.dev/experience.md): roles at Avenza Security and Avenza Cloud, Marketisa, projects
+- [Experience](https://matheus.theodoro.dev/experience.md): roles at Adapta, Avenza Security, Avenza Cloud, Marketisa; projects
 - [Blog](https://matheus.theodoro.dev/blog/index.md): all articles with descriptions
 
 ## Articles
