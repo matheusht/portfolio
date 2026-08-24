@@ -64,6 +64,25 @@ test("html pages advertise llms.txt via describedby", () => {
   assert.match(index, /rel="describedby"\s+href="\/llms\.txt"/);
 });
 
+test("homepage carries valid JSON-LD Person + Organization graph", () => {
+  const html = read("index.html");
+  const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  assert.ok(match, "no JSON-LD script found");
+  const ld = JSON.parse(match[1]);
+  assert.equal(ld["@context"], "https://schema.org");
+  const types = ld["@graph"].map((n) => n["@type"]);
+  for (const t of ["Person", "Organization", "WebSite"]) {
+    assert.ok(types.includes(t), `missing ${t} node`);
+  }
+  const person = ld["@graph"].find((n) => n["@type"] === "Person");
+  assert.equal(person.name, "Matheus Theodoro");
+  assert.ok(person.sameAs.includes("https://github.com/matheusht"));
+  const org = ld["@graph"].find((n) => n["@type"] === "Organization");
+  assert.equal(org.name, "Avenza Security");
+  assert.ok(org.contactPoint?.length, "org missing contactPoint");
+  assert.equal(org.address["addressCountry"], "BR");
+});
+
 test("markdown twin exists for every blog post source file", () => {
   const posts = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md"));
   assert.ok(posts.length > 0, "no posts found");

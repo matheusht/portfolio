@@ -11,6 +11,60 @@ const { title, description = "Making things. Breaking things. Mostly with AI now
 
 const path = Astro.url?.pathname?.replace(/\/+$/, "") || "/";
 const mdHref = markdownHref ?? (path === "/" ? "/index.md" : `${path}.md`);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://matheus.theodoro.dev/#person",
+      "name": "Matheus Theodoro",
+      "description":
+        "AI Security Engineer and founder of Avenza Security. Builds and breaks AI systems: LLM red teaming, agentic security, and secure cloud engineering.",
+      "url": "https://matheus.theodoro.dev/",
+      "email": "mailto:dev.matheustheodoro@gmail.com",
+      "jobTitle": "AI Security Engineer",
+      "nationality": { "@type": "Country", "name": "Brazil" },
+      "knowsAbout": [
+        "LLM red teaming",
+        "Agentic security",
+        "Prompt injection",
+        "MCP tool poisoning",
+        "DevSecOps",
+        "Cloud security",
+      ],
+      "worksFor": { "@id": "https://matheus.theodoro.dev/#organization" },
+      "sameAs": ["https://github.com/matheusht", "https://linkedin.com/in/matheusht"],
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://matheus.theodoro.dev/#organization",
+      "name": "Avenza Security",
+      "description":
+        "AI-powered penetration testing and offensive security practice focused on AI red teaming, vulnerability management, and risk reduction.",
+      "founder": { "@id": "https://matheus.theodoro.dev/#person" },
+      "email": "dev.matheustheodoro@gmail.com",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "business inquiries",
+          "email": "dev.matheustheodoro@gmail.com",
+          "availableLanguage": ["en", "pt-BR"],
+        },
+      ],
+      "address": { "@type": "PostalAddress", "addressCountry": "BR" },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://matheus.theodoro.dev/#website",
+      "url": "https://matheus.theodoro.dev/",
+      "name": "Matheus Theodoro",
+      "description": "Writing on AI security, LLM red teaming, and agentic systems.",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://matheus.theodoro.dev/#person" },
+    },
+  ],
+};
 ---
 
 <!DOCTYPE html>
@@ -23,6 +77,7 @@ const mdHref = markdownHref ?? (path === "/" ? "/index.md" : `${path}.md`);
     <link rel="alternate" type="text/markdown" href={mdHref} />
     <link rel="describedby" href="/llms.txt" />
     <link rel="icon" href="/favicon.ico" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <header class="blog-header">
