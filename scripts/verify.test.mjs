@@ -13,9 +13,18 @@ function exists(rel) {
 }
 
 test("markdown twins exist for all core pages", () => {
-  for (const f of ["index.md", "experience.md", "blog/index.md"]) {
+  for (const f of ["index.md", "experience.md", "blog/index.md", "404.md"]) {
     assert.ok(exists(f), `missing ${f}`);
   }
+});
+
+test("404 page body carries markdown recovery links", () => {
+  const html = read("404.html");
+  assert.match(html, /href="\/sitemap\.xml"/);
+  assert.match(html, /href="\/llms\.txt"/);
+  assert.match(html, /href="\/"/);
+  const md = read("404.md");
+  assert.match(md, /^# 404/);
 });
 
 test("markdown twin exists for every blog post source file", () => {

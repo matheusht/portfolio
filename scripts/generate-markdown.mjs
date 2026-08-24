@@ -128,4 +128,20 @@ NASA Space Apps 2025 global nominee and local 1st place. AI-powered wind predict
 `
 );
 
+write(
+  "404.md",
+  `# 404 — page not found
+
+> This path does not exist on matheus.theodoro.dev.
+
+Recover with these resources:
+
+- [Home](${SITE_URL}/): start here
+- [Sitemap](${SITE_URL}/sitemap.xml): every indexable URL
+- [llms.txt](${SITE_URL}/llms.txt): agent guidance and site map
+- [Blog](${SITE_URL}/blog/index.md): writing on AI security and red teaming
+- [Experience](${SITE_URL}/experience.md): roles and projects
+`
+);
+
 console.log("markdown twins generated");
