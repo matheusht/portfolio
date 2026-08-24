@@ -45,7 +45,7 @@ test("404s stay real with recovery links", async () => {
 test("sitemap.xml lists pages incl. trust pages, robots references it", async () => {
   const { body } = await get("/sitemap.xml");
   assert.match(body, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
-  for (const p of ["/", "/experience", "/about", "/contact", "/privacy"]) {
+  for (const p of ["/", "/experience", "/privacy"]) {
     assert.ok(body.includes(`<loc>${BASE}${p === "/" ? "/" : p}</loc>`), `sitemap missing ${p}`);
   }
   const robots = await get("/robots.txt");

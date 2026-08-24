@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://matheus.theodoro.dev/</loc></url>
-  <url><loc>https://matheus.theodoro.dev/about</loc></url>
   <url><loc>https://matheus.theodoro.dev/blog</loc></url>
   <url><loc>https://matheus.theodoro.dev/blog/adversarial-prediction-models</loc><lastmod>2026-05-14</lastmod></url>
   <url><loc>https://matheus.theodoro.dev/blog/agentic-security-shift-2025</loc><lastmod>2026-05-14</lastmod></url>
   <url><loc>https://matheus.theodoro.dev/blog/constitutional-classifiers-v2-what-1700-hours-of-red-teaming-revealed</loc><lastmod>2026-05-26</lastmod></url>
   <url><loc>https://matheus.theodoro.dev/blog/flowsteer-the-attack-that-mas-defenses-cant-see</loc><lastmod>2026-05-26</lastmod></url>
   <url><loc>https://matheus.theodoro.dev/blog/the-red-teamers-guide-to-agentic-defenses</loc><lastmod>2026-05-26</lastmod></url>
-  <url><loc>https://matheus.theodoro.dev/contact</loc></url>
   <url><loc>https://matheus.theodoro.dev/experience</loc></url>
   <url><loc>https://matheus.theodoro.dev/privacy</loc></url>
 </urlset>

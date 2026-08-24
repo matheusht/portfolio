@@ -165,80 +165,6 @@
       "dest": "/blog/$1.md"
     },
     {
-      "src": "^/about/?$",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": "text/markdown"
-        }
-      ],
-      "dest": "/about.md"
-    },
-    {
-      "src": "^/about/?$",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": {
-            "pre": "text/markdown"
-          }
-        }
-      ],
-      "dest": "/about.md"
-    },
-    {
-      "src": "^/about/?$",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": {
-            "suf": "text/markdown"
-          }
-        }
-      ],
-      "dest": "/about.md"
-    },
-    {
-      "src": "^/contact/?$",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": "text/markdown"
-        }
-      ],
-      "dest": "/contact.md"
-    },
-    {
-      "src": "^/contact/?$",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": {
-            "pre": "text/markdown"
-          }
-        }
-      ],
-      "dest": "/contact.md"
-    },
-    {
-      "src": "^/contact/?$",
-      "has": [
-        {
-          "type": "header",
-          "key": "accept",
-          "value": {
-            "suf": "text/markdown"
-          }
-        }
-      ],
-      "dest": "/contact.md"
-    },
-    {
       "src": "^/privacy/?$",
       "has": [
         {
@@ -278,22 +204,43 @@
     {
       "handle": "filesystem"
     },
-
     {
       "src": "/(.*)",
-      "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }],
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "text/markdown"
+        }
+      ],
       "dest": "/404.md",
       "status": 404
     },
     {
       "src": "/(.*)",
-      "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }],
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": {
+            "pre": "text/markdown"
+          }
+        }
+      ],
       "dest": "/404.md",
       "status": 404
     },
     {
       "src": "/(.*)",
-      "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }],
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": {
+            "suf": "text/markdown"
+          }
+        }
+      ],
       "dest": "/404.md",
       "status": 404
     }

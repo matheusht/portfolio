@@ -38,12 +38,12 @@ test("agent-skills SKILL.md carries explicit when-to-use guidance", () => {
 test("sitemap.xml lists every page with valid XML", () => {
   const xml = read("sitemap.xml");
   assert.match(xml, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
-  for (const loc of ["/", "/experience", "/blog", "/about", "/contact", "/privacy", "/blog/adversarial-prediction-models"]) {
+  for (const loc of ["/", "/experience", "/blog", "/privacy", "/blog/adversarial-prediction-models"]) {
     assert.ok(xml.includes(`<loc>${loc}</loc>`) || xml.includes(`<loc>https://matheus.theodoro.dev${loc === "/" ? "/" : loc}</loc>`), `sitemap missing ${loc}`);
   }
   const postCount = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md")).length;
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.equal(locs.length, postCount + 6, `expected ${postCount + 6} urls, got ${locs.length}`);
+  assert.equal(locs.length, postCount + 4, `expected ${postCount + 4} urls, got ${locs.length}`);
   assert.match(xml, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, "posts missing lastmod");
 });
 
@@ -87,8 +87,6 @@ test("homepage carries valid JSON-LD Person graph", () => {
   assert.ok(person.sameAs.includes("https://github.com/matheusht"));
   assert.equal(person.worksFor.name, "Adapta");
   assert.equal(person.worksFor.contactPoint[0].email, "parcerias@adapta.org");
-  assert.match(person.worksFor.address.streetAddress, /Berrini/);
-  assert.equal(person.worksFor.address.addressCountry, "BR");
   const avenzaMentions = [...html.matchAll(/Avenza/g)].length;
   if (avenzaMentions > 0) {
     const pastOk = /previously founded Avenza Security \(2024 — 2026\)/.test(html);
@@ -106,7 +104,7 @@ test("blog posts carry Article JSON-LD and og:type article", () => {
 });
 
 test("identity: Adapta is current employer across built pages", () => {
-  for (const f of ["index.html", "about/index.html", "experience/index.html"]) {
+  for (const f of ["index.html", "experience/index.html"]) {
     const html = read(f);
     assert.ok(html.includes("adapta.org"), `${f} missing Adapta`);
   }
@@ -136,7 +134,7 @@ test("og.png is a valid PNG at 1200x630", () => {
 });
 
 test("trust pages exist with substance and markdown twins", () => {
-  for (const p of ["about", "contact", "privacy"]) {
+  for (const p of ["privacy"]) {
     const html = read(`${p}/index.html`);
     const text = html.replace(/<[^>]+>/g, " ");
     assert.ok(text.length > 500, `${p} page too thin (${text.length} chars)`);
@@ -145,7 +143,7 @@ test("trust pages exist with substance and markdown twins", () => {
 });
 
 test("markdown twins open with YAML frontmatter", () => {
-  for (const f of ["index.md", "experience.md", "blog/index.md", "about.md"]) {
+  for (const f of ["index.md", "experience.md", "blog/index.md"]) {
     const md = read(f);
     assert.match(md, /^---\ntitle: /, `${f} missing frontmatter`);
   }
