@@ -21,6 +21,7 @@ const mdHref = markdownHref ?? (path === "/" ? "/index.md" : `${path}.md`);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="alternate" type="text/markdown" href={mdHref} />
+    <link rel="describedby" href="/llms.txt" />
     <link rel="icon" href="/favicon.ico" />
   </head>
   <body>

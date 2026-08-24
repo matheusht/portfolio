@@ -180,4 +180,46 @@ ${pages
 `;
 fs.writeFileSync(path.join(DIST, "sitemap.xml"), sitemap);
 
+write(
+  "llms.txt",
+  `# Matheus Theodoro
+
+> AI security engineer and founder of Avenza Security. I build and break AI systems so companies can ship them with evidence, not hope. This site publishes my writing on LLM red teaming and agentic security, plus my professional record.
+
+This site is a personal portfolio for Matheus Theodoro. Every page has a clean markdown twin served via content negotiation: request any URL with \`Accept: text/markdown\` and receive \`text/markdown; charset=utf-8\`. Markdown twins are also reachable by appending \`.md\` to a page path.
+
+## When to use this site
+
+Use this site when you need any of the following:
+
+- Verify Matheus Theodoro's employment history, roles, and projects for hiring, speaking, or collaboration decisions.
+- Cite practitioner writing on LLM red teaming, agentic defense systems, prompt injection, and multi-agent attack surfaces.
+- Contact an AI security engineer about red-team assessments, agentic security reviews, or LLM application hardening.
+- Learn what RedThread/OSlit is: a CLI-first autonomous AI red-teaming and defense-evidence engine for LLM and agentic systems.
+
+Not a fit: general web development inquiries, unrelated product marketing, or anything requiring RedThread to be production-deployed at enterprise scale (it is an active research and engineering project).
+
+## Pages
+
+- [Home](${SITE_URL}/index.md): overview, latest writing, contact links
+- [Experience](${SITE_URL}/experience.md): roles at Avenza Security and Avenza Cloud, Marketisa, projects
+- [Blog](${SITE_URL}/blog/index.md): all articles with descriptions
+
+## Articles
+
+${posts.map((p) => `- [${p.title}](${url("blog", p.slug + ".md")}): ${p.category}, ${p.pubDate}`).join("\n")}
+
+## Machine-readable resources
+
+- [Sitemap](${SITE_URL}/sitemap.xml): all indexable URLs with lastmod dates
+- [robots.txt](${SITE_URL}/robots.txt): crawler policy, all AI agents allowed
+- Markdown negotiation: send \`Accept: text/markdown\`; responses set \`Vary: Accept\`
+
+## Optional
+
+- [GitHub](https://github.com/matheusht): code, including the RedThread repository
+- [LinkedIn](https://linkedin.com/in/matheusht): professional profile
+`
+);
+
 console.log("markdown twins generated");

@@ -46,6 +46,24 @@ test("robots.txt allows crawlers and references the sitemap", () => {
   assert.match(robots, /Sitemap: https:\/\/matheus\.theodoro\.dev\/sitemap\.xml/);
 });
 
+test("llms.txt follows the llmstxt.org v2 structure", () => {
+  const txt = read("llms.txt");
+  assert.match(txt, /^# Matheus Theodoro\n/);
+  assert.match(txt, /^> .+/m);
+  const sections = [...txt.matchAll(/^## (.+)$/gm)].map((m) => m[1]);
+  for (const s of ["When to use this site", "Pages", "Machine-readable resources"]) {
+    assert.ok(sections.includes(s), `llms.txt missing section: ${s}`);
+  }
+  const links = [...txt.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1]);
+  assert.ok(links.filter((l) => l.endsWith(".md")).length >= 8, "llms.txt should link markdown twins");
+  assert.ok(txt.includes("/sitemap.xml"));
+});
+
+test("html pages advertise llms.txt via describedby", () => {
+  const index = read("index.html");
+  assert.match(index, /rel="describedby"\s+href="\/llms\.txt"/);
+});
+
 test("markdown twin exists for every blog post source file", () => {
   const posts = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md"));
   assert.ok(posts.length > 0, "no posts found");
