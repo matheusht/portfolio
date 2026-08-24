@@ -5,12 +5,14 @@ interface Props {
   title: string;
   description?: string;
   markdownHref?: string;
+  ogType?: string;
 }
 
-const { title, description = "Making things. Breaking things. Mostly with AI now.", markdownHref } = Astro.props;
+const { title, description = "Making things. Breaking things. Mostly with AI now.", markdownHref, ogType = "website" } = Astro.props;
 
 const path = Astro.url?.pathname?.replace(/\/+$/, "") || "/";
 const mdHref = markdownHref ?? (path === "/" ? "/index.md" : `${path}.md`);
+const canonical = `https://matheus.theodoro.dev${path === "/" ? "/" : path}`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -76,6 +78,16 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="alternate" type="text/markdown" href={mdHref} />
     <link rel="describedby" href="/llms.txt" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://matheus.theodoro.dev/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://matheus.theodoro.dev/og.png" />
     <link rel="icon" href="/favicon.ico" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>

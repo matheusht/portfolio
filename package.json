@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/generate-markdown.mjs",
+    "build": "astro build && node scripts/generate-markdown.mjs && node scripts/generate-images.mjs",
     "verify": "node --test scripts/verify.test.mjs",
     "preview": "astro preview"
   },

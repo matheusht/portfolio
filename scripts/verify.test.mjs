@@ -83,6 +83,26 @@ test("homepage carries valid JSON-LD Person + Organization graph", () => {
   assert.equal(org.address["addressCountry"], "BR");
 });
 
+test("every page has canonical URL and full OG metadata", () => {
+  for (const f of ["index.html", "experience/index.html", "blog/index.html", "404.html"]) {
+    const html = read(f);
+    const canonical = html.match(/rel="canonical" href="([^"]+)"/);
+    assert.ok(canonical, `${f} missing canonical`);
+    assert.ok(canonical[1].startsWith("https://matheus.theodoro.dev"), `${f} canonical not absolute`);
+    for (const prop of ["og:type", "og:image", "og:title", "og:url"]) {
+      assert.match(html, new RegExp(`property="${prop}"`), `${f} missing ${prop}`);
+    }
+    assert.match(html, /property="og:image:width" content="1200"/);
+  }
+});
+
+test("og.png is a valid PNG at 1200x630", () => {
+  const buf = fs.readFileSync(path.join(DIST, "og.png"));
+  assert.deepEqual([...buf.subarray(0, 8)], [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  assert.equal(buf.readUInt32BE(16), 1200);
+  assert.equal(buf.readUInt32BE(20), 630);
+});
+
 test("markdown twin exists for every blog post source file", () => {
   const posts = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md"));
   assert.ok(posts.length > 0, "no posts found");
