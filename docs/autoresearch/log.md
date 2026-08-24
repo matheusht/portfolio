@@ -19,35 +19,38 @@ Baseline: **69/100** published (Essential 62.9/80, Recommended 4.4/20, bonus 1.7
 | E8 | developer-resource discoverability + emerging bonuses | Publish machine-readable surfaces at predictable URLs | ARD ai-catalog.json at /.well-known/ per spec (urn:ai identifiers, host envelope); YAML frontmatter on every md twin (markdown-frontmatter); Link: rel="describedby" response header; Article JSON-LD + og:type=article on posts; /blog/llms.txt section guide; robots.txt AI-bot allowlist sections | **Kept** — live except bot-UA serving below |
 | E9 | agent-ua-markdown (emerging bonus) | Serve markdown to GPTBot/ClaudeBot/etc. UAs even without Accept header | Probed regex-string and {contains} has-value forms in legacy routes | **Reverted** — neither form matches; static hosting cannot negotiate on User-Agent. Requires edge middleware (@astrojs/vercel adapter). Documented ceiling unless adapter lands |
 | E10 | ard-catalog, agent-discovery-file, robots-ai-policy-quality, schema-type-breadth | Fix catalog URN namespace; publish skills index; complete crawler policy; extend schema | urn:ai → urn:air identifiers (checker requires domain-anchored urn:air); /.well-known/agent-skills/index.json + SKILL.md with build-time sha256 digest; OAI-SearchBot allow + CCBot/ByteSpider disallow; BreadcrumbList + truthful Service node in JSON-LD graph | **Kept** — raw scan: ard-catalog pass, agent-discovery-file 2/2 pass, robots-ai-policy-quality 2/2 pass |
-| E11 | schema-type-breadth (partial) | FAQPage lifts breadth from warning to full coverage | FAQPage JSON-LD with four questions whose answers mirror visible site content only (identity, RedThread, writing topics, contact); test tightened to allow past-tense Avenza mentions exclusively with explicit "(2024 — 2026)" marker | **Kept** — pending next raw scan |
+| E11 | schema-type-breadth (partial) | FAQPage lifts breadth from warning to full coverage | FAQPage JSON-LD with four questions whose answers mirror visible site content only (identity, RedThread, writing topics, contact); test tightened to allow past-tense Avenza mentions exclusively with explicit "(2024 — 2026)" marker | **Kept** |
+| E12 | agent-friendly-404 (Essential, partial) | Checker wants literal markdown to parse in the 404 contract | Visible `<pre>` markdown block on 404 page + post-filesystem catch-all routes serving `/404.md` with `status: 404` for `Accept: text/markdown` agents | **Kept** — raw scan: 2/2, "the strongest 404 contract"; live: 404 status + text/markdown for agents, HTML 404 unchanged for browsers |
+| E13 | agent-instruction (Recommended, partial) | Checker reads /.well-known/agent-skills/ for explicit when-to-use guidance | SKILL.md gained "When to use this skill" + "When NOT to use" sections; index.json description leads with When-to-use/How-to-call | **Kept** — raw scan: 3/3 |
+| E14 | org-schema-completeness (Recommended, partial) | Organization needs contactPoint + address; no-fabrication rule limits sources | Used ONLY publicly-published employer data from adapta.org legal pages (parcerias@adapta.org, registered Berrini One address, São Paulo/SP) inside Person.worksFor Organization node | **Kept** — raw scan: 2/2 |
+| E15 | owner instruction: remove /about and /contact | Owner trimmed site scope during review | Pages, nav links, md twins, vercel routes, sitemap entries removed; Service schema url repointed home; tests updated | **Kept** — trust-anchors drops to 1/2 ("missing Contact"): accepted cost of owner decision, not reverted |
 
 ## Raw score trajectory (same 124-check Ora audit)
 
-22 (E0 baseline) → 36 (after E1–E8) → 43 (after E10/E11, schema-type-breadth 2/2 pass).
+22 (E0 baseline) → 36 (after E1–E8) → 43 (after E10/E11) → **45 (after E12–E15; pass 38 / warn 3)**.
+Published model trajectory: **69 → 94** ("Strong technical baseline": Essential 74.3/80, Recommended 14.3/20, bonus +5 from 21 signals).
 
-## Final measurement protocol (blocked on Is Agentic staleness gate)
+## Remaining items — documented ceiling
 
-The published API replaces its stored snapshot only once it is stale (>6h from publication at 2026-08-24T02:15:59Z, i.e., ≥ 08:15:59Z). Forced scans complete and archive immediately but do not republish. When the window opens:
+Every unresolved check now falls in one category:
 
-1. `npx -y is-agentic matheus.theodoro.dev --json` (starts-and-waits if no report exists; otherwise retrieves — so trigger a rescan first via `POST /api/scan/refresh {"target":"https://matheus.theodoro.dev"}` or the Rescan button on https://is-agentic.com/scan/matheus.theodoro.dev).
-2. Record published score vs 69 baseline in this ledger.
-
-Do NOT run additional forced stream scans before the window opens: if their staleness clock tracks newest-completed-scan, extra scans postpone publication.
-
-## Remaining items by category
-
-- **Ceiling (static hosting):** agent-ua-markdown — requires @astrojs/vercel adapter + edge middleware; owner decision.
-- **Product decision:** modular-llms-txt wants a second section guide; the honest candidate is publishing docs/wiki as a /wiki section — needs owner approval for content licensing/accuracy.
-- **External SEO/time:** brand-search-accuracy, agentic-search-specific, wikipedia-presence — depend on third-party search indexing, backlinks, and Wikipedia presence; not achievable from this repository.
-- **Not applicable (personal static portfolio):** public-api, openapi-spec, oauth-support, mcp-server, pricing-info/pages, cli-tool, chatgpt-app-listed, sandbox-environment, webmcp, a2a-agent-card — the published model excludes interfaces the product does not offer.
+1. **External SEO/indexing (outside repository control):**
+   - `brand-search-accuracy` — needs third-party search engines to rank matheus.theodoro.dev for "Matheus Theodoro"; requires backlinks/press/time.
+   - `agentic-search-specific` — same indexing dependency for name-based resource search.
+2. **Owner product decisions:**
+   - `trust-anchors` 1/2 — restore a /contact page if wanted (was removed by owner instruction).
+   - `modular-llms-txt` warning — second section llms.txt would require publishing docs/wiki as a section.
+3. **Hosting architecture decision:**
+   - `agent-ua-markdown` — static hosting cannot negotiate on User-Agent; needs @astrojs/vercel adapter + edge middleware.
+4. **Not applicable (excluded from scoring):** API/OAuth/MCP/pricing surfaces a personal portfolio does not offer.
 
 ## Measurement notes
 
-- The published report API replaces its snapshot only when stale (>6h) or via the UI Rescan flow; forced scans complete and archive immediately but publication lags. Raw Ora evidence used for keep/revert decisions between publications.
-- Raw Ora score moved 22 → 36 across E1–E8 (same 124-check audit).
-- Checks requiring credentials/product surface (public-api, oauth-support, mcp-server, openapi-spec, pricing-info, chatgpt-app-listed, wikipedia-presence, brand-search-accuracy off-page factors) are out of scope for a personal static portfolio; the published model excludes non-applicable interfaces rather than penalizing them.
+- The published report API serves the stored snapshot; after a forced scan completes and archives, their pipeline promotes it on its own schedule (observed lag: minutes to ~40 min). Raw Ora evidence from the `scan/stream` SSE is used for keep/revert decisions between publications.
+- Canonical test command per owner: `npx is-agentic matheus.theodoro.dev`.
 
-## Next
+## Optional follow-ups
 
-1. At publication window (post-staleness), trigger refresh and record published score delta vs 69 baseline.
-2. Optional: adopt @astrojs/vercel static adapter + root middleware.ts to unlock agent-ua-markdown (+406/q-value strictness if scored later).
+1. Adopt @astrojs/vercel static adapter + root middleware.ts to unlock agent-ua-markdown (bot-UA markdown serving).
+2. Restore a /contact page if trust-anchors full credit matters more than the trimmed scope.
+3. Publish docs/wiki as /wiki section with its own llms.txt for modular-llms-txt bonus.
