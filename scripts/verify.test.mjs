@@ -21,11 +21,18 @@ test("markdown twins exist for all core pages", () => {
 
 test("404 page body carries markdown recovery links", () => {
   const html = read("404.html");
-  assert.match(html, /href="\/sitemap\.xml"/);
-  assert.match(html, /href="\/llms\.txt"/);
-  assert.match(html, /href="\/"/);
+  for (const href of ['href="/sitemap.xml"', 'href="/llms.txt"', 'href="/"']) {
+    assert.ok(html.includes(href), `404 missing ${href}`);
+  }
+  assert.match(html, /#\s*404 — page not found[\s\S]*?- \[Home\]\(\/\)/, "404 body lacks literal markdown block");
   const md = read("404.md");
   assert.match(md, /^---[\s\S]*?---\n\n# 404/m);
+});
+
+test("agent-skills SKILL.md carries explicit when-to-use guidance", () => {
+  const md = read(".well-known/agent-skills/matheus-theodoro-site/SKILL.md");
+  assert.match(md, /## When to use this skill/);
+  assert.match(md, /When NOT to use/);
 });
 
 test("sitemap.xml lists every page with valid XML", () => {
@@ -79,6 +86,9 @@ test("homepage carries valid JSON-LD Person graph", () => {
   assert.equal(person.name, "Matheus Theodoro");
   assert.ok(person.sameAs.includes("https://github.com/matheusht"));
   assert.equal(person.worksFor.name, "Adapta");
+  assert.equal(person.worksFor.contactPoint[0].email, "parcerias@adapta.org");
+  assert.match(person.worksFor.address.streetAddress, /Berrini/);
+  assert.equal(person.worksFor.address.addressCountry, "BR");
   const avenzaMentions = [...html.matchAll(/Avenza/g)].length;
   if (avenzaMentions > 0) {
     const pastOk = /previously founded Avenza Security \(2024 — 2026\)/.test(html);

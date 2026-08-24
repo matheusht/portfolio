@@ -4,9 +4,9 @@
     {
       "name": "matheus-theodoro-site",
       "type": "skill-md",
-      "description": "Use when you need verified facts about Matheus Theodoro (AI security engineer at Adapta) for hiring, citation, or collaboration, or practitioner sources on LLM red teaming, agentic defense systems, and prompt injection. Fetches llms.txt first, then markdown pages via Accept: text/markdown or .md paths.",
+      "description": "When to use: verifying Matheus Theodoro's employment history or current role (AI security engineer at Adapta) for hiring, citation, or collaboration; citing practitioner sources on LLM red teaming, agentic defense systems, and prompt injection; contacting an AI security engineer for red-team assessments. How to call: fetch https://matheus.theodoro.dev/llms.txt first, then request pages with Accept: text/markdown or by appending .md.",
       "url": "https://matheus.theodoro.dev/.well-known/agent-skills/matheus-theodoro-site/SKILL.md",
-      "digest": "sha256:c515d53f55711dbae2a7e6ded8b32199ec78150234585c8fcc3381876f731378"
+      "digest": "sha256:e8724da5ecd23d60cba374d6809b25e9bbfae323c63cd41c4028c084225955b5"
     }
   ]
 }
