@@ -1,50 +1,33 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/index.md"
+      "src": "/(.*)",
+      "headers": { "Vary": "Accept, Accept-Encoding" },
+      "continue": true
     },
     {
-      "source": "/experience",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/experience.md"
+      "src": "/(.*)\\.md$",
+      "headers": { "Content-Type": "text/markdown; charset=utf-8" },
+      "continue": true
     },
-    {
-      "source": "/blog",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/blog/index.md"
-    },
-    {
-      "source": "/blog/:slug",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/blog/:slug.md"
-    },
-    {
-      "source": "/about",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/about.md"
-    },
-    {
-      "source": "/contact",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/contact.md"
-    },
-    {
-      "source": "/privacy",
-      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
-      "destination": "/privacy.md"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [{ "key": "Vary", "value": "Accept, Accept-Encoding" }]
-    },
-    {
-      "source": "/(.*\\.md)",
-      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
-    }
+
+    { "src": "^/$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/index.md" },
+    { "src": "^/$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/index.md" },
+    { "src": "^/$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/index.md" },
+
+    { "src": "^/experience/?$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/experience.md" },
+    { "src": "^/experience/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/experience.md" },
+    { "src": "^/experience/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/experience.md" },
+
+    { "src": "^/blog/?$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/blog/index.md" },
+    { "src": "^/blog/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/blog/index.md" },
+    { "src": "^/blog/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/blog/index.md" },
+
+    { "src": "^/blog/([a-z0-9-]+)/?$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/blog/$1.md" },
+    { "src": "^/blog/([a-z0-9-]+)/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/blog/$1.md" },
+    { "src": "^/blog/([a-z0-9-]+)/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/blog/$1.md" },
+
+    { "handle": "filesystem" }
   ]
 }

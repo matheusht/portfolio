@@ -47,16 +47,32 @@ test("blog twins carry their post title as H1", () => {
 
 test("vercel.json negotiates markdown with correct headers", () => {
   const cfg = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
-  const has = (r) => r.has?.some((h) => h.type === "header" && h.key === "accept" && /text\/markdown/i.test(h.value));
-  const sources = cfg.rewrites.filter(has).map((r) => r.source);
-  for (const s of ["/", "/experience", "/blog", "/blog/:slug"]) {
-    assert.ok(sources.includes(s), `no markdown rewrite for ${s}`);
+  const routes = cfg.routes;
+  assert.ok(Array.isArray(routes), "routes array missing");
+
+  const varyRoute = routes.find((r) => r.headers?.Vary && r.continue);
+  assert.ok(varyRoute, "missing blanket Vary route");
+  assert.match(varyRoute.headers.Vary, /\bAccept\b/);
+
+  const ctRoute = routes.find((r) => r.src?.includes("\\.md") && r.continue);
+  assert.ok(ctRoute, "missing markdown content-type route");
+  assert.equal(ctRoute.headers["Content-Type"], "text/markdown; charset=utf-8");
+
+  const mdRoutes = routes.filter((r) => r.dest?.endsWith(".md"));
+  const srcs = new Set(mdRoutes.map((r) => r.src));
+  for (const s of ["^/$", "^/experience/?$", "^/blog/?$", "^/blog/([a-z0-9-]+)/?$"]) {
+    assert.ok(srcs.has(s), `no markdown rewrite for ${s}`);
+    for (const src of srcs) {
+      if (src !== s) continue;
+      const variants = mdRoutes.filter((r) => r.src === s);
+      assert.ok(
+        variants.some((r) => r.has[0].value === "text/markdown") &&
+          variants.some((r) => typeof r.has[0].value === "object"),
+        `${s} missing has-condition variants`
+      );
+    }
   }
-  const vary = cfg.headers.find((h) => h.source === "/(.*)")?.headers.find((x) => x.key === "Vary");
-  assert.ok(vary, "missing blanket Vary header");
-  assert.match(vary.value, /\bAccept\b/);
-  const ct = cfg.headers.find((h) => /\.md/.test(h.source))?.headers.find((x) => x.key === "Content-Type");
-  assert.ok(ct && ct.value === "text/markdown; charset=utf-8", "missing text/markdown content-type override");
+  assert.ok(routes.some((r) => r.handle === "filesystem"), "filesystem fallback missing");
 });
 
 test("html pages advertise their markdown alternate", () => {
