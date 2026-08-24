@@ -30,12 +30,12 @@ test("404 page body carries markdown recovery links", () => {
 test("sitemap.xml lists every page with valid XML", () => {
   const xml = read("sitemap.xml");
   assert.match(xml, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
-  for (const loc of ["/", "/experience", "/blog", "/blog/adversarial-prediction-models"]) {
+  for (const loc of ["/", "/experience", "/blog", "/about", "/contact", "/privacy", "/blog/adversarial-prediction-models"]) {
     assert.ok(xml.includes(`<loc>${loc}</loc>`) || xml.includes(`<loc>https://matheus.theodoro.dev${loc === "/" ? "/" : loc}</loc>`), `sitemap missing ${loc}`);
   }
   const postCount = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md")).length;
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.equal(locs.length, postCount + 3, `expected ${postCount + 3} urls, got ${locs.length}`);
+  assert.equal(locs.length, postCount + 6, `expected ${postCount + 6} urls, got ${locs.length}`);
   assert.match(xml, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, "posts missing lastmod");
 });
 
@@ -101,6 +101,22 @@ test("og.png is a valid PNG at 1200x630", () => {
   assert.deepEqual([...buf.subarray(0, 8)], [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
   assert.equal(buf.readUInt32BE(16), 1200);
   assert.equal(buf.readUInt32BE(20), 630);
+});
+
+test("trust pages exist with substance and markdown twins", () => {
+  for (const p of ["about", "contact", "privacy"]) {
+    const html = read(`${p}/index.html`);
+    const text = html.replace(/<[^>]+>/g, " ");
+    assert.ok(text.length > 500, `${p} page too thin (${text.length} chars)`);
+    assert.ok(exists(`${p}.md`), `missing ${p}.md twin`);
+  }
+});
+
+test("stale identity facts are gone from built pages", () => {
+  for (const f of ["index.html", "about/index.html", "experience/index.html"]) {
+    const html = read(f);
+    assert.ok(!html.includes("adapta.org"), `${f} still links Adapta`);
+  }
 });
 
 test("markdown twin exists for every blog post source file", () => {

@@ -222,4 +222,64 @@ ${posts.map((p) => `- [${p.title}](${url("blog", p.slug + ".md")}): ${p.category
 `
 );
 
+write(
+  "about.md",
+  `# About — Matheus Theodoro
+
+> AI Security Engineer and founder of Avenza Security. LLM red teaming, agentic security, and secure cloud engineering.
+
+I'm Matheus Theodoro, an AI security engineer based in Brazil. I build and break AI systems so companies can ship them with evidence, not hope.
+
+I'm the founder of Avenza Security, a practice focused on AI-powered penetration testing and offensive security. I run adversarial campaigns against LLMs and agentic systems using PAIR, TAP, Crescendo, and GS-MCTS. I score what breaks with judge-based rubrics mapped to OWASP LLM and MITRE ATLAS categories. Then I turn confirmed failures into guardrail candidates with replay-backed validation evidence.
+
+My flagship project is RedThread, a CLI-first autonomous AI red-teaming and defense-evidence engine for LLM and agentic systems. It treats AI security like an engineering control loop: generate attacks, execute them in parallel, score behavior, synthesize defenses, replay evidence, and track runtime risk.
+
+Before Avenza, I built secure cloud infrastructure at Avenza Cloud — AWS, Kubernetes, mTLS, RBAC, CI/CD, and observability serving 10+ clients with 99.9% availability. At Marketisa I integrated security practices into the software development lifecycle.
+
+My work sits at the intersection of offensive security, backend engineering, DevSecOps, and applied AI. I write about what I find on this blog.
+`
+);
+
+write(
+  "contact.md",
+  `# Contact — Matheus Theodoro
+
+> Reach Matheus Theodoro about AI security work, red teaming assessments, agentic security reviews, and speaking.
+
+The fastest way to reach me is email. I read everything.
+
+- Email: dev.matheustheodoro@gmail.com
+- GitHub: https://github.com/matheusht
+- LinkedIn: https://linkedin.com/in/matheusht
+
+## What to contact me about
+
+AI red-team assessments for LLM applications and agents. Agentic security reviews: tool poisoning, confused-deputy risks, permission boundaries. Prompt injection and jailbreak testing with evidence you can hand to engineers. Secure backend, cloud, and DevSecOps engineering for teams shipping AI systems. Speaking and writing on AI security.
+
+If your message is about RedThread or OSlit, include the campaign context and what evidence you need. Specific asks get specific answers.
+`
+);
+
+write(
+  "privacy.md",
+  `# Privacy
+
+> Privacy statement for matheus.theodoro.dev: no analytics, no cookies, no tracking.
+
+This site collects nothing. No analytics, no cookies, no fingerprinting, no advertising, no client-side tracking of any kind.
+
+## Server logs
+
+The site is served by Vercel. Vercel keeps standard request logs for security and abuse prevention: requested URL, timestamp, IP address, and user agent. Retention follows Vercel's defaults. I do not use these logs to profile visitors.
+
+## What agents may read
+
+Everything here is public by design. Pages are available as HTML and as markdown via content negotiation. Crawlers and AI agents that follow robots.txt are welcome.
+
+## Contact
+
+If you email me, I keep your message and your address so I can reply. I don't add contacts to marketing lists and I don't share addresses with anyone. Ask me to delete your correspondence at any time: dev.matheustheodoro@gmail.com.
+`
+);
+
 console.log("markdown twins generated");

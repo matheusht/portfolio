@@ -2,14 +2,6 @@
 
 > AI Security Engineer at Avenza Security. Experience across AI security, cloud engineering, and DevSecOps.
 
-## AI Security Engineer — Adapta
-
-2026 — Present
-
-Working on AI and blockchain security.
-
-Link: https://adapta.org
-
 ## Founder & AI Security Engineer — Avenza Security
 
 2024 — Present

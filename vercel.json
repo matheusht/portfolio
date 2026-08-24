@@ -28,6 +28,18 @@
     { "src": "^/blog/([a-z0-9-]+)/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/blog/$1.md" },
     { "src": "^/blog/([a-z0-9-]+)/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/blog/$1.md" },
 
+    { "src": "^/about/?$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/about.md" },
+    { "src": "^/about/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/about.md" },
+    { "src": "^/about/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/about.md" },
+
+    { "src": "^/contact/?$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/contact.md" },
+    { "src": "^/contact/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/contact.md" },
+    { "src": "^/contact/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/contact.md" },
+
+    { "src": "^/privacy/?$", "has": [{ "type": "header", "key": "accept", "value": "text/markdown" }], "dest": "/privacy.md" },
+    { "src": "^/privacy/?$", "has": [{ "type": "header", "key": "accept", "value": { "pre": "text/markdown" } }], "dest": "/privacy.md" },
+    { "src": "^/privacy/?$", "has": [{ "type": "header", "key": "accept", "value": { "suf": "text/markdown" } }], "dest": "/privacy.md" },
+
     { "handle": "filesystem" }
   ]
 }

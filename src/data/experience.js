@@ -2,15 +2,6 @@ export const SITE_URL = "https://matheus.theodoro.dev";
 
 export const roles = [
   {
-    company: "Adapta",
-    role: "AI Security Engineer",
-    date: "2026 — Present",
-    description: "Working on AI and blockchain security.",
-    achievements: [],
-    link: "https://adapta.org",
-    linkLabel: "Visit Adapta",
-  },
-  {
     company: "Avenza Security",
     role: "Founder & AI Security Engineer",
     date: "2024 — Present",
