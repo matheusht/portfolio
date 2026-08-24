@@ -298,4 +298,14 @@ If you email me, I keep your message and your address so I can reply. I don't ad
 `
 );
 
+write(
+  "blog/llms.txt",
+  `# Blog — Matheus Theodoro
+
+> Practitioner writing on AI security, LLM red teaming, agentic defense systems, and prompt injection. Every article has a clean markdown twin.
+
+${posts.map((p) => `- [${p.title}](${url("blog", p.slug + ".md")}): ${p.category}, ${p.pubDate} — ${p.description}`).join("\n")}
+`
+);
+
 console.log("markdown twins generated");
