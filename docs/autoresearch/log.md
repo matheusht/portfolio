@@ -18,6 +18,12 @@ Baseline: **69/100** published (Essential 62.9/80, Recommended 4.4/20, bonus 1.7
 | E7b | identity correction (owner input) | Owner corrected facts mid-run: works at Adapta now; Avenza founder role was 2024—2026, past | Homepage/blog bios point at Adapta + RedThread; experience data Adapta (2026—Present) + Avenza Security (2024—2026); JSON-LD worksFor=Adapta, Organization node removed; llms.txt/md twins updated | **Kept** — truth over score: org-schema-completeness check stays failed because fabricating employer contact/address would violate no-fabrication rule |
 | E8 | developer-resource discoverability + emerging bonuses | Publish machine-readable surfaces at predictable URLs | ARD ai-catalog.json at /.well-known/ per spec (urn:ai identifiers, host envelope); YAML frontmatter on every md twin (markdown-frontmatter); Link: rel="describedby" response header; Article JSON-LD + og:type=article on posts; /blog/llms.txt section guide; robots.txt AI-bot allowlist sections | **Kept** — live except bot-UA serving below |
 | E9 | agent-ua-markdown (emerging bonus) | Serve markdown to GPTBot/ClaudeBot/etc. UAs even without Accept header | Probed regex-string and {contains} has-value forms in legacy routes | **Reverted** — neither form matches; static hosting cannot negotiate on User-Agent. Requires edge middleware (@astrojs/vercel adapter). Documented ceiling unless adapter lands |
+| E10 | ard-catalog, agent-discovery-file, robots-ai-policy-quality, schema-type-breadth | Fix catalog URN namespace; publish skills index; complete crawler policy; extend schema | urn:ai → urn:air identifiers (checker requires domain-anchored urn:air); /.well-known/agent-skills/index.json + SKILL.md with build-time sha256 digest; OAI-SearchBot allow + CCBot/ByteSpider disallow; BreadcrumbList + truthful Service node in JSON-LD graph | **Kept** — raw scan: ard-catalog pass, agent-discovery-file 2/2 pass, robots-ai-policy-quality 2/2 pass |
+| E11 | schema-type-breadth (partial) | FAQPage lifts breadth from warning to full coverage | FAQPage JSON-LD with four questions whose answers mirror visible site content only (identity, RedThread, writing topics, contact); test tightened to allow past-tense Avenza mentions exclusively with explicit "(2024 — 2026)" marker | **Kept** — pending next raw scan |
+
+## Raw score trajectory (same 124-check Ora audit)
+
+22 (E0 baseline) → 36 (after E1–E8) → 43 (after E10). Published model snapshot still 69 (staleness-gated, see below).
 
 ## Measurement notes
 
