@@ -23,7 +23,23 @@ Baseline: **69/100** published (Essential 62.9/80, Recommended 4.4/20, bonus 1.7
 
 ## Raw score trajectory (same 124-check Ora audit)
 
-22 (E0 baseline) → 36 (after E1–E8) → 43 (after E10). Published model snapshot still 69 (staleness-gated, see below).
+22 (E0 baseline) → 36 (after E1–E8) → 43 (after E10/E11, schema-type-breadth 2/2 pass).
+
+## Final measurement protocol (blocked on Is Agentic staleness gate)
+
+The published API replaces its stored snapshot only once it is stale (>6h from publication at 2026-08-24T02:15:59Z, i.e., ≥ 08:15:59Z). Forced scans complete and archive immediately but do not republish. When the window opens:
+
+1. `npx -y is-agentic matheus.theodoro.dev --json` (starts-and-waits if no report exists; otherwise retrieves — so trigger a rescan first via `POST /api/scan/refresh {"target":"https://matheus.theodoro.dev"}` or the Rescan button on https://is-agentic.com/scan/matheus.theodoro.dev).
+2. Record published score vs 69 baseline in this ledger.
+
+Do NOT run additional forced stream scans before the window opens: if their staleness clock tracks newest-completed-scan, extra scans postpone publication.
+
+## Remaining items by category
+
+- **Ceiling (static hosting):** agent-ua-markdown — requires @astrojs/vercel adapter + edge middleware; owner decision.
+- **Product decision:** modular-llms-txt wants a second section guide; the honest candidate is publishing docs/wiki as a /wiki section — needs owner approval for content licensing/accuracy.
+- **External SEO/time:** brand-search-accuracy, agentic-search-specific, wikipedia-presence — depend on third-party search indexing, backlinks, and Wikipedia presence; not achievable from this repository.
+- **Not applicable (personal static portfolio):** public-api, openapi-spec, oauth-support, mcp-server, pricing-info/pages, cli-tool, chatgpt-app-listed, sandbox-environment, webmcp, a2a-agent-card — the published model excludes interfaces the product does not offer.
 
 ## Measurement notes
 
