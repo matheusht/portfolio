@@ -14,9 +14,36 @@ const path = Astro.url?.pathname?.replace(/\/+$/, "") || "/";
 const mdHref = markdownHref ?? (path === "/" ? "/index.md" : `${path}.md`);
 const canonical = `https://matheus.theodoro.dev${path === "/" ? "/" : path}`;
 
+const crumbs = [{ name: "Home", path: "/" }];
+if (path !== "/") {
+  const label = title.split(" — ")[0].split(" | ")[0];
+  crumbs.push({ name: label, path });
+}
+const crumbLd = {
+  "@type": "BreadcrumbList",
+  itemListElement: crumbs.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: c.name,
+    item: `https://matheus.theodoro.dev${c.path === "/" ? "/" : c.path}`,
+  })),
+};
+
+const serviceLd = {
+  "@type": "Service",
+  name: "AI security red teaming and assessment",
+  description:
+    "AI red-team assessments for LLM applications and agents, agentic security reviews, prompt injection and jailbreak testing with replay-validated evidence, and secure backend/cloud/DevSecOps engineering.",
+  serviceType: "AI security assessment and engineering",
+  provider: { "@id": "https://matheus.theodoro.dev/#person" },
+  areaServed: "Worldwide",
+  url: "https://matheus.theodoro.dev/contact",
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
+    crumbLd,
     {
       "@type": "Person",
       "@id": "https://matheus.theodoro.dev/#person",
@@ -51,6 +78,7 @@ const jsonLd = {
       "inLanguage": "en",
       "publisher": { "@id": "https://matheus.theodoro.dev/#person" },
     },
+    serviceLd,
   ],
 };
 ---

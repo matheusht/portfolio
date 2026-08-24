@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { SITE_URL, roles } from "../src/data/experience.js";
 
 const DIST = "dist";
@@ -307,5 +308,20 @@ write(
 ${posts.map((p) => `- [${p.title}](${url("blog", p.slug + ".md")}): ${p.category}, ${p.pubDate} — ${p.description}`).join("\n")}
 `
 );
+
+const skillIndexPath = "public/.well-known/agent-skills/index.json";
+const skillMdPath = "public/.well-known/agent-skills/matheus-theodoro-site/SKILL.md";
+if (fs.existsSync(skillIndexPath) && fs.existsSync(skillMdPath)) {
+  const idx = JSON.parse(fs.readFileSync(skillIndexPath, "utf8"));
+  const digest = crypto.createHash("sha256").update(fs.readFileSync(skillMdPath)).digest("hex");
+  for (const s of idx.skills ?? []) {
+    if (s.url?.endsWith("/.well-known/agent-skills/matheus-theodoro-site/SKILL.md")) {
+      s.digest = `sha256:${digest}`;
+    }
+  }
+  fs.writeFileSync(skillIndexPath, JSON.stringify(idx, null, 2) + "\n");
+  fs.mkdirSync(path.join(DIST, ".well-known/agent-skills"), { recursive: true });
+  fs.copyFileSync(skillIndexPath, path.join(DIST, ".well-known/agent-skills/index.json"));
+}
 
 console.log("markdown twins generated");

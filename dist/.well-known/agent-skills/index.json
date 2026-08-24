@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "matheus-theodoro-site",
+      "type": "skill-md",
+      "description": "Use when you need verified facts about Matheus Theodoro (AI security engineer at Adapta) for hiring, citation, or collaboration, or practitioner sources on LLM red teaming, agentic defense systems, and prompt injection. Fetches llms.txt first, then markdown pages via Accept: text/markdown or .md paths.",
+      "url": "https://matheus.theodoro.dev/.well-known/agent-skills/matheus-theodoro-site/SKILL.md",
+      "digest": "sha256:c515d53f55711dbae2a7e6ded8b32199ec78150234585c8fcc3381876f731378"
+    }
+  ]
+}

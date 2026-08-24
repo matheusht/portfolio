@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 
 const DIST = "dist";
 
@@ -141,9 +142,38 @@ test("well-known ai-catalog.json is valid per ARD spec", () => {
   assert.equal(cat.host.identifier, "matheus.theodoro.dev");
   assert.ok(cat.entries.length >= 1);
   for (const e of cat.entries) {
-    assert.match(e.identifier, /^urn:ai:matheus\.theodoro\.dev:/);
+    assert.match(e.identifier, /^urn:air:matheus\.theodoro\.dev:/, `${e.identifier} not urn:air domain-anchored`);
     assert.ok(e.displayName && e.type && e.url);
   }
+});
+
+test("robots.txt restricts training-only crawlers", () => {
+  const robots = fs.readFileSync("public/robots.txt", "utf8");
+  for (const bot of ["OAI-SearchBot", "CCBot", "ByteSpider"]) {
+    assert.match(robots, new RegExp(`User-agent: ${bot}`));
+  }
+  assert.match(robots, /User-agent: CCBot[\s\S]*?Disallow: \//);
+});
+
+test("JSON-LD graph includes BreadcrumbList and Service", () => {
+  const html = read("index.html");
+  const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  const ld = JSON.parse(match[1]);
+  const types = ld["@graph"].map((n) => n["@type"]);
+  assert.ok(types.includes("BreadcrumbList"), "missing BreadcrumbList");
+  const service = ld["@graph"].find((n) => n["@type"] === "Service");
+  assert.ok(service, "missing Service");
+  assert.equal(service.provider["@id"], "https://matheus.theodoro.dev/#person");
+});
+
+test("agent-skills index advertises skill with matching sha256 digest", () => {
+  const idx = JSON.parse(read(".well-known/agent-skills/index.json"));
+  assert.ok(idx.skills?.length >= 1);
+  const skill = idx.skills[0];
+  assert.ok(skill.name && skill.description && skill.url);
+  const md = read(".well-known/agent-skills/matheus-theodoro-site/SKILL.md");
+  const expected = "sha256:" + crypto.createHash("sha256").update(md).digest("hex");
+  assert.equal(skill.digest, expected);
 });
 
 test("markdown twin exists for every blog post source file", () => {
