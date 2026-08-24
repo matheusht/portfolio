@@ -40,10 +40,50 @@ const serviceLd = {
   url: "https://matheus.theodoro.dev/contact",
 };
 
+const faqLd = {
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Who is Matheus Theodoro?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Matheus Theodoro is an AI security engineer based in Brazil, working at Adapta. He previously founded Avenza Security (2024 — 2026) and built secure cloud infrastructure at Avenza Cloud and Marketisa.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is RedThread?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "RedThread is a CLI-first autonomous AI red-teaming and defense-evidence engine for LLM and agentic systems. It runs adversarial campaigns (PAIR, TAP, Crescendo, GS-MCTS), scores traces against OWASP LLM and MITRE ATLAS categories, and turns confirmed failures into replay-validated guardrail candidates.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What does Matheus Theodoro write about?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Practitioner writing on AI security: LLM red teaming, agentic defense systems, multi-agent attack surfaces, prompt injection, and adversarial machine learning.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How can I contact Matheus Theodoro?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Email dev.matheustheodoro@gmail.com or reach out via LinkedIn (linkedin.com/in/matheusht) or GitHub (github.com/matheusht). Contact topics include AI red-team assessments, agentic security reviews, speaking, and writing.",
+      },
+    },
+  ],
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     crumbLd,
+    serviceLd,
+    faqLd,
     {
       "@type": "Person",
       "@id": "https://matheus.theodoro.dev/#person",
@@ -78,7 +118,6 @@ const jsonLd = {
       "inLanguage": "en",
       "publisher": { "@id": "https://matheus.theodoro.dev/#person" },
     },
-    serviceLd,
   ],
 };
 ---

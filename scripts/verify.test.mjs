@@ -160,9 +160,11 @@ test("JSON-LD graph includes BreadcrumbList and Service", () => {
   const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   const ld = JSON.parse(match[1]);
   const types = ld["@graph"].map((n) => n["@type"]);
-  assert.ok(types.includes("BreadcrumbList"), "missing BreadcrumbList");
+  for (const t of ["BreadcrumbList", "Service", "FAQPage", "Person", "WebSite"]) {
+    assert.ok(types.includes(t), `missing ${t}`);
+  }
+  assert.equal(types.filter((t) => t === "Service").length, 1, "Service duplicated");
   const service = ld["@graph"].find((n) => n["@type"] === "Service");
-  assert.ok(service, "missing Service");
   assert.equal(service.provider["@id"], "https://matheus.theodoro.dev/#person");
 });
 
