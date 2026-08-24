@@ -128,6 +128,23 @@ NASA Space Apps 2025 global nominee and local 1st place. AI-powered wind predict
 `
 );
 
+function walkHtml(dir) {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...walkHtml(p));
+    else if (entry.name.endsWith(".html")) out.push(p);
+  }
+  return out;
+}
+
+function pagePath(file) {
+  const rel = path.relative(DIST, file).replace(/\.html$/, "");
+  if (rel === "index") return "/";
+  if (rel.endsWith("/index")) return "/" + rel.slice(0, -"/index".length);
+  return "/" + rel;
+}
+
 write(
   "404.md",
   `# 404 — page not found
@@ -143,5 +160,24 @@ Recover with these resources:
 - [Experience](${SITE_URL}/experience.md): roles and projects
 `
 );
+
+const pages = walkHtml(DIST)
+  .map(pagePath)
+  .filter((p) => !p.includes("404"))
+  .sort();
+const lastmodByPage = Object.fromEntries(posts.map((p) => [`${SITE_URL}/blog/${p.slug}`, p.pubDate]));
+const today = new Date().toISOString().slice(0, 10);
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${pages
+  .map((p) => {
+    const loc = `${SITE_URL}${p === "/" ? "/" : p}`;
+    const lm = lastmodByPage[loc];
+    return `  <url><loc>${loc}</loc>${lm ? `<lastmod>${lm}</lastmod>` : ""}</url>`;
+  })
+  .join("\n")}
+</urlset>
+`;
+fs.writeFileSync(path.join(DIST, "sitemap.xml"), sitemap);
 
 console.log("markdown twins generated");

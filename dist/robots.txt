@@ -1,0 +1,6 @@
+# matheus.theodoro.dev — crawler policy
+
+User-agent: *
+Allow: /
+
+Sitemap: https://matheus.theodoro.dev/sitemap.xml

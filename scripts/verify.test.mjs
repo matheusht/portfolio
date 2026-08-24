@@ -27,6 +27,25 @@ test("404 page body carries markdown recovery links", () => {
   assert.match(md, /^# 404/);
 });
 
+test("sitemap.xml lists every page with valid XML", () => {
+  const xml = read("sitemap.xml");
+  assert.match(xml, /<urlset xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/);
+  for (const loc of ["/", "/experience", "/blog", "/blog/adversarial-prediction-models"]) {
+    assert.ok(xml.includes(`<loc>${loc}</loc>`) || xml.includes(`<loc>https://matheus.theodoro.dev${loc === "/" ? "/" : loc}</loc>`), `sitemap missing ${loc}`);
+  }
+  const postCount = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md")).length;
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  assert.equal(locs.length, postCount + 3, `expected ${postCount + 3} urls, got ${locs.length}`);
+  assert.match(xml, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, "posts missing lastmod");
+});
+
+test("robots.txt allows crawlers and references the sitemap", () => {
+  const robots = fs.readFileSync("public/robots.txt", "utf8");
+  assert.match(robots, /User-agent: \*/);
+  assert.match(robots, /Allow: \//);
+  assert.match(robots, /Sitemap: https:\/\/matheus\.theodoro\.dev\/sitemap\.xml/);
+});
+
 test("markdown twin exists for every blog post source file", () => {
   const posts = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md"));
   assert.ok(posts.length > 0, "no posts found");
