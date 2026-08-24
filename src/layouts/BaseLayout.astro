@@ -4,9 +4,13 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  markdownHref?: string;
 }
 
-const { title, description = "Making things. Breaking things. Mostly with AI now." } = Astro.props;
+const { title, description = "Making things. Breaking things. Mostly with AI now.", markdownHref } = Astro.props;
+
+const path = Astro.url?.pathname?.replace(/\/+$/, "") || "/";
+const mdHref = markdownHref ?? (path === "/" ? "/index.md" : `${path}.md`);
 ---
 
 <!DOCTYPE html>
@@ -16,6 +20,7 @@ const { title, description = "Making things. Breaking things. Mostly with AI now
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="alternate" type="text/markdown" href={mdHref} />
     <link rel="icon" href="/favicon.ico" />
   </head>
   <body>

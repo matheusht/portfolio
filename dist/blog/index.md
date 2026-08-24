@@ -1,0 +1,10 @@
+# Blog — Matheus Theodoro
+
+> Writing on AI security, red teaming, agentic systems, and building with LLMs.
+
+- [The Red Teamer's Guide to Agentic Defenses: 12 Systems and Where They Break](https://matheus.theodoro.dev/blog/the-red-teamers-guide-to-agentic-defenses.md): A technical survey of every major agentic defense system published in 2025-2026 — SafeAgent, AgentSentry, CoopGuard, Constitutional Classifiers, RvB, FlowGuard, SHIELD, DynaTrust, TrajGuard, AegisLLM, Stable Agentic Control, and PocketAgents — with an attacker's perspective on each.
+- [FlowSteer: The Attack That Current Multi-Agent Defenses Can't See](https://matheus.theodoro.dev/blog/flowsteer-the-attack-that-mas-defenses-cant-see.md): Deep technical analysis of FlowSteer — a prompt-only planning-time attack against multi-agent LLM systems that achieves +55% malicious success rate by manipulating workflow formation itself, completely bypassing post-hoc defenses like G-Safeguard and ARGUS.
+- [Constitutional Classifiers v2: What 1,736 Hours of Red Teaming Revealed About Production AI Defense](https://matheus.theodoro.dev/blog/constitutional-classifiers-v2-what-1700-hours-of-red-teaming-revealed.md): An attacker's analysis of Anthropic's next-generation Constitutional Classifiers — the two-stage cascade, linear probe screening, 0.05% flag rate, 40x cost reduction, and what the absence of a universal jailbreak actually means.
+- [Every Defense Misses the Second Turn](https://matheus.theodoro.dev/blog/agentic-security-shift-2025.md): I ran 12 agentic defense systems against a two-turn attack. Every one of them failed. Here's the vulnerability they all share and the architectural fix that closes it.
+- [Adversarial Prediction Models for Learning-Augmented Algorithms](https://matheus.theodoro.dev/blog/adversarial-prediction-models.md): A position paper arguing that predictions used by learning-augmented algorithms should be treated as untrusted algorithmic inputs, not neutral estimates. Maps adversarial machine learning threat models into algorithm design and proposes benchmark dimensions for robust, security-aware online decision-making.
+

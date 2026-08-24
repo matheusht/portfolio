@@ -6,7 +6,7 @@ const posts = await getCollection("blog");
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title="Matheus Theodoro - AI Coding & Product Building" description="Thoughts on building with frontier AI, coding techniques, and shipping real products.">
+<BaseLayout title="Matheus Theodoro - AI Coding & Product Building" description="Thoughts on building with frontier AI, coding techniques, and shipping real products." markdownHref="/blog/index.md">
   <div class="master-grid">
     <div class="col-span-12 md:col-span-8 md:col-start-3">
       {

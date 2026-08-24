@@ -1,0 +1,50 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/index.md"
+    },
+    {
+      "source": "/experience",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/experience.md"
+    },
+    {
+      "source": "/blog",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/blog/index.md"
+    },
+    {
+      "source": "/blog/:slug",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/blog/:slug.md"
+    },
+    {
+      "source": "/about",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/about.md"
+    },
+    {
+      "source": "/contact",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/contact.md"
+    },
+    {
+      "source": "/privacy",
+      "has": [{ "type": "header", "key": "accept", "value": ".*text/markdown.*" }],
+      "destination": "/privacy.md"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [{ "key": "Vary", "value": "Accept, Accept-Encoding" }]
+    },
+    {
+      "source": "/(.*\\.md)",
+      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+    }
+  ]
+}
