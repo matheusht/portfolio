@@ -254,3 +254,63 @@ test("html pages advertise their markdown alternate", () => {
   const exp = read("experience/index.html");
   assert.match(exp, /rel="alternate"\s+type="text\/markdown"\s+href="\/experience\.md"/);
 });
+
+test("readme blocks render in both themes and both widths", () => {
+  const slugs = ["currently", "post-1", "post-2", "post-3", "redthread"];
+  for (const slug of slugs) {
+    for (const theme of ["dark", "light"]) {
+      for (const suffix of ["", "-narrow"]) {
+        const f = `readme/${slug}-${theme}${suffix}.svg`;
+        assert.ok(exists(f), `missing dist/${f}`);
+        const svg = read(f);
+        assert.match(svg, /^<svg /, `${f} is not an svg`);
+        // Glyphs must be outlined: the SVG loads inside an <img> through
+        // GitHub's camo proxy, where no webfont would ever be fetched.
+        assert.ok(!svg.includes("<text"), `${f} has live <text>, not outlined paths`);
+        assert.ok(svg.includes("prefers-reduced-motion"), `${f} does not honor reduced motion`);
+      }
+    }
+    assert.ok(exists(`readme/go/${slug}/index.html`), `missing bounce page for ${slug}`);
+  }
+});
+
+test("readme bounce pages redirect to live, canonical URLs", () => {
+  const posts = fs
+    .readdirSync("src/content/blog")
+    .filter((f) => f.endsWith(".md"))
+    .map((f) => f.replace(/\.md$/, ""));
+
+  for (const slug of ["currently", "post-1", "post-2", "post-3", "redthread"]) {
+    const html = read(`readme/go/${slug}/index.html`);
+    const target = html.match(/content="0; url=([^"]+)"/)?.[1];
+    assert.ok(target, `${slug} has no meta refresh target`);
+    assert.match(html, new RegExp(`rel="canonical" href="${target.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
+    assert.match(html, /name="robots" content="noindex"/, `${slug} bounce page is indexable`);
+    assert.doesNotMatch(target, /\/$/, `${slug} target has a trailing slash; site convention omits it`);
+
+    if (slug.startsWith("post-")) {
+      const postSlug = target.replace("https://matheus.theodoro.dev/blog/", "");
+      assert.ok(posts.includes(postSlug), `${slug} points at a post that does not exist: ${postSlug}`);
+      assert.ok(exists(`blog/${postSlug}/index.html`), `${slug} target is not a built page`);
+    }
+  }
+});
+
+test("readme svgs get a cache header ahead of the filesystem handler", () => {
+  const routes = JSON.parse(fs.readFileSync("vercel.json", "utf8")).routes;
+  const idx = routes.findIndex((r) => r.src === "^/readme/(.*)\\.svg$");
+  assert.ok(idx >= 0, "missing readme svg cache route");
+  assert.ok(routes[idx].continue, "readme svg route must fall through");
+  assert.match(routes[idx].headers["Cache-Control"], /max-age=3600/);
+  const fsIdx = routes.findIndex((r) => r.handle === "filesystem");
+  assert.ok(idx < fsIdx, "readme svg route must precede the filesystem handler");
+});
+
+test("every @font-face src resolves to a file in dist", () => {
+  const css = fs.readFileSync("src/styles/global.css", "utf8");
+  const srcs = [...css.matchAll(/src:\s*url\((\/[^)]+)\)/g)].map((m) => m[1]);
+  assert.ok(srcs.length > 0, "no @font-face srcs found");
+  for (const s of srcs) {
+    assert.ok(exists(s.replace(/^\//, "")), `@font-face points at missing dist${s}`);
+  }
+});

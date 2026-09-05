@@ -17,6 +17,14 @@
       "continue": true
     },
     {
+      "src": "^/readme/(.*)\\.svg$",
+      "headers": {
+        "Cache-Control": "public, max-age=3600, s-maxage=3600",
+        "Access-Control-Allow-Origin": "*"
+      },
+      "continue": true
+    },
+    {
       "src": "^/$",
       "has": [
         {
