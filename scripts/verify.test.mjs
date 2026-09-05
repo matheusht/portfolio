@@ -268,6 +268,16 @@ test("readme blocks render in both themes and both widths", () => {
         // GitHub's camo proxy, where no webfont would ever be fetched.
         assert.ok(!svg.includes("<text"), `${f} has live <text>, not outlined paths`);
         assert.ok(svg.includes("prefers-reduced-motion"), `${f} does not honor reduced motion`);
+        // `both` would pin opacity:0 before the animation starts, so a viewer
+        // whose browser does not animate SVG-in-<img> would see nothing.
+        assert.ok(svg.includes("forwards"), `${f} must fade with \`forwards\`, never \`both\``);
+        assert.doesNotMatch(svg, /animation:[^;}]*\bboth\b/, `${f} uses animation-fill-mode: both`);
+        // Borderless: no opaque backdrop, so the block reads as plain text.
+        assert.doesNotMatch(
+          svg,
+          /<rect x="0" y="0" width="\d+" height="\d+" fill="#(?!fff\b)[0-9a-f]{6}"/i,
+          `${f} paints an opaque background; blocks must be transparent`
+        );
       }
     }
     assert.ok(exists(`readme/go/${slug}/index.html`), `missing bounce page for ${slug}`);

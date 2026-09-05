@@ -7,6 +7,10 @@
 //
 // Text is outlined to <path> by satori: the SVG loads inside an <img> through
 // GitHub's camo proxy, where no webfont would ever be fetched.
+//
+// Layout follows caio.theodoro.dev/readme: no card, no border, no background —
+// content sits at x=0 on a transparent canvas and reads as plain typography in
+// the README. Section labels appear only on the first block of a group.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -17,116 +21,148 @@ const OUT = "dist/readme";
 const GITHUB_USER = "matheusht";
 const REDTHREAD = "https://github.com/matheusht/redthread";
 
+// camo derives its URL from the source URL, not the bytes, and caches for an
+// hour. Content changes flow through the same URLs, but a *design* change needs
+// a new URL to show up immediately — bump this and re-paste the README.
+const VERSION = 2;
+
+const font = (file, weight) => ({
+  name: "Plus Jakarta Sans",
+  weight,
+  style: "normal",
+  data: fs.readFileSync(`scripts/fonts/${file}`),
+});
 const fonts = [
-  { name: "Cabinet Grotesk", weight: 500, style: "normal", data: fs.readFileSync("scripts/fonts/CabinetGrotesk-Medium.ttf") },
-  { name: "Cabinet Grotesk", weight: 700, style: "normal", data: fs.readFileSync("scripts/fonts/CabinetGrotesk-Bold.ttf") },
+  font("PlusJakartaSans-Regular.ttf", 400),
+  font("PlusJakartaSans-Medium.ttf", 500),
+  font("PlusJakartaSans-Bold.ttf", 700),
 ];
 
 const THEMES = {
-  dark: { bg: "#0d1117", border: "#30363d", fg: "#e6edf3", muted: "#8b949e", link: "#2f81f7", green: "#3fb950", chip: "#21262d" },
-  light: { bg: "#ffffff", border: "#d0d7de", fg: "#1f2328", muted: "#59636e", link: "#0969da", green: "#1a7f37", chip: "#f6f8fa" },
+  dark: { body: "#9198a1", bright: "#e6edf3", label: "#7d8590", green: "#3fb950" },
+  light: { body: "#59636e", bright: "#1f2328", label: "#818b98", green: "#1a7f37" },
 };
 
-const SIZES = { wide: 832, narrow: 400 };
+// Canvas is 832 wide; text is constrained to a 640 column, as Caio's is.
+const SIZES = { wide: { w: 832, col: 640 }, narrow: { w: 400, col: 400 } };
 
-// A sentinel fill satori will emit verbatim; swapped for class="dot" after
-// render so the CSS below can animate it.
 const DOT_SENTINEL = "#00ff01";
 
-const KEYFRAMES = `@keyframes rmFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}` +
+// `forwards`, never `both`: with `both` the backwards fill pins opacity:0 before
+// the animation starts, so any viewer whose browser does not run animations in
+// an <img>-embedded SVG sees nothing at all. `forwards` degrades to visible.
+const KEYFRAMES =
+  `@keyframes rmFadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}` +
   `@keyframes rmBreathe{0%,100%{opacity:.4;transform:scale(.85)}50%{opacity:1;transform:scale(1.12)}}` +
-  `.rm{animation:rmFadeUp .5s cubic-bezier(.25,.46,.45,.94) both}` +
+  `.rm{animation:rmFadeUp .55s cubic-bezier(.25,.46,.45,.94) forwards}` +
   `.dot{transform-box:fill-box;transform-origin:center;animation:rmBreathe 2.4s ease-in-out infinite}` +
   `@media (prefers-reduced-motion:reduce){.rm,.dot{animation:none}}`;
 
 const div = (style, children) => ({ type: "div", props: { style, children } });
-const text = (style, content) => div({ display: "flex", ...style }, content);
+const span = (style, children) => ({ type: "span", props: { style, children } });
 
-// Cut on a word boundary — satori wraps, but an over-long string still has to
-// end somewhere, and mid-word ellipses read as a bug.
-function clip(s, max) {
-  const t = s.replace(/\s+/g, " ").trim();
-  if (t.length <= max) return t;
-  const cut = t.slice(0, max);
-  const lastSpace = cut.lastIndexOf(" ");
-  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:—-]+$/, "") + "…";
-}
+// satori trims trailing whitespace inside a flex item, so a run that must wrap
+// mid-sentence is split into one span per word and columnGap supplies the
+// spaces. A run that must keep a continuous underline stays a single span.
+const words = (text, style) => text.split(/\s+/).filter(Boolean).map((w) => span(style, w));
 
-function card(t, w, children, gap = 8) {
-  const pad = w === SIZES.narrow ? 16 : 22;
+function label(t, s, txt) {
   return div(
     {
       display: "flex",
-      flexDirection: "column",
-      gap,
-      width: w,
-      padding: `${pad}px ${pad + 2}px`,
-      background: t.bg,
-      border: `1px solid ${t.border}`,
-      borderRadius: 8,
-      fontFamily: "Cabinet Grotesk",
+      color: t.label,
+      fontSize: s.w === 400 ? 10 : 11,
+      fontWeight: 700,
+      letterSpacing: 1.1,
+      lineHeight: 1.3,
+      marginBottom: 14,
+    },
+    txt,
+  );
+}
+
+// One flowing paragraph inside a 640px column. satori has no real inline
+// layout — a multi-child div must be flex — so styled runs are flex items on a
+// wrapping line. A run that fits shares the line with the next; one that does
+// not takes its own lines. columnGap supplies the inter-run space, since
+// leading whitespace in a flex item is trimmed.
+function para(t, s, children) {
+  return div(
+    {
+      display: "flex",
+      flexWrap: "wrap",
+      columnGap: s.w === 400 ? 4 : 5,
+      rowGap: 0,
+      width: s.col,
+      color: t.body,
+      fontSize: s.w === 400 ? 15 : 17,
+      fontWeight: 400,
+      lineHeight: 1.5,
     },
     children,
   );
 }
 
-function chipRow(t, w, label, meta) {
-  const fs_ = w === SIZES.narrow ? 12 : 13;
-  return div({ display: "flex", alignItems: "center", gap: 8 }, [
-    text(
-      {
-        color: t.link,
-        background: t.chip,
-        border: `1px solid ${t.border}`,
-        borderRadius: 999,
-        padding: "2px 9px",
-        fontSize: fs_,
-        fontWeight: 500,
-      },
-      label,
-    ),
-    text({ color: t.muted, fontSize: fs_ }, meta),
-  ]);
+function block(children, s) {
+  return div(
+    {
+      display: "flex",
+      flexDirection: "column",
+      width: s.w,
+      paddingBottom: 18,
+      fontFamily: "Plus Jakarta Sans",
+    },
+    children,
+  );
 }
 
 // --- block builders -------------------------------------------------------
 
-function currentlyBlock(t, w) {
-  const narrow = w === SIZES.narrow;
+function currentlyBlock(t, s) {
   const r = roles[0];
-  return card(t, w, [
-    div({ display: "flex", alignItems: "center", gap: 9 }, [
-      div({ width: 9, height: 9, borderRadius: 5, background: DOT_SENTINEL }),
-      text({ color: t.muted, fontSize: narrow ? 12 : 13, fontWeight: 500, letterSpacing: 0.6 }, "CURRENTLY"),
-    ]),
-    text({ color: t.fg, fontSize: narrow ? 18 : 24, fontWeight: 700 }, `${r.role} at ${r.company}`),
-    text({ color: t.muted, fontSize: narrow ? 13 : 15 }, clip(r.date, narrow ? 40 : 90)),
-  ]);
+  return block(
+    [
+      div({ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }, [
+        div({ width: 8, height: 8, borderRadius: 4, background: DOT_SENTINEL }),
+        div(
+          { display: "flex", color: t.label, fontSize: s.w === 400 ? 10 : 11, fontWeight: 700, letterSpacing: 1.1 },
+          "CURRENTLY",
+        ),
+      ]),
+      para(t, s, [
+        span({ color: t.bright, fontWeight: 700 }, r.role),
+        ...words(`at ${r.company} · ${r.date}. ${r.description}`, {}),
+      ]),
+    ],
+    s,
+  );
 }
 
-function postBlock(t, w, post) {
-  const narrow = w === SIZES.narrow;
-  return card(t, w, [
-    chipRow(t, w, post.category, `${post.readTime} min read`),
-    // Budgeted to wrap onto a second line rather than ellipsize a long title.
-    text({ color: t.fg, fontSize: narrow ? 16 : 21, fontWeight: 700, lineHeight: 1.25 }, clip(post.title, narrow ? 80 : 150)),
-    text({ color: t.muted, fontSize: narrow ? 12.5 : 14.5, lineHeight: 1.45 }, clip(post.description, narrow ? 95 : 165)),
-  ]);
+// Title only — no description. The label rides on the first post of the group.
+function postBlock(t, s, post, first) {
+  return block(
+    [
+      ...(first ? [label(t, s, "RECENT WRITING")] : []),
+      para(t, s, [span({ color: t.bright, fontWeight: 700, textDecoration: "underline" }, post.title)]),
+    ],
+    s,
+  );
 }
 
-function projectBlock(t, w) {
-  const narrow = w === SIZES.narrow;
-  return card(t, w, [
-    chipRow(t, w, "Flagship", "github.com/matheusht/redthread"),
-    text({ color: t.fg, fontSize: narrow ? 16 : 21, fontWeight: 700 }, "RedThread"),
-    text(
-      { color: t.muted, fontSize: narrow ? 12.5 : 14.5, lineHeight: 1.45 },
-      clip(
-        "Autonomous AI red-teaming engine orchestrating multi-agent workflows for continuous LLM security testing and self-healing defenses.",
-        narrow ? 95 : 165,
-      ),
-    ),
-  ]);
+function projectBlock(t, s) {
+  return block(
+    [
+      label(t, s, "FLAGSHIP"),
+      para(t, s, [
+        span({ color: t.bright, fontWeight: 700, textDecoration: "underline" }, "RedThread"),
+        ...words(
+          "— Autonomous AI red-teaming engine orchestrating multi-agent workflows for continuous LLM security testing and self-healing defenses.",
+          {},
+        ),
+      ]),
+    ],
+    s,
+  );
 }
 
 // --- content --------------------------------------------------------------
@@ -147,8 +183,6 @@ function readPosts() {
         slug: f.replace(/\.md$/, ""),
         title: field("title"),
         description: field("description"),
-        category: field("category"),
-        readTime: Number(field("readTime")) || 0,
         pubDate: new Date(field("pubDate")),
       };
     })
@@ -159,56 +193,69 @@ function readPosts() {
 
 async function render(node, width) {
   const svg = await satori(node, { width, fonts });
-  const inner = svg.replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
   const open = svg.match(/^<svg[^>]*>/)[0];
+  const inner = svg.replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
   return (
     open +
     `<style>${KEYFRAMES}</style><g class="rm">` +
-    inner.replaceAll(`fill="${DOT_SENTINEL}"`, `fill="${"THEME_GREEN"}" class="dot"`) +
+    inner.replaceAll(`fill="${DOT_SENTINEL}"`, `fill="THEME_GREEN" class="dot"`) +
     `</g></svg>`
   );
 }
 
 function bouncePage(target, title) {
-  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">` +
+  return (
+    `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">` +
     `<meta http-equiv="refresh" content="0; url=${target}">` +
     `<link rel="canonical" href="${target}">` +
     `<meta name="robots" content="noindex">` +
     `<title>${title}</title></head>` +
-    `<body><p>Redirecting to <a href="${target}">${target}</a>.</p></body></html>\n`;
+    `<body><p>Redirecting to <a href="${target}">${target}</a>.</p></body></html>\n`
+  );
 }
 
 const posts = readPosts().slice(0, 3);
 
 const blocks = [
-  { slug: "currently", build: currentlyBlock, target: `${SITE_URL}/experience`, alt: `Currently: ${roles[0].role} at ${roles[0].company}.` },
+  {
+    slug: "currently",
+    build: currentlyBlock,
+    target: `${SITE_URL}/experience`,
+    alt: `Currently: ${roles[0].role} at ${roles[0].company}.`,
+  },
   ...posts.map((p, i) => ({
     slug: `post-${i + 1}`,
-    build: (t, w) => postBlock(t, w, p),
+    build: (t, s) => postBlock(t, s, p, i === 0),
     target: `${SITE_URL}/blog/${p.slug}`,
     alt: `Recent writing: ${p.title}`,
   })),
-  { slug: "redthread", build: projectBlock, target: REDTHREAD, alt: "RedThread — autonomous AI red-teaming engine." },
+  {
+    slug: "redthread",
+    build: projectBlock,
+    target: REDTHREAD,
+    alt: "RedThread — autonomous AI red-teaming engine.",
+  },
 ];
 
 fs.mkdirSync(OUT, { recursive: true });
 
-for (const block of blocks) {
+for (const b of blocks) {
   for (const [themeName, t] of Object.entries(THEMES)) {
-    for (const [sizeName, w] of Object.entries(SIZES)) {
+    for (const [sizeName, s] of Object.entries(SIZES)) {
       const suffix = sizeName === "narrow" ? "-narrow" : "";
-      const svg = (await render(block.build(t, w), w)).replaceAll("THEME_GREEN", t.green);
-      fs.writeFileSync(`${OUT}/${block.slug}-${themeName}${suffix}.svg`, svg);
+      const svg = (await render(b.build(t, s), s.w)).replaceAll("THEME_GREEN", t.green);
+      fs.writeFileSync(`${OUT}/${b.slug}-${themeName}${suffix}.svg`, svg);
     }
   }
-  const goDir = `${OUT}/go/${block.slug}`;
+  const goDir = `${OUT}/go/${b.slug}`;
   fs.mkdirSync(goDir, { recursive: true });
-  fs.writeFileSync(`${goDir}/index.html`, bouncePage(block.target, block.alt));
+  fs.writeFileSync(`${goDir}/index.html`, bouncePage(b.target, b.alt));
 }
 
 // --- the README itself ----------------------------------------------------
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+const src = (f) => `${SITE_URL}/readme/${f}.svg?v=${VERSION}`;
 
 const markup = blocks
   .flatMap((b) =>
@@ -216,8 +263,8 @@ const markup = blocks
       (theme) =>
         `<a href="${SITE_URL}/readme/go/${b.slug}#gh-${theme}-mode-only">` +
         `<picture>` +
-        `<source media="(max-width: 600px)" srcset="${SITE_URL}/readme/${b.slug}-${theme}-narrow.svg">` +
-        `<img alt="${esc(b.alt)}" src="${SITE_URL}/readme/${b.slug}-${theme}.svg">` +
+        `<source media="(max-width: 600px)" srcset="${esc(src(`${b.slug}-${theme}-narrow`))}">` +
+        `<img alt="${esc(b.alt)}" src="${esc(src(`${b.slug}-${theme}`))}">` +
         `</picture></a>`,
     ),
   )
@@ -227,7 +274,8 @@ const readme =
   `<!-- Rendered by the site at build time from src/content + src/data ` +
   `(https://github.com/${GITHUB_USER}/portfolio, scripts/generate-readme.mjs). Edit content there, not here.\n` +
   `     Each block is a dark and a light image. GitHub hides the link whose href ends in #gh-<other>-mode-only,\n` +
-  `     so only the reader's theme shows. The <source> swaps in a 400px render on phones. -->\n` +
+  `     so only the reader's theme shows. The <source> swaps in a 400px render on phones.\n` +
+  `     ?v=${VERSION} busts GitHub's camo cache; bump it in scripts/generate-readme.mjs when the design changes. -->\n` +
   `[matheus.theodoro.dev](${SITE_URL}) · [linkedin](https://linkedin.com/in/matheusht) · ` +
   `[email](mailto:dev.matheustheodoro@gmail.com)\n\n${markup}\n`;
 
