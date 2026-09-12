@@ -1,12 +1,12 @@
 ---
 title: "Matheus Theodoro"
-description: "AI security engineer at Adapta. LLM red teaming, agentic security, and practitioner writing."
+description: "Senior AI Security Engineer at Toloka. LLM red teaming, agentic security, and practitioner writing."
 url: https://matheus.theodoro.dev/
 ---
 
 # Matheus Theodoro
 
-> AI security engineer at Adapta, previously founder of Avenza Security (2024 — 2026). I build and break AI systems so companies can ship them with evidence, not hope.
+> Senior AI Security Engineer at [Toloka](https://toloka.ai). I build and break AI systems so companies can ship them with evidence, not hope.
 
 I red team LLMs and agentic systems, then turn confirmed failures into engineering controls. My work combines offensive security with production engineering: adversarial campaigns, judge-based scoring, and defense validation for real deployments.
 
@@ -20,9 +20,9 @@ All writing: https://matheus.theodoro.dev/blog/index.md
 
 ## Experience
 
-- **AI Security Engineer, Adapta** (2026 — Present): AI security.
-- **Founder & AI Security Engineer, Avenza Security** (2024 — 2026): practical AI security practice for companies shipping LLM applications and agents.
-- **Software Engineer II, Avenza Cloud** (2022 — 2026): secure cloud infrastructure and backend systems at scale.
+- **Senior AI Security Engineer, Toloka** (Sep 2026 — Present): Designing security benchmarks and evaluating AI coding agents.
+- **AI Security Engineer, Adapta** (2026 · 5-month engagement): AI security for enterprise LLM applications and agent deployments.
+- **Founder & AI Security Engineer, Avenza Security** (2024 — 2026): Founded and ran a practical AI security practice for companies shipping LLM applications, agents, and AI-enabled products.
 
 Full history: https://matheus.theodoro.dev/experience.md
 

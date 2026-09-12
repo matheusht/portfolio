@@ -82,12 +82,13 @@ test("agent-skills digest matches live SKILL.md bytes", async () => {
   assert.equal(skill.digest, expected, "published digest does not match live SKILL.md");
 });
 
-test("homepage JSON-LD parses with Person@Adapta and full metadata", async () => {
+test("homepage JSON-LD parses with Person@Toloka and full metadata", async () => {
   const { body } = await get("/");
   const match = body.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   const ld = JSON.parse(match[1]);
   const person = ld["@graph"].find((n) => n["@type"] === "Person");
-  assert.equal(person.worksFor.name, "Adapta");
+  assert.equal(person.worksFor.name, "Toloka");
+  assert.equal(person.worksFor.url, "https://toloka.ai");
   for (const prop of ['property="og:type"', 'property="og:image"', 'rel="canonical"', 'rel="describedby"', 'rel="alternate" type="text/markdown"']) {
     assert.ok(body.includes(prop), `missing ${prop}`);
   }

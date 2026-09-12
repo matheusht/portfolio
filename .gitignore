@@ -1,0 +1,5 @@
+# Local agent context: preserve on disk, exclude from commits and deployments.
+/AGENTS.md
+/docs/LLM_WIKI.md
+/docs/wiki/
+/scripts/verify-wiki.test.mjs

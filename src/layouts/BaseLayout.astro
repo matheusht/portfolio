@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { currentRole } from "../data/experience.js";
 
 interface Props {
   title: string;
@@ -48,7 +49,7 @@ const faqLd = {
       name: "Who is Matheus Theodoro?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Matheus Theodoro is an AI security engineer based in Brazil, working at Adapta. He previously founded Avenza Security (2024 — 2026) and built secure cloud infrastructure at Avenza Cloud and Marketisa.",
+        text: `Matheus Theodoro is a ${currentRole.role.toLowerCase()} based in Brazil, working at ${currentRole.company}. ${currentRole.description} His background spans AI security consulting, cloud engineering, and DevSecOps.`,
       },
     },
     {
@@ -92,7 +93,7 @@ const jsonLd = {
         "AI Security Engineer. Builds and breaks AI systems: LLM red teaming, agentic security, and secure cloud engineering.",
       "url": "https://matheus.theodoro.dev/",
       "email": "mailto:dev.matheustheodoro@gmail.com",
-      "jobTitle": "AI Security Engineer",
+      "jobTitle": currentRole.role,
       "nationality": { "@type": "Country", "name": "Brazil" },
       "knowsAbout": [
         "LLM red teaming",
@@ -104,25 +105,8 @@ const jsonLd = {
       ],
       "worksFor": {
         "@type": "Organization",
-        "name": "Adapta",
-        "url": "https://adapta.org",
-        "email": "parcerias@adapta.org",
-        "contactPoint": [
-          {
-            "@type": "ContactPoint",
-            "contactType": "partnerships",
-            "email": "parcerias@adapta.org",
-            "availableLanguage": ["pt-BR", "en"]
-          }
-        ],
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Avenida Engenheiro Luis Carlos Berrini, 105 - Edifício Berrini One - 32º andar - Escritório 321, Cidade Monções",
-          "addressLocality": "São Paulo",
-          "addressRegion": "SP",
-          "postalCode": "04571-010",
-          "addressCountry": "BR"
-        }
+        "name": currentRole.company,
+        "url": currentRole.link,
       },
       "sameAs": ["https://github.com/matheusht", "https://linkedin.com/in/matheusht"],
     },

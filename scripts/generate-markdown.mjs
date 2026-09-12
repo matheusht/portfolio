@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import { SITE_URL, roles } from "../src/data/experience.js";
+import { SITE_URL, roles, currentRole } from "../src/data/experience.js";
 
 const DIST = "dist";
 const BLOG_SRC = "src/content/blog";
@@ -51,10 +51,10 @@ const url = (...p) => [SITE_URL, ...p].join("/");
 
 write(
   "index.md",
-  { title: "Matheus Theodoro", description: "AI security engineer at Adapta. LLM red teaming, agentic security, and practitioner writing." },
+  { title: "Matheus Theodoro", description: `${currentRole.role} at ${currentRole.company}. LLM red teaming, agentic security, and practitioner writing.` },
   `# Matheus Theodoro
 
-> AI security engineer at Adapta, previously founder of Avenza Security (2024 — 2026). I build and break AI systems so companies can ship them with evidence, not hope.
+> ${currentRole.role} at [${currentRole.company}](${currentRole.link}). I build and break AI systems so companies can ship them with evidence, not hope.
 
 I red team LLMs and agentic systems, then turn confirmed failures into engineering controls. My work combines offensive security with production engineering: adversarial campaigns, judge-based scoring, and defense validation for real deployments.
 
@@ -66,9 +66,7 @@ All writing: ${url("blog/index.md")}
 
 ## Experience
 
-- **AI Security Engineer, Adapta** (2026 — Present): AI security.
-- **Founder & AI Security Engineer, Avenza Security** (2024 — 2026): practical AI security practice for companies shipping LLM applications and agents.
-- **Software Engineer II, Avenza Cloud** (2022 — 2026): secure cloud infrastructure and backend systems at scale.
+${roles.slice(0, 3).map((r) => `- **${r.role}, ${r.company}** (${r.date}): ${r.description}`).join("\n")}
 
 Full history: ${url("experience.md")}
 
@@ -107,10 +105,10 @@ ${posts.map((p) => `- [${p.title}](${url("blog", p.slug + ".md")}): ${p.descript
 
 write(
   "experience.md",
-  { title: "Experience — Matheus Theodoro", description: "Roles at Adapta, Avenza Security, Avenza Cloud, Marketisa. Projects: RedThread, WindWhisper." },
+  { title: "Experience — Matheus Theodoro", description: `Roles at ${roles.map((r) => r.company).join(", ")}. Projects: RedThread, WindWhisper.` },
   `# Experience — Matheus Theodoro
 
-> AI Security Engineer at Adapta. Experience across AI security, cloud engineering, and DevSecOps.
+> ${currentRole.role} at [${currentRole.company}](${currentRole.link}). Experience across AI security, model evaluation, cloud engineering, and DevSecOps.
 
 ${roles
   .map(
@@ -198,7 +196,7 @@ write(
   "llms.txt",
   `# Matheus Theodoro
 
-> AI security engineer at Adapta. I build and break AI systems so companies can ship them with evidence, not hope. This site publishes my writing on LLM red teaming and agentic security, plus my professional record.
+> ${currentRole.role} at ${currentRole.company}. I build and break AI systems so companies can ship them with evidence, not hope. This site publishes my writing on LLM red teaming and agentic security, plus my professional record.
 
 This site is a personal portfolio for Matheus Theodoro. Every page has a clean markdown twin served via content negotiation: request any URL with \`Accept: text/markdown\` and receive \`text/markdown; charset=utf-8\`. Markdown twins are also reachable by appending \`.md\` to a page path.
 
@@ -216,7 +214,7 @@ Not a fit: general web development inquiries, unrelated product marketing, or an
 ## Pages
 
 - [Home](${SITE_URL}/index.md): overview, latest writing, contact links
-- [Experience](${SITE_URL}/experience.md): roles at Adapta, Avenza Security, Avenza Cloud, Marketisa; projects
+- [Experience](${SITE_URL}/experience.md): roles at ${roles.map((r) => r.company).join(", ")}; projects
 - [Blog](${SITE_URL}/blog/index.md): all articles with descriptions
 
 ## Articles

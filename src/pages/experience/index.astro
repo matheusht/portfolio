@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { roles } from "../../data/experience.js";
+import { roles, currentRole } from "../../data/experience.js";
 
 const githubStars = await fetch("https://api.github.com/repos/matheusht/redthread")
   .then((r) => r.json())
@@ -10,7 +10,7 @@ const githubStars = await fetch("https://api.github.com/repos/matheusht/redthrea
 
 <BaseLayout
   title="Experience — Matheus Theodoro"
-  description="AI Security Engineer at Adapta, founder of Avenza Security, builder of OSlit. Experience across AI security, cloud engineering, and DevSecOps."
+  description={`${currentRole.role} at ${currentRole.company}. Experience across AI security, model evaluation, cloud engineering, and DevSecOps.`}
 >
   <div class="master-grid">
     <main class="col-span-12 md:col-span-8 md:col-start-3" style="animation: settleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0;">

@@ -2,10 +2,19 @@ export const SITE_URL = "https://matheus.theodoro.dev";
 
 export const roles = [
   {
+    company: "Toloka",
+    role: "Senior AI Security Engineer",
+    date: "Sep 2026 — Present",
+    description: "Designing security benchmarks and evaluating AI coding agents.",
+    achievements: [],
+    link: "https://toloka.ai",
+    linkLabel: "Visit Toloka",
+  },
+  {
     company: "Adapta",
     role: "AI Security Engineer",
-    date: "2026 — Present",
-    description: "Working on AI security.",
+    date: "2026 · 5-month engagement",
+    description: "AI security for enterprise LLM applications and agent deployments.",
     achievements: [],
     link: "https://adapta.org",
     linkLabel: "Visit Adapta",
@@ -51,3 +60,5 @@ export const roles = [
     ],
   },
 ];
+
+export const currentRole = roles[0];

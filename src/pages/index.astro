@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { currentRole } from "../data/experience.js";
 
 const posts = await getCollection("blog");
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -13,8 +14,8 @@ const latest = posts.slice(0, 3);
       <section style="margin-bottom: var(--ma-5);">
         <h1 class="page-title">Testing AI agents where they break.</h1>
         <p style="color: var(--color-warm-gray); max-width: 90%; font-size: 20px; line-height: 1.7;">
-          I'm Matheus, an AI security engineer working at
-          <a href="https://adapta.org" target="_blank" rel="noopener noreferrer" class="inline-link">Adapta</a>, building
+          I'm Matheus, a senior AI security engineer working at
+          <a href={currentRole.link} target="_blank" rel="noopener noreferrer" class="inline-link">{currentRole.company}</a>, building
           <a href="https://github.com/matheusht/redthread" target="_blank" rel="noopener noreferrer" class="inline-link">RedThread</a>
           —an autonomous AI red-teaming and defense-evidence engine for LLM and agentic systems.
         </p>

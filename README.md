@@ -1,6 +1,6 @@
 # portfolio
 
-Personal site of Matheus Theodoro — AI Security Engineer at Adapta. Astro 5 + Tailwind 4, deployed on Vercel at https://matheus.theodoro.dev (pushes to `main` auto-deploy).
+Personal site of Matheus Theodoro — Senior AI Security Engineer at [Toloka](https://toloka.ai). Astro 5 + Tailwind 4, deployed on Vercel at https://matheus.theodoro.dev (pushes to `main` auto-deploy).
 
 ## Agent-facing surfaces
 
@@ -15,7 +15,7 @@ Every page ships two representations. Browsers get HTML; agents get clean markdo
 | `/robots.txt` | Allows answer-engine crawlers (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot…); restricts training-only crawlers (CCBot, ByteSpider). |
 | `/.well-known/ai-catalog.json` | ARD catalog with domain-anchored `urn:air:` entries. |
 | `/.well-known/agent-skills/index.json` | Agent Skills discovery index; sha256 digest matches the SKILL.md bytes. |
-| JSON-LD | Person (worksFor Adapta), WebSite, BreadcrumbList, Service, FAQPage sitewide; Article on posts. |
+| JSON-LD | Person (worksFor Toloka), WebSite, BreadcrumbList, Service, FAQPage sitewide; Article on posts. |
 | OG metadata | Canonical URL, og:type, og:image (generated 1200×630 PNG), Twitter card. |
 
 Markdown twins and `llms.txt` regenerate on every build via `scripts/generate-markdown.mjs`; og/favicon via `scripts/generate-images.mjs`. Routing lives in `vercel.json` legacy `routes` — conditional rewrites sit **before** `{ "handle": "filesystem" }` because filesystem precedence beats modern `rewrites`.
@@ -34,4 +34,8 @@ Scored by [Is Agentic](https://is-agentic.com/scan/matheus.theodoro.dev). Experi
 
 ## Identity facts
 
-Current: AI Security Engineer at [Adapta](https://adapta.org). Past: founder of Avenza Security (2024 — 2026). Flagship project: [RedThread](https://github.com/matheusht/redthread). These facts are enforced by tests; do not reintroduce stale claims.
+Current: Senior AI Security Engineer at [Toloka](https://toloka.ai), since September 2026. Toloka copy stays brief: security benchmarks and AI coding-agent evaluation. Adapta remains a past five-month engagement in 2026. The current role in `src/data/experience.js` feeds the site, structured metadata, markdown twins and generated profile. Older career entries are retained; they have not been comprehensively reconciled with the new CV.
+
+## LLM Wiki
+
+The personal brief and research wiki are local-only agent context, excluded from Git and website publication. Existing copies stay on disk; a fresh clone does not contain them. Older committed versions remain in Git history.

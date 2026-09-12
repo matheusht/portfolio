@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import { currentRole, roles } from "../src/data/experience.js";
 
 const DIST = "dist";
 
@@ -85,14 +86,10 @@ test("homepage carries valid JSON-LD Person graph", () => {
   const person = ld["@graph"].find((n) => n["@type"] === "Person");
   assert.equal(person.name, "Matheus Theodoro");
   assert.ok(person.sameAs.includes("https://github.com/matheusht"));
-  assert.equal(person.worksFor.name, "Adapta");
-  assert.equal(person.worksFor.contactPoint[0].email, "parcerias@adapta.org");
-  const avenzaMentions = [...html.matchAll(/Avenza/g)].length;
-  if (avenzaMentions > 0) {
-    const pastOk = /previously founded Avenza Security \(2024 — 2026\)/.test(html);
-    assert.ok(pastOk, "homepage Avenza references must be explicit past-tense only");
-    assert.ok(!/at Avenza Security[^(]|working at Avenza/.test(html), "homepage must not claim current Avenza affiliation");
-  }
+  assert.equal(person.worksFor.name, "Toloka");
+  assert.equal(person.worksFor.url, "https://toloka.ai");
+  assert.equal(person.jobTitle, "Senior AI Security Engineer");
+  assert.ok(!person.worksFor.contactPoint, "do not carry over the former employer's contacts");
 });
 
 test("blog posts carry Article JSON-LD and og:type article", () => {
@@ -103,14 +100,25 @@ test("blog posts carry Article JSON-LD and og:type article", () => {
   assert.match(post, /property="og:type" content="article"/);
 });
 
-test("identity: Adapta is current employer across built pages", () => {
-  for (const f of ["index.html", "experience/index.html"]) {
+test("identity: Toloka is current across HTML, markdown and generated profile", () => {
+  assert.equal(currentRole.company, "Toloka");
+  assert.equal(currentRole.date, "Sep 2026 — Present");
+  assert.equal(currentRole.achievements.length, 0, "keep the Toloka entry concise");
+  assert.ok(!roles.find((r) => r.company === "Adapta").date.includes("Present"));
+  const posts = fs.readdirSync("src/content/blog").filter((f) => f.endsWith(".md"));
+  for (const f of ["index.html", "experience/index.html", ...posts.map((f) => `blog/${f.slice(0, -3)}/index.html`)]) {
     const html = read(f);
-    assert.ok(html.includes("adapta.org"), `${f} missing Adapta`);
+    assert.ok(html.includes('href="https://toloka.ai"'), `${f} missing Toloka link`);
+    const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    assert.equal(ld["@graph"].find((n) => n["@type"] === "Person").worksFor.name, "Toloka");
+    assert.doesNotMatch(html, /working at Adapta|parcerias@adapta\.org/);
   }
-  const exp = read("experience/index.html").replace(/<[^>]+>/g, " ");
-  assert.match(exp, /2024 — 2026/, "Avenza role must be past-dated");
-  assert.doesNotMatch(exp.replace(/2024 — 2026[\s\S]*?(?=Marketisa|$)/, " "), /Founder & AI Security Engineer[\s\S]*?Present/, "founder role must not be Present");
+  for (const f of ["index.md", "experience.md", "llms.txt"]) {
+    assert.match(read(f), /Senior AI Security Engineer at (?:\[)?Toloka/);
+    assert.doesNotMatch(read(f), /engineer at Adapta/i);
+  }
+  assert.match(fs.readFileSync("docs/profile-readme.md", "utf8"), /Currently: Senior AI Security Engineer at Toloka/);
+  assert.ok(read("experience.md").indexOf("Toloka") < read("experience.md").indexOf("Adapta"));
 });
 
 test("every page has canonical URL and full OG metadata", () => {

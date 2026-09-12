@@ -1,18 +1,26 @@
 ---
 title: "Experience — Matheus Theodoro"
-description: "Roles at Adapta, Avenza Security, Avenza Cloud, Marketisa. Projects: RedThread, WindWhisper."
+description: "Roles at Toloka, Adapta, Avenza Security, Avenza Cloud, Marketisa. Projects: RedThread, WindWhisper."
 url: https://matheus.theodoro.dev/experience
 ---
 
 # Experience — Matheus Theodoro
 
-> AI Security Engineer at Adapta. Experience across AI security, cloud engineering, and DevSecOps.
+> Senior AI Security Engineer at [Toloka](https://toloka.ai). Experience across AI security, model evaluation, cloud engineering, and DevSecOps.
+
+## Senior AI Security Engineer — Toloka
+
+Sep 2026 — Present
+
+Designing security benchmarks and evaluating AI coding agents.
+
+Link: https://toloka.ai
 
 ## AI Security Engineer — Adapta
 
-2026 — Present
+2026 · 5-month engagement
 
-Working on AI security.
+AI security for enterprise LLM applications and agent deployments.
 
 Link: https://adapta.org
 
