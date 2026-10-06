@@ -1,6 +1,18 @@
 # Writing Guide — Matheus Theodoro
 
-This guide captures the voice, structural patterns, and editorial rules for this blog. It exists to make edits consistent — especially when AI assists with writing.
+This guide captures Matheus's writing voice. The X DM section applies to personal outreach; the remaining sections apply to the blog.
+
+## X DMs to founders and other people
+
+User-confirmed October 6, 2026: this is Matheus's usual DM style.
+
+- Write like a conversation: short messages or paragraphs, plain words, contractions, and often lowercase. Keep names, technical terms, and links clear.
+- Open with a simple greeting and a specific reason for reaching out, such as the person's post or work.
+- Connect relevant experience or something Matheus is building to that reason. Use verified facts and a useful portfolio or project link when it helps.
+- State the interest directly and leave an easy next step: a question, a chat, or an offer to explain more.
+- Let warmth and occasional humor happen naturally. A smiley or casual phrase can fit; forcing slang or copying typos does not make a message sound like him.
+- Keep it personal rather than turning it into a cover letter, sales pitch, or fixed template. Match the recipient and existing conversation.
+- Preserve uncertainty that matters. This style supplies neither credentials nor permission to reuse private messages or disclose private work.
 
 ## Voice
 
