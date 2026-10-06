@@ -14,6 +14,13 @@ User-confirmed October 6, 2026: this is Matheus's usual DM style.
 - Keep it personal rather than turning it into a cover letter, sales pitch, or fixed template. Match the recipient and existing conversation.
 - Preserve uncertainty that matters. This style supplies neither credentials nor permission to reuse private messages or disclose private work.
 
+### References and authority
+
+- **Primary confirmation, October 6, 2026:** Matheus explicitly described the reviewed examples as "the writing style i usually take when dming founders/people on X." This establishes the scope of the DM guidance.
+- **Primary writing sample, reviewed October 6, 2026:** Matheus's own sent messages in a private X conversation he selected. These support the observations about short messages, lowercase, contractions, concrete context and natural warmth. The private source locator is retained in the local personal brief; recipient replies and assistant-written drafts are not samples of his voice.
+- **Blog rules:** the existing [August 17 guide](https://github.com/matheusht/portfolio/blob/0728bb370b0bb1e58f3cb00e9bb0633b4987c448/WRITING_GUIDE.md) is the source for the blog sections below. The October DM confirmation does not newly endorse every older blog rule.
+- **Related public guidance:** [Personal AI security writing and visibility](docs/personal-visibility.md) explains evidence and attribution boundaries. It is editorial context, not a natural-writing sample.
+
 ## Voice
 
 - **Short declarative sentences.** Lead with the claim. "The security frontier moved." Not "The security landscape has undergone a significant shift."
